@@ -1,10 +1,13 @@
 #define CATCH_CONFIG_RUNNER
 #include <catch.hpp>
 #include <glm/vec3.hpp>
+#include <glm/glm.hpp>
+#include <glm/gtx/intersect.hpp>
 #include "shape.hpp"
 #include "sphere.hpp"
 #include "box.hpp"
 #include "color.hpp"
+#include "ray.hpp"
 #include <iostream>
 #include <string>
 
@@ -66,7 +69,7 @@ TEST_CASE("sphere_with_color", "[color_and_name2]"){
 	REQUIRE(s1.get_name().compare(name) == 0);
 }
 
-//6.4
+//6.5
 TEST_CASE("print_sphere", "[print1]"){
 	glm::vec3 vec{1.0f,2.0f,0.0f};
 	Color c{1.0f, 0.5f, 0.2f};
@@ -83,6 +86,43 @@ TEST_CASE("print_box", "[print2]"){
 	std::cout << b1 << std::endl;
 }
 
+//6.6
+TEST_CASE("intersectRaySphere", "[intersect]"){
+	//Ray
+	glm::vec3 ray_origin(0.0,0.0,0.0);
+	//v = glm::normalize(some_vector);
+	glm::vec3 ray_direction(0.0,0.0,1.0);
+
+	//Sphere
+	glm::vec3 sphere_center(0.0,0.0,5.0);
+	float sphere_radius(1.0);
+
+	float distance(0.0);
+	auto result = glm::intersectRaySphere(ray_origin, ray_direction, sphere_center, sphere_radius, distance);
+	REQUIRE(distance == Approx(4.0));
+}
+TEST_CASE("intersect_sphere_ray", "[intersect_sphere]"){
+	glm::vec3 origin(0.0,0.0,0.0);
+	glm::vec3 direction(0.0,0.0,1.0);
+	Ray r{origin, direction};
+
+	glm::vec3 vec(0.0,0.0,5.0);
+	Sphere s1{vec , 1.0};
+	float distance(0.0);
+	s1.intersect(r, distance);
+	REQUIRE(distance == Approx(4.0));
+}
+TEST_CASE("intersect_sphere_ray2", "[intersect_sphere2]"){
+	glm::vec3 origin(0.0,0.0,0.0);
+	glm::vec3 direction(0.0,0.0,1.0);
+	Ray r{origin, direction};
+
+	glm::vec3 vec(0.0,0.0,4.0);
+	Sphere s1{vec , 1.0};
+	float distance(0.0);
+	s1.intersect(r, distance);
+	REQUIRE(distance == Approx(3.0));
+}
 
 
 int main(int argc, char *argv[])
