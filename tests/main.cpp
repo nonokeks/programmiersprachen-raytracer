@@ -1,6 +1,7 @@
 #define CATCH_CONFIG_RUNNER
 #include <catch.hpp>
 #include <glm/vec3.hpp>
+#include "shape.hpp"
 #include "sphere.hpp"
 #include "box.hpp"
 #include "color.hpp"
@@ -47,22 +48,22 @@ TEST_CASE("box_with_color", "[color_and_name1]"){
 	glm::vec3 vec1{0.0f,0.0f,0.0f};
 	glm::vec3 vec2{2.0f,1.0f,3.0f};
 	Color c{1.0f, 0.5f, 0.2f};
-	std::string name = "box";
+	std::string name = ("box");
 	Box b1{vec2, vec1, name, c};
 	REQUIRE(b1.get_color().r == c.r);
 	REQUIRE(b1.get_color().g == c.g);
 	REQUIRE(b1.get_color().b == c.b);
-	REQUIRE(b1.get_name() == name);
+	REQUIRE(b1.get_name().compare("box") == 0);
 }
 TEST_CASE("sphere_with_color", "[color_and_name2]"){
 	glm::vec3 vec1{0.0f,0.0f,0.0f};
 	Color c{1.0f, 0.5f, 0.2f};
-	std::string name = "box";
+	std::string name = ("sphere");
 	Sphere s1{vec1 , 2.0f, name, c};
 	REQUIRE(s1.get_color().r == c.r);
 	REQUIRE(s1.get_color().g == c.g);
 	REQUIRE(s1.get_color().b == c.b);
-	REQUIRE(s1.get_name() == name);
+	REQUIRE(s1.get_name().compare(name) == 0);
 }
 
 

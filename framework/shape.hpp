@@ -12,6 +12,10 @@ public:
 
 	virtual float area() const = 0;
 	virtual float volume() const = 0;
+	virtual std::ostream& print(std::ostream& os) const{
+		os << "Name: " << name_ << ", Color: " << color_.r << " " << color_.g << " " << color_.b;
+		return os;
+	}
 
 	std::string get_name()const{
 		return name_;
@@ -20,9 +24,15 @@ public:
 		return color_;
 	}
 
+	friend std::ostream& operator<<(std::ostream& os, Shape const& s){
+		return s.print(os);
+	}
+
+
 private:
 	std::string name_;
 	Color color_;
 };
+
 
 #endif // #ifndef BUW_SHAPE_HPP
