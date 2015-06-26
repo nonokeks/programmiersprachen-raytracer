@@ -23,7 +23,16 @@ float Sphere::get_radius() const{
 float Sphere::area() const{
 	return (4 * M_PI * radius_ * radius_);
 }
+
 float Sphere::volume() const{
 	float temp = (4 * M_PI * pow(radius_,3))/3;
 	return temp;
+}
+
+std::ostream& Sphere::print(std::ostream& os) const{
+	Shape::print(os);
+	//os << "Name: " << get_name() << ", Color: " << get_color().r << " " << get_color().g << " " << get_color().b << "\n";
+	os << "Radius: " << radius_ << ", Center: " << center_.x << " " << center_.y << " " << center_.z;
+
+	return os;
 }

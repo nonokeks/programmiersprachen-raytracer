@@ -13,7 +13,7 @@ public:
 	virtual float area() const = 0;
 	virtual float volume() const = 0;
 	virtual std::ostream& print(std::ostream& os) const{
-		os << "Name: " << name_ << ", Color: " << color_.r << " " << color_.g << " " << color_.b;
+		os << "Name: " << name_ << ", Color: " << color_.r << " " << color_.g << " " << color_.b << "\n";
 		return os;
 	}
 

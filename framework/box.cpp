@@ -28,3 +28,10 @@ float Box::volume() const{
 	float high = fabs(max_.z - min_.z);
 	return (high * width * depth);
 }
+
+std::ostream& Box::print(std::ostream& os) const{
+	Shape::print(os);
+	//os << "Name: " << get_name() << ", Color: " << get_color().r << " " << get_color().g << " " << get_color().b << "\n";
+	os << "Min: " << min_.x << " " << min_.y << " " << min_.z << ", Max: "<< max_.x << " " << max_.y << " " << max_.z;
+	return os;
+}

@@ -18,6 +18,7 @@ public:
 
 	/*virtual*/ float area() const;
 	/*virtual*/ float volume() const;
+	/*virtual*/ std::ostream& print(std::ostream& os) const;
 
 private:
 	glm::vec3 min_;

@@ -66,6 +66,22 @@ TEST_CASE("sphere_with_color", "[color_and_name2]"){
 	REQUIRE(s1.get_name().compare(name) == 0);
 }
 
+//6.4
+TEST_CASE("print_sphere", "[print1]"){
+	glm::vec3 vec{1.0f,2.0f,0.0f};
+	Color c{1.0f, 0.5f, 0.2f};
+	std::string name = ("sphere");
+	Sphere s1{vec , 2.0f, name, c};
+	std::cout << s1 << std::endl;
+}
+TEST_CASE("print_box", "[print2]"){
+	glm::vec3 vec1{0.0f,0.0f,0.0f};
+	glm::vec3 vec2{2.0f,1.0f,3.0f};
+	Color c{1.0f, 0.2f, 0.7f};
+	std::string name = ("box");
+	Box b1{vec2, vec1, name, c};
+	std::cout << b1 << std::endl;
+}
 
 
 
