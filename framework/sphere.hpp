@@ -17,7 +17,7 @@ public:
 
 	glm::vec3 const& get_center() const;
 	float get_radius() const;
-	void intersect(Ray const& ray, float& distance)const;
+	bool intersect(Ray const& ray, float& distance)const;
 
 	/*virtual*/ float area() const;
 	/*virtual*/ float volume() const;

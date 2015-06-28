@@ -23,9 +23,9 @@ float Sphere::get_radius() const{
 	return radius_;
 }
 
-void Sphere::intersect(Ray const& ray, float& distance)const{
+bool Sphere::intersect(Ray const& ray, float& distance)const{
 	glm::vec3 direct = glm::normalize(ray.direction);
-	glm::intersectRaySphere(ray.origin, direct, center_, radius_, distance);
+	return glm::intersectRaySphere(ray.origin, direct, center_, radius_, distance);
 }
 
 

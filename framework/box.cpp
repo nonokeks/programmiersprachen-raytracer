@@ -16,6 +16,11 @@ glm::vec3 const& Box::get_max()const{
 	return max_;
 }
 
+// bool Box::intersect(Ray const& ray)const{
+
+// }
+
+
 float Box::area() const{
 	float depth = fabs(max_.x - min_.x);
 	float width = fabs(max_.y - min_.y);

@@ -15,6 +15,7 @@ public:
 
 	glm::vec3 const& get_min()const;
 	glm::vec3 const& get_max()const;
+	//bool intersect(Ray const& ray)const;
 
 	/*virtual*/ float area() const;
 	/*virtual*/ float volume() const;

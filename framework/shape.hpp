@@ -9,6 +9,8 @@ class Shape
 public:
 	Shape(): name_{""}, color_{0.0f, 0.0f, 0.0f}{}
 	Shape(std::string name, Color color): name_{name}, color_{color} {}
+	//virtual ~Shape(){}
+	~Shape(){}
 
 	virtual float area() const = 0;
 	virtual float volume() const = 0;

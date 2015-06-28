@@ -114,16 +114,31 @@ TEST_CASE("intersect_sphere_ray", "[intersect_sphere]"){
 }
 TEST_CASE("intersect_sphere_ray2", "[intersect_sphere2]"){
 	glm::vec3 origin(0.0,0.0,0.0);
-	glm::vec3 direction(0.0,0.0,1.0);
+	glm::vec3 direction(0.0,0.0,2.0);
 	Ray r{origin, direction};
 
 	glm::vec3 vec(0.0,0.0,4.0);
 	Sphere s1{vec , 1.0};
 	float distance(0.0);
-	s1.intersect(r, distance);
+	bool b = s1.intersect(r, distance);
 	REQUIRE(distance == Approx(3.0));
+	REQUIRE(b);
 }
 
+//6.8
+TEST_CASE("virtual_destructor", "[destructor]"){
+	Color red(255, 0, 0);
+	glm::vec3 position(0,0,0);
+	Sphere* s1 = new Sphere(position, 1.2, "sphere0", red);
+	Shape* s2 = new Sphere(position, 1.2, "sphere1", red);
+
+	s1->print(std::cout);
+	std::cout << "\n";
+	s2->print(std::cout);
+
+	delete s1;
+	delete s2;
+}
 
 int main(int argc, char *argv[])
 {
