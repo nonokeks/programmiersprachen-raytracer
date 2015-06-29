@@ -9,7 +9,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/intersect.hpp>
 
-Sphere::Sphere(): center_{0.0f, 0.0f, 0.0f}, radius_{0.0}{}
+Sphere::Sphere(): Shape{}, center_{0.0f, 0.0f, 0.0f}, radius_{0.0}{}
 Sphere::Sphere(glm::vec3 const& center, float radius): Shape{}, center_{center}, radius_{radius} {}
 Sphere::Sphere(glm::vec3 const& center, float radius, std::string name, Color color):Shape{name, color}, center_{center}, 
 radius_{radius}{}
@@ -26,7 +26,7 @@ float Sphere::get_radius() const{
 
 bool Sphere::intersect(Ray const& ray, float& distance)const{
 	glm::vec3 direct = glm::normalize(ray.direction);
-	return glm::intersectRaySphere(ray.origin, direct, center_, radius_, distance);
+	return glm::intersectRaySphere(ray.origin, direct, center_, radius_*radius_, distance);
 }
 
 
