@@ -13,6 +13,7 @@ Sphere::Sphere(): center_{0.0f, 0.0f, 0.0f}, radius_{0.0}{}
 Sphere::Sphere(glm::vec3 const& center, float radius): Shape{}, center_{center}, radius_{radius} {}
 Sphere::Sphere(glm::vec3 const& center, float radius, std::string name, Color color):Shape{name, color}, center_{center}, 
 radius_{radius}{}
+//Sphere::~Sphere(){std::cout << "Sphere Destructor" << std::endl;}
 
 
 glm::vec3 const& Sphere::get_center() const {

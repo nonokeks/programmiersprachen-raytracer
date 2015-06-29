@@ -7,7 +7,7 @@
 Box::Box() :min_{0.0f, 0.0f, 0.0f}, max_{0.0f, 0.0f, 0.0f} {}
 Box::Box(glm::vec3 const& min, glm::vec3 const& max):Shape{}, min_{min}, max_{max} {}
 Box::Box(glm::vec3 const& min, glm::vec3 const& max, std::string name, Color color):Shape{name, color}, min_{min}, max_{max} {}
-
+//Box::~Box(){std::cout << "Box Destructor" << std::endl;}
 
 glm::vec3 const& Box::get_min()const{
 	return min_;
@@ -15,10 +15,6 @@ glm::vec3 const& Box::get_min()const{
 glm::vec3 const& Box::get_max()const{
 	return max_;
 }
-
-// bool Box::intersect(Ray const& ray)const{
-
-// }
 
 
 float Box::area() const{

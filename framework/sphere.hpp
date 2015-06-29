@@ -13,6 +13,7 @@ public:
 	Sphere();
 	Sphere(glm::vec3 const& center, float radius);
 	Sphere(glm::vec3 const& center, float radius, std::string name, Color color);
+	//~Sphere();
 	
 
 	glm::vec3 const& get_center() const;
