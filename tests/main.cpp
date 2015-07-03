@@ -98,7 +98,7 @@ TEST_CASE("intersectRaySphere", "[intersect]"){
 	float sphere_radius(1.0);
 
 	float distance(0.0);
-	auto result = glm::intersectRaySphere(ray_origin, ray_direction, sphere_center, sphere_radius, distance);
+	auto result = glm::intersectRaySphere(ray_origin, ray_direction, sphere_center, sphere_radius* sphere_radius, distance);
 	REQUIRE(distance == Approx(4.0));
 }
 TEST_CASE("intersect_sphere_ray", "[intersect_sphere]"){
