@@ -1,4 +1,4 @@
-g#ifndef BUW_SHAPE_HPP
+#ifndef BUW_SHAPE_HPP
 #define BUW_SHAPE_HPP
 #include <iostream>
 #include <string>
