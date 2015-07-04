@@ -19,10 +19,10 @@ public:
 		return os;
 	}
 
-	std::string get_name()const{
+	std::string const& get_name()const{
 		return name_;
 	}
-	Color get_color() const{
+	Color const& get_color() const{
 		return color_;
 	}
 
