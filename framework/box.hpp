@@ -14,6 +14,9 @@ public:
 	Box(glm::vec3 const& min, glm::vec3 const& max, std::string name, Color const& color);
 	//~Box();
 
+	//Box(glm::vec3 const& min, glm::vec3 const& max, Material const& mat);
+	//Box(glm::vec3 const& min, glm::vec3 const& max, std::string name_mat, Color const& ka, Color const& kd, Color const& ks, float m);
+
 	glm::vec3 const& get_min()const;
 	glm::vec3 const& get_max()const;
 	

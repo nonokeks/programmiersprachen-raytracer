@@ -25,7 +25,9 @@ float Material::get_m() const{
 }
 
 //operator<<
-friend std::ostream& Material::operator<<(std::ostream& os, Material const& mat){
-	//Fehlt noch
+std::ostream& operator<<(std::ostream& os, Material const& mat){
+	os << "Materialname: " << mat.name_ << " ka: " << mat.ka_.r << " " << mat.ka_.g << " " << mat.ka_.b << "\n";
+	os << "kd: " << mat.kd_.r << " " << mat.kd_.g << " " << mat.kd_.b << " ks: "<< mat.ks_.r << " " << mat.ks_.g << " " << mat.ks_.b << "\n";
+	os << "m: " << mat.m_;
 	return os;
 }

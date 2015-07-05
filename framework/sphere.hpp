@@ -16,6 +16,9 @@ public:
 	//~Sphere();
 	
 
+	//Sphere(glm::vec3 const& center, float radius, std::string name, Material const& mat);
+	//Sphere(glm::vec3 const& center, float radius, std::string name, std::string name_mat, Color const& ka, Color const& kd, Color const& ks, float m);
+
 	glm::vec3 const& get_center() const;
 	float get_radius() const;
 	bool intersect(Ray const& ray, float& distance)const;
