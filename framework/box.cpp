@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include "color.hpp"
+#include "ray.hpp"
 
 Box::Box() : Shape{}, min_{0.0f, 0.0f, 0.0f}, max_{0.0f, 0.0f, 0.0f} {}
 Box::Box(glm::vec3 const& min, glm::vec3 const& max):Shape{}, min_{min}, max_{max} {}
@@ -40,4 +41,27 @@ std::ostream& Box::print(std::ostream& os) const{
 	//os << "Name: " << get_name() << ", Color: " << get_color().r << " " << get_color().g << " " << get_color().b << "\n";
 	os << "Min: " << min_.x << " " << min_.y << " " << min_.z << ", Max: "<< max_.x << " " << max_.y << " " << max_.z;
 	return os;
+}
+
+bool Box::intersect(Ray const& ray, float& distance) const{
+    double a = (get_min().x - ray.origin.x) * ray.inv_direction.x;
+    double b = (get_max().x - ray.origin.x) * ray.inv_direction.x;
+    double tmin = std::min(a, b);
+    double tmax = std::max(a, b);
+
+    a = (get_min().y - ray.origin.y) * ray.inv_direction.y;
+    b = (get_max().y - ray.origin.y) * ray.inv_direction.y;
+    tmin = std::max(tmin, std::min(a, b));
+    tmax = std::min(tmax, std::max(a, b));
+
+    a = (get_min().z - ray.origin.z) * ray.inv_direction.z;
+    b = (get_max().z - ray.origin.z) * ray.inv_direction.z;
+    tmin = std::max(tmin, std::min(a, b));
+    tmax = std::min(tmax, std::max(a, b));
+
+    if (tmax > std::max(0.0, tmin)) {
+        distance = sqrt(tmin * tmin * (ray.direction.x * ray.direction.x + ray.direction.y * ray.direction.y + ray.direction.z * ray.direction.z));
+        return true;
+    }
+    return false;
 }

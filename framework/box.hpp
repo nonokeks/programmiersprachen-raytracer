@@ -5,6 +5,7 @@
 #include <iostream>
 #include <string>
 #include "color.hpp"
+#include "ray.hpp"
 
 class Box : public Shape
 {
@@ -24,6 +25,8 @@ public:
 	/*virtual*/ float area() const;
 	/*virtual*/ float volume() const;
 	/*virtual*/ std::ostream& print(std::ostream& os) const;
+
+	bool intersect(Ray const& ray, float& distance) const;
 
 private:
 	glm::vec3 min_;

@@ -140,6 +140,44 @@ TEST_CASE("virtual_destructor", "[destructor]"){
 	delete s2;
 }
 
+
+//7
+TEST_CASE("box_intersect", "[intersect_box]"){
+	glm::vec3 vec1{0.0f,0.0f,0.0f};
+	glm::vec3 vec2{1.0f,1.0f,1.0f};
+	Box b1{vec1, vec2};
+
+	glm::vec3 origin(-1.0,0.5,0.5);
+	glm::vec3 direction(1.0,0.0,0.0);
+	Ray r{origin, direction};
+	float distance(0.0);
+	REQUIRE(b1.intersect(r, distance));
+	std::cout <<"\n" << distance << std::endl;
+}
+TEST_CASE("box_intersect2", "[intersect_box2]"){
+	glm::vec3 vec1{0.0f,0.0f,0.0f};
+	glm::vec3 vec2{1.0f,1.0f,1.0f};
+	Box b1{vec1, vec2};
+
+	glm::vec3 origin(12.0,0.5,0.5);
+	glm::vec3 direction(1.0,0.0,0.0);
+	Ray r{origin, direction};
+	float distance(0.0);
+	REQUIRE(b1.intersect(r, distance)==false);
+	std::cout <<"\n" << distance << std::endl;
+}
+TEST_CASE("box_intersect3", "[intersect_box3]"){
+	glm::vec3 vec1{-1.0f,-1.0f,-1.0f};
+	glm::vec3 vec2{3.0f,3.0f,3.0f};
+	Box b1{vec1, vec2};
+
+	glm::vec3 origin(-12.0,0.5,0.5);
+	glm::vec3 direction(1.0,0.0,0.0);
+	Ray r{origin, direction};
+	float distance(0.0);
+	REQUIRE(b1.intersect(r, distance));
+	std::cout <<"\n" << distance << std::endl;
+}
 int main(int argc, char *argv[])
 {
   return Catch::Session().run(argc, argv);

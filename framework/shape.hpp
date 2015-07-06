@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include "color.hpp"
+#include "ray.hpp"
 
 class Shape
 {
@@ -35,6 +36,7 @@ public:
 		return s.print(os);
 	}
 
+	virtual bool intersect(Ray const& ray, float& distance) const = 0;
 
 private:
 	std::string name_;
