@@ -10,6 +10,11 @@
 #include "ray.hpp"
 #include <iostream>
 #include <string>
+#include <map>
+#include "scene.hpp"
+#include "sdf_loader.hpp"
+#include "material.hpp"
+using namespace std;
 
 // //6.2
 // TEST_CASE("sphere_with_radius_2", "[sphere1]"){
@@ -177,6 +182,15 @@ TEST_CASE("box_intersect3", "[intersect_box3]"){
 	float distance(0.0);
 	REQUIRE(b1.intersect(r, distance));
 	std::cout <<"\n" << distance << std::endl;
+}
+
+TEST_CASE("material", "[mat]"){
+	std::map<std::string, Material> mat;
+	Sdf_loader s{};
+	s.load_material("mat.txt", mat);
+	for(Map::iterator it = mat.begin(); it != mat.end(); ++it){
+		std::cout << it->second << std::endl;
+	}
 }
 
 int main(int argc, char *argv[])
