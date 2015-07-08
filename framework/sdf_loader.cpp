@@ -140,3 +140,7 @@ void Sdf_loader::loadMaterial(std::string file, std::map<std::string, Material>&
 	
 	textfile.close();
 }
+
+std::string Sdf_loader::get_file()const{
+	return file_;
+}

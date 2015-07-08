@@ -18,6 +18,8 @@ public:
 	//Scene loadScene(std::file) const;
 	
 	void loadMaterial(std::string file, std::map<std::string, Material>& material );
+	std::string get_file()const;
+
 
 private:
 	std::string file_;

@@ -186,10 +186,13 @@ TEST_CASE("box_intersect3", "[intersect_box3]"){
 
 TEST_CASE("material", "[mat]"){
 	std::map<std::string, Material> mat;
+
 	Sdf_loader s{};
 	s.load_material("mat.txt", mat);
-	for(Map::iterator it = mat.begin(); it != mat.end(); ++it){
-		std::cout << it->second << std::endl;
+
+
+	for(std::map<std::string, Material>::iterator it = mat.begin(); it != mat.end(); ++it){
+	 	std::cout << it->second << std::endl;
 	}
 }
 
