@@ -1,5 +1,5 @@
-#ifndef BUW_SHAPE_HPP
-#define BUW_SHAPE_HPP
+#ifndef BUW_SDF_LOADER_HPP
+#define BUW_SDF_LOADER_HPP
 #include <iostream>
 #include <string>
 #include "scene.hpp"
@@ -17,8 +17,8 @@ public:
 
 	//Scene loadScene(std::file) const;
 	
-	void loadMaterial(std::string file, std::map<std::string, Material>& material );
-	std::string get_file()const;
+	void load_material(std::string file, std::map<std::string, Material>& material);
+	std::string get_file() const;
 
 
 private:
@@ -27,4 +27,4 @@ private:
 };
 
 
-#endif // #ifndef BUW_SHAPE_HPP
+#endif // #ifndef BUW_SDF_LOADER_HPP

@@ -11,7 +11,6 @@
 #include <iostream>
 #include <string>
 #include <map>
-#include "scene.hpp"
 #include "sdf_loader.hpp"
 #include "material.hpp"
 using namespace std;
@@ -152,8 +151,8 @@ TEST_CASE("box_intersect", "[intersect_box]"){
 	glm::vec3 vec2{1.0f,1.0f,1.0f};
 	Box b1{vec1, vec2};
 
-	glm::vec3 origin(-1.0,0.5,0.5);
-	glm::vec3 direction(1.0,0.0,0.0);
+	glm::vec3 origin(-1.0,0.0,0.0);
+	glm::vec3 direction(1.0,0.5,0.0);
 	Ray r{origin, direction};
 	float distance(0.0);
 	REQUIRE(b1.intersect(r, distance));
@@ -188,7 +187,7 @@ TEST_CASE("material", "[mat]"){
 	std::map<std::string, Material> mat;
 
 	Sdf_loader s{};
-	s.load_material("mat.txt", mat);
+	s.load_material("./mat.txt", mat);
 
 
 	for(std::map<std::string, Material>::iterator it = mat.begin(); it != mat.end(); ++it){
