@@ -11,16 +11,57 @@ Sdf_loader::Sdf_loader(std::string file): file_{file} {}
 Sdf_loader::Sdf_loader():file_{""} {}
 Sdf_loader::~Sdf_loader(){}
 
-// Scene Sdf_loader::loadScene(std::file) const{
+Scene Sdf_loader::loadScene(std::file) const{
 
-// 	//fstream datei(“mat.txt“, ios::in);
-// 	Scene s{};
+	ifstream datei(“mat.txt“, ios::in);
+ 	Scene s{};
+ 	if (datei.good())
+ 	{
+ 		while(getline(datei, line)){
+ 			//compare(pos,leng,string)
+ 			if (line.compare(0,1,"#") == 0)//Kommentarzeilen werden ignoriert
+	 		{
+	 			//do nothing BRAUCHEN WIR DAS??
+	 		}
+	 		else if (line.compare(0,6,"camera") == 0)//Kamera
+	 		{
+	 			/* code */
+	 		}
+	 		else if (line.compare(0,6,"render") == 0)//Renderer
+	 		{
+	 			/* code */
+	 		}
+	 		else if (line.compare(0,6,"define") == 0)//Klassendefinierung
+	 		{
+	 			if (line.compare(7,8,"material") == 0)//Materials für Shapes
+		 		{
+		 			/* code */
+		 		}
+		 		else if (line.compare(7,5,"light") == 0)//Lichquellen
+		 		{
+		 			/* code */
+		 		}
+	 			else if ("define shape box")//Shapes (Box)
+		 		{
+		 			/* code */
+		 		}
+		 		else if ("define shape shpere")//Shapes (Sphere)
+		 		{
+		 			/* code */
+		 		}
+		 		
+	 		}	
+ 		}
+ 	
+ 		
 
 
-// 	//datei.close();
-// 	return s;
+ 	}
 
-// }
+ 	//datei.close();
+ 	return s;
+
+ }
 	
 void Sdf_loader::load_material(std::string file, std::map<std::string, Material>& material) {
 	ifstream datei;
