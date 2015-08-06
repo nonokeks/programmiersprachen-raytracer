@@ -65,7 +65,7 @@ Scene Sdf_loader::loadScene(std::string file) const{
 	 			sstr >> y_res;
 
 	 			Renderer render{x_res, y_res, filename};
-
+	 			s.render = render;
 	 		}
 	 		else if (word.compare("define") == 0)//Klassendefinierung
 	 		{

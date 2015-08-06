@@ -8,7 +8,7 @@ class Light_source
 public:
 	Light_source(std::string name, glm::vec3 const& pos, float ambient, float diffuse);
 	Light_source();
-	~Light_source();
+//	~Light_source();
 
 private:
 	std::string name_;
