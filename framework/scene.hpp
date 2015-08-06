@@ -7,6 +7,7 @@
 #include "ray.hpp"
 #include "material.hpp"
 #include "camera.hpp"
+#include "light_source.hpp"
 #include <map>
 #include <vector>
 
@@ -17,7 +18,7 @@ struct Scene
 	std::vector<Light_source> lights;
 	Color ambient;
 	Camera cam;
-	//Renderer render;
+	Renderer render;
 };
 
 

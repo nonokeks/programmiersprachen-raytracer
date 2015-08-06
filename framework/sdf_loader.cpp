@@ -1,9 +1,16 @@
 #include <iostream>
 #include <string>
-#include <fstream> 
+#include <fstream>
+#include <sstream>  
 #include "sdf_loader.hpp"
 #include "scene.hpp"
 #include "material.hpp"
+#include "camera.hpp"
+#include "light_source.hpp"
+#include "color.hpp"
+#include "shape.hpp"
+#include "box.hpp"
+#include "sphere.hpp"
 #include <map>
 using namespace std;
 
@@ -22,6 +29,7 @@ Scene Sdf_loader::loadScene(std::string file) const{
  	{
  		//while(getline(datei, line)){
  			
+
 			while(datei >> word){
  			if (word.compare("#") == 0)//Kommentarzeilen werden ignoriert
 	 		{
@@ -30,8 +38,14 @@ Scene Sdf_loader::loadScene(std::string file) const{
 	 		else if (word.compare("camera") == 0)//Kamera
 	 		{
 	 			datei >> name;
-	 			//Winkel
-	 			//Kamer Scene hinzufügen
+	 			datei >> word;
+	 			std::stringstream sstr; 
+				sstr << word; 
+				float ancle; 
+				sstr >> ancle;
+				Camera c{name, ancle};
+				s.cam = c;
+
 	 		}
 	 		else if (word.compare("render") == 0)//Renderer
 	 		{
@@ -59,6 +73,9 @@ Scene Sdf_loader::loadScene(std::string file) const{
 			 		{
 			 			/* code */
 		 			}
+	 			}
+	 			else{
+	 				//define <class>...
 	 			}
 		 		
 	 		}	

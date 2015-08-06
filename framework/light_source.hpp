@@ -6,7 +6,7 @@
 class Light_sources
 {
 public:
-	Light_sources(std::string name, glm::vec3 pos, float ambient, float diffuse);
+	Light_sources(std::string name, glm::vec3 const& pos, float ambient, float diffuse);
 	Light_sources();
 	~Light_sources();
 
