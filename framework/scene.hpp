@@ -6,6 +6,7 @@
 #include "shape.hpp"
 #include "ray.hpp"
 #include "material.hpp"
+#include "camera.hpp"
 #include <map>
 #include <vector>
 
@@ -15,6 +16,8 @@ struct Scene
 	std::vector<Shape> shapes; // shared pointer
 	//std::vector<LightSource> lights;
 	Color ambient;
+	Camera cam;
+	//Renderer render;
 };
 
 

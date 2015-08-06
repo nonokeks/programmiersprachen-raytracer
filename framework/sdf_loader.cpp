@@ -11,13 +11,60 @@ Sdf_loader::Sdf_loader(std::string file): file_{file} {}
 Sdf_loader::Sdf_loader():file_{""} {}
 Sdf_loader::~Sdf_loader(){}
 
-Scene Sdf_loader::loadScene(std::file) const{
+Scene Sdf_loader::loadScene(std::string file) const{
 
-	ifstream datei(“mat.txt“, ios::in);
+	ifstream datei(file, ios::in);
  	Scene s{};
+ 	//std::string line;
+ 	std::string word;
+ 	std::string name;
  	if (datei.good())
  	{
- 		while(getline(datei, line)){
+ 		//while(getline(datei, line)){
+ 			
+			while(datei >> word){
+ 			if (word.compare("#") == 0)//Kommentarzeilen werden ignoriert
+	 		{
+	 			//do nothing BRAUCHEN WIR DAS??
+	 		}
+	 		else if (word.compare("camera") == 0)//Kamera
+	 		{
+	 			datei >> name;
+	 			//Winkel
+	 			//Kamer Scene hinzufügen
+	 		}
+	 		else if (word.compare("render") == 0)//Renderer
+	 		{
+	 			datei >> name;
+	 		}
+	 		else if (word.compare("define") == 0)//Klassendefinierung
+	 		{
+	 			datei >> word;
+	 			if (word.compare("material") == 0)//Materials für Shapes
+		 		{
+		 			/* code */
+		 		}
+		 		else if (word.compare("light") == 0)//Lichquellen
+		 		{
+		 			/* code */
+		 		}
+	 			else if (word.compare("shape") == 0)
+	 			{
+	 				datei >> word;
+	 				if (word.compare("box") == 0)//Shapes (Box)
+			 		{
+			 			/* code */
+			 		}
+			 		else if (word.compare("shpere") == 0)//Shapes (Sphere)
+			 		{
+			 			/* code */
+		 			}
+	 			}
+		 		
+	 		}	
+			}
+
+ 			/*
  			//compare(pos,leng,string)
  			if (line.compare(0,1,"#") == 0)//Kommentarzeilen werden ignoriert
 	 		{
@@ -25,33 +72,33 @@ Scene Sdf_loader::loadScene(std::file) const{
 	 		}
 	 		else if (line.compare(0,6,"camera") == 0)//Kamera
 	 		{
-	 			/* code */
+	 			
 	 		}
 	 		else if (line.compare(0,6,"render") == 0)//Renderer
 	 		{
-	 			/* code */
+	 			
 	 		}
 	 		else if (line.compare(0,6,"define") == 0)//Klassendefinierung
 	 		{
 	 			if (line.compare(7,8,"material") == 0)//Materials für Shapes
 		 		{
-		 			/* code */
+		 			
 		 		}
 		 		else if (line.compare(7,5,"light") == 0)//Lichquellen
 		 		{
-		 			/* code */
+		 			
 		 		}
 	 			else if ("define shape box")//Shapes (Box)
 		 		{
-		 			/* code */
+		 			
 		 		}
 		 		else if ("define shape shpere")//Shapes (Sphere)
 		 		{
-		 			/* code */
+		 			
 		 		}
 		 		
-	 		}	
- 		}
+	 		}*/
+ 		//}
  	
  		
 
