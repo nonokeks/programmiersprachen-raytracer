@@ -73,7 +73,58 @@ Scene Sdf_loader::loadScene(std::string file) const{
 	 			datei >> word;
 	 			if (word.compare("material") == 0)//Materials für Shapes
 		 		{
-		 			/* code */
+		 			datei >> name;
+		 			Color ka();
+		 			//red
+		 			datei >> word;
+		 			sstr << word;
+		 			sstr >> ka.r;
+		 			//green
+		 			datei >> word;
+		 			sstr << word;
+		 			sstr >> ka.g;
+		 			//blue
+		 			datei >> word;
+		 			sstr << word;
+		 			sstr >> ka.b;
+
+		 			Color kd();
+		 			//red
+		 			datei >> word;
+		 			sstr << word;
+		 			sstr >> kd.r;
+		 			//green
+		 			datei >> word;
+		 			sstr << word;
+		 			sstr >> kd.g;
+		 			//blue
+		 			datei >> word;
+		 			sstr << word;
+		 			sstr >> kd.b;
+
+		 			Color ks();
+		 			//red
+		 			datei >> word;
+		 			sstr << word;
+		 			sstr >> ks.r;
+		 			//green
+		 			datei >> word;
+		 			sstr << word;
+		 			sstr >> ks.g;
+		 			//blue
+		 			datei >> word;
+		 			sstr << word;
+		 			sstr >> ks.b;
+
+		 			float m;
+		 			datei >> word;
+		 			sstr << word;
+		 			sstr >> m;
+
+		 			Material mat{name, ka, kd, ks, m};
+				    s.material[name] = mat;
+
+
 		 		}
 		 		else if (word.compare("light") == 0)//Lichquellen
 		 		{
@@ -112,7 +163,7 @@ Scene Sdf_loader::loadScene(std::string file) const{
 	 				datei >> word;
 	 				if (word.compare("box") == 0)//Shapes (Box)
 			 		{
-			 			/* code */
+			 			//Scene hat Shared pointer? 
 			 		}
 			 		else if (word.compare("shpere") == 0)//Shapes (Sphere)
 			 		{
