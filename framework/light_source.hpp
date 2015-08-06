@@ -3,12 +3,12 @@
 #include <glm/vec3.hpp>
 #include <string>
 
-class Light_sources
+class Light_source
 {
 public:
-	Light_sources(std::string name, glm::vec3 const& pos, float ambient, float diffuse);
-	Light_sources();
-	~Light_sources();
+	Light_source(std::string name, glm::vec3 const& pos, float ambient, float diffuse);
+	Light_source();
+	~Light_source();
 
 private:
 	std::string name_;

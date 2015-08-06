@@ -8,6 +8,7 @@
 #include "material.hpp"
 #include "camera.hpp"
 #include "light_source.hpp"
+#include "renderer.hpp"
 #include <map>
 #include <vector>
 

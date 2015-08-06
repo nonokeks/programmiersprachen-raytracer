@@ -25,6 +25,7 @@ Scene Sdf_loader::loadScene(std::string file) const{
  	//std::string line;
  	std::string word;
  	std::string name;
+ 	std::stringstream sstr; //für String to Float
  	if (datei.good())
  	{
  		//while(getline(datei, line)){
@@ -39,17 +40,32 @@ Scene Sdf_loader::loadScene(std::string file) const{
 	 		{
 	 			datei >> name;
 	 			datei >> word;
-	 			std::stringstream sstr; 
+	 			//String to Float
 				sstr << word; 
 				float ancle; 
 				sstr >> ancle;
+
 				Camera c{name, ancle};
 				s.cam = c;
 
 	 		}
 	 		else if (word.compare("render") == 0)//Renderer
 	 		{
-	 			datei >> name;
+	 			datei >> name; //Kamera Name ..?
+	 			std::string filename;
+	 			datei >> filename;
+
+	 			unsigned x_res;
+	 			unsigned y_res;
+	 			datei >> word;
+	 			sstr << word;
+	 			sstr >> x_res;
+	 			datei >> word;
+	 			sstr << word;
+	 			sstr >> y_res;
+
+	 			Renderer render{x_res, y_res, filename};
+
 	 		}
 	 		else if (word.compare("define") == 0)//Klassendefinierung
 	 		{
