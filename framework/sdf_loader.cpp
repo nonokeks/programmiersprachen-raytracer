@@ -2,6 +2,7 @@
 #include <string>
 #include <fstream>
 #include <sstream>  
+#include <glm/vec3.hpp>
 #include "sdf_loader.hpp"
 #include "scene.hpp"
 #include "material.hpp"
@@ -76,7 +77,35 @@ Scene Sdf_loader::loadScene(std::string file) const{
 		 		}
 		 		else if (word.compare("light") == 0)//Lichquellen
 		 		{
-		 			/* code */
+		 			datei >> name;
+
+		 			float x,y,z;
+		 			//x
+		 			datei >> word;
+		 			sstr << word;
+		 			sstr >> x;
+		 			//y
+		 			datei >> word;
+		 			sstr << word;
+		 			sstr >> y;
+		 			//z
+		 			datei >> word;
+		 			sstr << word;
+		 			sstr >> z;
+		 			glm::vec3 position(x,y,z);
+
+		 			float ld, la;
+		 			//la
+		 			datei >> word;
+		 			sstr << word;
+		 			sstr >> la;
+		 			//ld
+		 			datei >> word;
+		 			sstr << word;
+		 			sstr >> ld;
+		 			Light_source light(name, position, la, ld);
+		 			s.lights.push_back(light);
+
 		 		}
 	 			else if (word.compare("shape") == 0)
 	 			{
