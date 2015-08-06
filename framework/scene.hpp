@@ -14,7 +14,7 @@ struct Scene
 {
 	std::map<std::string, Material> material;
 	std::vector<Shape> shapes; // shared pointer
-	//std::vector<LightSource> lights;
+	std::vector<Light_source> lights;
 	Color ambient;
 	Camera cam;
 	//Renderer render;
