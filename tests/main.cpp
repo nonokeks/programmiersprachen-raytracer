@@ -187,6 +187,7 @@ TEST_CASE("box_intersect3", "[intersect_box3]"){
 	std::cout <<"\n" << distance << std::endl;
 }
 
+/*
 TEST_CASE("material", "[mat]"){
 	std::map<std::string, Material> mat;
 
@@ -197,7 +198,7 @@ TEST_CASE("material", "[mat]"){
 	for(std::map<std::string, Material>::iterator it = mat.begin(); it != mat.end(); ++it){
 	 	std::cout << it->second << std::endl;
 	}
-}
+}*/
 
 
 TEST_CASE("camera", "[cam]"){
@@ -250,6 +251,31 @@ TEST_CASE("scene", "[scene]"){
 	REQUIRE(s2.render.get_height() == render2.get_height());
 	REQUIRE(s2.render.get_width() == render2.get_width());
 	REQUIRE(s2.render.get_filename() == render2.get_filename());
+}
+
+TEST_CASE("Sdf_loader_material", "[sdf_loader]"){
+	
+	Sdf_loader loader{"./materials.txt"};
+	Scene s = loader.load_scene("./materials.txt");
+
+	for(std::map<std::string, Material>::iterator it = s.material.begin(); it != s.material.end(); ++it){
+	 	std::cout << it->second << std::endl;
+	}
+
+}
+
+TEST_CASE("Sdf_loader_lights", "[sdf_loader]"){
+	
+	Sdf_loader loader{"./lights.txt"};
+	Scene s = loader.load_scene("./lights.txt");
+
+	for(std::vector<Light_source>::iterator it = s.lights.begin(); it != s.lights.end(); ++it){
+		Light_source i = *it;
+	 	std::cout << i.get_name() << " " ;
+	 	std::cout << i.get_position().x << " " << i.get_position().y << " " << i.get_position().z;
+	 	std::cout << " " << i.get_ambiente() << " " << i.get_diffuse() << std::endl;
+	}
+
 }
 
 int main(int argc, char *argv[])

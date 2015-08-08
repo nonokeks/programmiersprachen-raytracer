@@ -15,7 +15,7 @@ public:
 	Sdf_loader();
 	~Sdf_loader();
 
-	Scene loadScene(std::string file) const;
+	Scene load_scene(std::string file) const;
 	
 	void load_material(std::string file, std::map<std::string, Material>& material);
 	std::string get_file() const;

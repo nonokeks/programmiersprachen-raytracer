@@ -19,7 +19,7 @@ Sdf_loader::Sdf_loader(std::string file): file_{file} {}
 Sdf_loader::Sdf_loader():file_{""} {}
 Sdf_loader::~Sdf_loader(){}
 
-Scene Sdf_loader::loadScene(std::string file) const{
+Scene Sdf_loader::load_scene(std::string file) const{
 	//file_ = file; // noetig?
 
 	ifstream datei(file, ios::in);
@@ -232,7 +232,8 @@ Scene Sdf_loader::loadScene(std::string file) const{
 		 			}
 	 			}
 	 			else{
-	 				//define <class>...
+	 				//define <class> <name> <arg> ...
+	 				//Für evtl neue Klassen
 	 			}
 		 		
 	 		}	
@@ -277,6 +278,9 @@ Scene Sdf_loader::loadScene(std::string file) const{
  		
 
 
+ 	}
+ 	else{
+ 		std::cout << "Nope nope" << std::endl;
  	}
 
  	//datei.close();
