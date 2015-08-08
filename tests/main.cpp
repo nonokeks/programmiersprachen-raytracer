@@ -11,6 +11,7 @@
 #include "scene.hpp"
 #include "camera.hpp"
 #include "light_source.hpp"
+#include "renderer.hpp"
 #include <iostream>
 #include <string>
 #include <map>
@@ -226,10 +227,23 @@ TEST_CASE("lights", "[light]"){
 	REQUIRE(l2.get_diffuse() == Approx(0.0));
 }
 
-/*
+
 TEST_CASE("scene", "[scene]"){
+	Color red{1.0,0.0,0.0};
+	Camera cam{"cam", 22.3f};
+	Renderer render{800,600,"notyet.txt"};
+	Scene s{red, cam, render};
+	REQUIRE(s.cam.get_name() == cam.get_name());
+	REQUIRE(s.cam.get_ancle() == cam.get_ancle());
+	//REQUIRE(s.ambient == red);
 	
-}*/
+	Scene s2{};
+	Color farb{};
+	Camera cam2{};
+	REQUIRE(s2.cam.get_name() == cam2.get_name());
+	REQUIRE(s2.cam.get_ancle() == cam2.get_ancle());
+	//REQUIRE(s2.ambient == farb);
+}
 
 int main(int argc, char *argv[])
 {
