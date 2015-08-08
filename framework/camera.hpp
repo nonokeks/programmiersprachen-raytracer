@@ -8,6 +8,10 @@ public:
 	Camera();
 	~Camera();
 
+	//getter
+	std::string get_name() const;
+	float get_ancle() const;
+
 private:
 	std::string name_;
 	float fov_x_;

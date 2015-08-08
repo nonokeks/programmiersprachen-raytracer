@@ -6,3 +6,16 @@ Light_source::Light_source(std::string name, glm::vec3 const& pos, float ambient
 pos_{pos}, la_{ambient}, ld_{diffuse}{}
 Light_source::Light_source(): name_{""}, pos_{0.0,0.0,0.0}, la_{0.0f}, ld_{0.0}{}
 //Light_source::~Light_source();
+
+std::string Light_source::get_name() const{
+	return name_;
+}
+glm::vec3 const& Light_source::get_position() const{
+	return pos_;
+}
+float Light_source::get_ambiente() const{
+	return la_;
+} 
+float Light_source::get_diffuse() const{
+	return ld_;
+}

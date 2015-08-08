@@ -10,6 +10,12 @@ public:
 	Light_source();
 //	~Light_source();
 
+	//getter
+	std::string get_name() const;
+	glm::vec3 const& get_position() const;
+	float get_ambiente() const; 
+	float get_diffuse() const;
+
 private:
 	std::string name_;
 	glm::vec3 pos_; //Position

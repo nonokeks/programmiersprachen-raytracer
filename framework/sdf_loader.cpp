@@ -73,48 +73,51 @@ Scene Sdf_loader::loadScene(std::string file) const{
 	 			datei >> word;
 	 			if (word.compare("material") == 0)//Materials für Shapes
 		 		{
+		 			float r,g,b;
 		 			datei >> name;
-		 			Color ka();
 		 			//red
 		 			datei >> word;
 		 			sstr << word;
-		 			sstr >> ka.r;
+		 			sstr >> r;
 		 			//green
 		 			datei >> word;
 		 			sstr << word;
-		 			sstr >> ka.g;
+		 			sstr >> g;
 		 			//blue
 		 			datei >> word;
 		 			sstr << word;
-		 			sstr >> ka.b;
+		 			sstr >> b;
+		 			Color ka(r,g,b);
 
-		 			Color kd();
+		 			
 		 			//red
 		 			datei >> word;
 		 			sstr << word;
-		 			sstr >> kd.r;
+		 			sstr >> r;
 		 			//green
 		 			datei >> word;
 		 			sstr << word;
-		 			sstr >> kd.g;
+		 			sstr >> g;
 		 			//blue
 		 			datei >> word;
 		 			sstr << word;
-		 			sstr >> kd.b;
+		 			sstr >> b;
+		 			Color kd(r,g,b);
 
-		 			Color ks();
+		 			
 		 			//red
 		 			datei >> word;
 		 			sstr << word;
-		 			sstr >> ks.r;
+		 			sstr >> r;
 		 			//green
 		 			datei >> word;
 		 			sstr << word;
-		 			sstr >> ks.g;
+		 			sstr >> g;
 		 			//blue
 		 			datei >> word;
 		 			sstr << word;
-		 			sstr >> ks.b;
+		 			sstr >> b;
+		 			Color ks(r,g,b);
 
 		 			float m;
 		 			datei >> word;
