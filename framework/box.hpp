@@ -6,7 +6,7 @@
 #include <string>
 #include "color.hpp"
 #include "ray.hpp"
-#include "material.hpp"
+//#include "material.hpp"
 
 class Box : public Shape
 {
@@ -15,9 +15,10 @@ public:
 	Box(glm::vec3 const& min, glm::vec3 const& max);
 	// Box(glm::vec3 const& min, glm::vec3 const& max, std::string name, Color const& color);
 	//~Box();
+	//Box(glm::vec3 const& min, glm::vec3 const& max, std::string name, Material const& mat);
+	//Box(glm::vec3 const& min, glm::vec3 const& max, std::string name, std::string name_mat, Color const& ka, Color const& kd, Color const& ks, float m);
 
-	Box(glm::vec3 const& min, glm::vec3 const& max, std::string name, Material const& mat);
-	Box(glm::vec3 const& min, glm::vec3 const& max, std::string name, std::string name_mat, Color const& ka, Color const& kd, Color const& ks, float m);
+	Box(std::string name,glm::vec3 const& min, glm::vec3 const& max, std::string material);
 
 	glm::vec3 const& get_min()const;
 	glm::vec3 const& get_max()const;

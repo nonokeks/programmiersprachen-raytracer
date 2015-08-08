@@ -16,10 +16,11 @@ Sphere::Sphere(glm::vec3 const& center, float radius): Shape{}, center_{center},
 //radius_{radius}{}
 //Sphere::~Sphere(){std::cout << "Sphere Destructor" << std::endl;}
 
-Sphere::Sphere(glm::vec3 const& center, float radius, std::string name, Material const& mat) : Shape{name, mat}, center_{center}, radius_{radius} {}
+/*Sphere::Sphere(glm::vec3 const& center, float radius, std::string name, Material const& mat) : Shape{name, mat}, center_{center}, radius_{radius} {}
 Sphere::Sphere(glm::vec3 const& center, float radius, std::string name, std::string name_mat, Color const& ka, Color const& kd, Color const& ks, 
-float m):Shape{name, name_mat, ka, kd, ks, m}, center_{center}, radius_{radius} {}
+float m):Shape{name, name_mat, ka, kd, ks, m}, center_{center}, radius_{radius} {}*/
 
+Sphere::Sphere(std::string name, glm::vec3 const& center, float radius, std::string material) : Shape{name, material}, center_{center}, radius_{radius} {}
 
 glm::vec3 const& Sphere::get_center() const {
 	return center_;

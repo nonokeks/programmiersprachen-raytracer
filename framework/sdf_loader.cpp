@@ -165,11 +165,70 @@ Scene Sdf_loader::loadScene(std::string file) const{
 	 				datei >> word;
 	 				if (word.compare("box") == 0)//Shapes (Box)
 			 		{
-			 			//Scene hat Shared pointer? 
+			 			datei >> name;
+			 			float x,y,z;
+			 			//x
+			 			datei >> word;
+			 			sstr << word;
+			 			sstr >> x;
+			 			//y
+			 			datei >> word;
+			 			sstr << word;
+			 			sstr >> y;
+			 			//z
+			 			datei >> word;
+			 			sstr << word;
+			 			sstr >> z;
+			 			glm::vec3 min(x,y,z);
+
+			 			//x
+			 			datei >> word;
+			 			sstr << word;
+			 			sstr >> x;
+			 			//y
+			 			datei >> word;
+			 			sstr << word;
+			 			sstr >> y;
+			 			//z
+			 			datei >> word;
+			 			sstr << word;
+			 			sstr >> z;
+			 			glm::vec3 max(x,y,z);
+			 			
+			 			datei >> word; //Materialname
+
+			 			std::shared_ptr<Shape> b(new Box(name, min, max, word));
+			 			s.shapes.push_back(b);
+
 			 		}
 			 		else if (word.compare("shpere") == 0)//Shapes (Sphere)
 			 		{
-			 			/* code */
+			 			datei >> name;
+			 			float x,y,z;
+			 			//x
+			 			datei >> word;
+			 			sstr << word;
+			 			sstr >> x;
+			 			//y
+			 			datei >> word;
+			 			sstr << word;
+			 			sstr >> y;
+			 			//z
+			 			datei >> word;
+			 			sstr << word;
+			 			sstr >> z;
+			 			glm::vec3 center(x,y,z);
+
+			 			float r;
+			 			//radius
+			 			datei >> word;
+			 			sstr << word;
+			 			sstr >> r;
+
+			 			datei >> word;//Materialname
+
+			 			std::shared_ptr<Shape> sph(new Sphere(name, center, r, word));
+			 			s.shapes.push_back(sph);
 		 			}
 	 			}
 	 			else{

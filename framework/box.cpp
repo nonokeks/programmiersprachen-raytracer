@@ -11,9 +11,12 @@ Box::Box(glm::vec3 const& min, glm::vec3 const& max):Shape{}, min_{min}, max_{ma
 // Box::Box(glm::vec3 const& min, glm::vec3 const& max, std::string name, Color const& color):Shape{name, color}, min_{min}, max_{max} {}
 //Box::~Box(){std::cout << "Box Destructor" << std::endl;}
 
-Box::Box(glm::vec3 const& min, glm::vec3 const& max, std::string name, Material const& mat):Shape{name, mat}, min_{min}, max_{max} {}
+/*Box::Box(glm::vec3 const& min, glm::vec3 const& max, std::string name, Material const& mat):Shape{name, mat}, min_{min}, max_{max} {}
 Box::Box(glm::vec3 const& min, glm::vec3 const& max, std::string name, std::string name_mat, Color const& ka, Color const& kd, Color const& ks,
-float m):Shape{name, name_mat, ka, kd, ks, m}, min_{min}, max_{max} {}
+float m):Shape{name, name_mat, ka, kd, ks, m}, min_{min}, max_{max} {}*/
+
+Box::Box(std::string name, glm::vec3 const& min, glm::vec3 const& max, std::string material):Shape{name, material}, 
+min_{min}, max_{max} {}
 
 
 glm::vec3 const& Box::get_min()const{
