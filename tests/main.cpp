@@ -236,13 +236,20 @@ TEST_CASE("scene", "[scene]"){
 	REQUIRE(s.cam.get_name() == cam.get_name());
 	REQUIRE(s.cam.get_ancle() == cam.get_ancle());
 	REQUIRE(s.ambient == red);
+	REQUIRE(s.render.get_height() == render.get_height());
+	REQUIRE(s.render.get_width() == render.get_width());
+	REQUIRE(s.render.get_filename() == render.get_filename());
 	
 	Scene s2{};
 	Color farb{};
 	Camera cam2{};
+	Renderer render2{};
 	REQUIRE(s2.cam.get_name() == cam2.get_name());
 	REQUIRE(s2.cam.get_ancle() == cam2.get_ancle());
 	REQUIRE(s2.ambient == farb);
+	REQUIRE(s2.render.get_height() == render2.get_height());
+	REQUIRE(s2.render.get_width() == render2.get_width());
+	REQUIRE(s2.render.get_filename() == render2.get_filename());
 }
 
 int main(int argc, char *argv[])

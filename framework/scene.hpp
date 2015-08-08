@@ -15,7 +15,7 @@
 
 struct Scene
 {
-	Scene(): ambient(), cam(), render(0.0, 0.0, ""){};
+	Scene(): ambient(), cam(), render(){};
 	Scene(Color const& ambient_color, Camera const& camera, Renderer const& renderer): ambient(ambient_color), cam(camera), render(renderer){};
 	std::map<std::string, Material> material;
 	std::vector<std::shared_ptr <Shape>> shapes; 
