@@ -17,6 +17,19 @@ Renderer::Renderer(unsigned w, unsigned h, std::string const& file)
   , ppm_(width_, height_)
 {}
 
+unsigned Renderer::get_width() const{
+  return width_;
+}
+unsigned Renderer::get_height() const{
+  return height_;
+}
+std::string Renderer::get_filename() const{
+  return filename_;
+}
+
+
+
+
 void Renderer::render()
 {
   const std::size_t checkersize = 20;

@@ -29,6 +29,11 @@ public:
     return colorbuffer_;
   }
 
+  unsigned get_width() const;
+  unsigned get_height() const;
+  std::string get_filename() const;
+
+
 private:
   unsigned width_;
   unsigned height_;
