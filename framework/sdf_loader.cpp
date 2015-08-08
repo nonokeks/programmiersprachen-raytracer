@@ -46,6 +46,7 @@ Scene Sdf_loader::load_scene(std::string file) const{
 				sstr << word; 
 				float ancle; 
 				sstr >> ancle;
+				sstr.clear();
 
 				Camera c{name, ancle};
 				s.cam = c;
@@ -60,11 +61,11 @@ Scene Sdf_loader::load_scene(std::string file) const{
 	 			unsigned x_res;
 	 			unsigned y_res;
 	 			datei >> word;
-	 			sstr << word;
-	 			sstr >> x_res;
+	 			sstr << word << ' ';
 	 			datei >> word;
 	 			sstr << word;
-	 			sstr >> y_res;
+	 			sstr >> x_res >> y_res;
+	 			sstr.clear();
 
 	 			Renderer render{x_res, y_res, filename};
 	 			s.render = render;
@@ -76,52 +77,45 @@ Scene Sdf_loader::load_scene(std::string file) const{
 		 		{
 		 			float r,g,b;
 		 			datei >> name;
-		 			//red
+
+		 			//ka
+		 			datei >> word;
+		 			sstr << word << ' ';
+		 			datei >> word;
+		 			sstr << word << ' ';
 		 			datei >> word;
 		 			sstr << word;
-		 			sstr >> r;
-		 			//green
-		 			datei >> word;
-		 			sstr << word;
-		 			sstr >> g;
-		 			//blue
-		 			datei >> word;
-		 			sstr << word;
-		 			sstr >> b;
+		 			sstr >> r >> g >> b;
 		 			Color ka(r,g,b);
+		 			sstr.clear();
 		 			
-		 			//red
+		 			//kd
+		 			datei >> word;
+		 			sstr << word << ' ';
+		 			datei >> word;
+		 			sstr << word << ' ';
 		 			datei >> word;
 		 			sstr << word;
-		 			sstr >> r;
-		 			//green
-		 			datei >> word;
-		 			sstr << word;
-		 			sstr >> g;
-		 			//blue
-		 			datei >> word;
-		 			sstr << word;
-		 			sstr >> b;
+		 			sstr >> r >> g >> b;
 		 			Color kd(r,g,b);
-		 			
-		 			//red
+		 			sstr.clear();
+
+		 			//ks
+		 			datei >> word;
+		 			sstr << word << ' ';
+		 			datei >> word;
+		 			sstr << word << ' ';
 		 			datei >> word;
 		 			sstr << word;
-		 			sstr >> r;
-		 			//green
-		 			datei >> word;
-		 			sstr << word;
-		 			sstr >> g;
-		 			//blue
-		 			datei >> word;
-		 			sstr << word;
-		 			sstr >> b;
+		 			sstr >> r >> g >> b;
 		 			Color ks(r,g,b);
+		 			sstr.clear();
 
 		 			float m;
 		 			datei >> word;
 		 			sstr << word;
 		 			sstr >> m;
+		 			sstr.clear();
 
 		 			Material mat{name, ka, kd, ks, m};
 				    s.material[name] = mat;
@@ -132,30 +126,26 @@ Scene Sdf_loader::load_scene(std::string file) const{
 		 		{
 		 			datei >> name;
 
-		 			float x,y,z;
-		 			//x
+		 			//Position
+		 			float x, y, z;
+		 			datei >> word;
+		 			sstr << word << ' ';
+		 			datei >> word;
+		 			sstr << word << ' ';
 		 			datei >> word;
 		 			sstr << word;
-		 			sstr >> x;
-		 			//y
-		 			datei >> word;
-		 			sstr << word;
-		 			sstr >> y;
-		 			//z
-		 			datei >> word;
-		 			sstr << word;
-		 			sstr >> z;
+		 			sstr >> x >> y >> z;
 		 			glm::vec3 position(x,y,z);
+		 			sstr.clear(); // Clear stringstream
 
 		 			float ld, la;
-		 			//la
+		 			datei >> word;
+		 			sstr << word << ' ';
 		 			datei >> word;
 		 			sstr << word;
-		 			sstr >> la;
-		 			//ld
-		 			datei >> word;
-		 			sstr << word;
-		 			sstr >> ld;
+		 			sstr >> la >> ld;
+		 			sstr.clear(); //Clear stringstream
+
 		 			Light_source light(name, position, la, ld);
 		 			s.lights.push_back(light);
 
@@ -167,33 +157,27 @@ Scene Sdf_loader::load_scene(std::string file) const{
 			 		{
 			 			datei >> name;
 			 			float x,y,z;
-			 			//x
+			 			//min
+			 			datei >> word;
+			 			sstr << word << ' ';
+			 			datei >> word;
+			 			sstr << word << ' ';
 			 			datei >> word;
 			 			sstr << word;
-			 			sstr >> x;
-			 			//y
-			 			datei >> word;
-			 			sstr << word;
-			 			sstr >> y;
-			 			//z
-			 			datei >> word;
-			 			sstr << word;
-			 			sstr >> z;
+			 			sstr >> x >> y >> z;
 			 			glm::vec3 min(x,y,z);
+			 			sstr.clear();
 
-			 			//x
+			 			//max
+			 			datei >> word;
+			 			sstr << word << ' ';
+			 			datei >> word;
+			 			sstr << word << ' ';
 			 			datei >> word;
 			 			sstr << word;
-			 			sstr >> x;
-			 			//y
-			 			datei >> word;
-			 			sstr << word;
-			 			sstr >> y;
-			 			//z
-			 			datei >> word;
-			 			sstr << word;
-			 			sstr >> z;
+			 			sstr >> x >> y >> z;
 			 			glm::vec3 max(x,y,z);
+			 			sstr.clear();
 			 			
 			 			datei >> word; //Materialname
 
@@ -205,25 +189,24 @@ Scene Sdf_loader::load_scene(std::string file) const{
 			 		{
 			 			datei >> name;
 			 			float x,y,z;
-			 			//x
+			 			//center
+			 			datei >> word;
+			 			sstr << word << ' ';
+			 			datei >> word;
+			 			sstr << word << ' ';
 			 			datei >> word;
 			 			sstr << word;
-			 			sstr >> x;
-			 			//y
-			 			datei >> word;
-			 			sstr << word;
-			 			sstr >> y;
-			 			//z
-			 			datei >> word;
-			 			sstr << word;
-			 			sstr >> z;
+			 			sstr >> x >> y >> z;
 			 			glm::vec3 center(x,y,z);
+
+			 			sstr.clear();
 
 			 			float r;
 			 			//radius
 			 			datei >> word;
 			 			sstr << word;
 			 			sstr >> r;
+			 			sstr.clear();
 
 			 			datei >> word;//Materialname
 
