@@ -185,7 +185,7 @@ Scene Sdf_loader::load_scene(std::string file) const{
 			 			s.shapes.push_back(b);
 
 			 		}
-			 		else if (word.compare("shpere") == 0)//Shapes (Sphere)
+			 		else if (word.compare("sphere") == 0)//Shapes (Sphere)
 			 		{
 			 			datei >> name;
 			 			float x,y,z;

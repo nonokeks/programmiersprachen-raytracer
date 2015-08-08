@@ -278,6 +278,32 @@ TEST_CASE("Sdf_loader_lights", "[sdf_loader]"){
 
 }
 
+
+//benoetigt Copyconstruktor bzw =overloading
+TEST_CASE("Sdf_loader_camera", "[sdf_loader]"){
+	
+	Sdf_loader loader{"./camera.txt"};
+	Scene s = loader.load_scene("./camera.txt");
+
+	
+	std::cout << s.cam.get_name() << " " << s.cam.get_ancle() << std::endl;
+}
+
+TEST_CASE("Sdf_loader_shapes", "[sdf_loader]"){
+	
+	Sdf_loader loader{"./geometry.txt"};
+	Scene s = loader.load_scene("./geometry.txt");
+
+	
+	//std::vector<std::shared_ptr <Shape>> shapes
+
+	for(std::vector<std::shared_ptr <Shape>>::iterator it = s.shapes.begin(); it != s.shapes.end(); ++it){
+	 	std::cout << **it << std::endl;
+	}
+}
+
+
+
 int main(int argc, char *argv[])
 {
   return Catch::Session().run(argc, argv);
