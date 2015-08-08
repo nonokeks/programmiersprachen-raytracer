@@ -235,14 +235,14 @@ TEST_CASE("scene", "[scene]"){
 	Scene s{red, cam, render};
 	REQUIRE(s.cam.get_name() == cam.get_name());
 	REQUIRE(s.cam.get_ancle() == cam.get_ancle());
-	//REQUIRE(s.ambient == red);
+	REQUIRE(s.ambient == red);
 	
 	Scene s2{};
 	Color farb{};
 	Camera cam2{};
 	REQUIRE(s2.cam.get_name() == cam2.get_name());
 	REQUIRE(s2.cam.get_ancle() == cam2.get_ancle());
-	//REQUIRE(s2.ambient == farb);
+	REQUIRE(s2.ambient == farb);
 }
 
 int main(int argc, char *argv[])
