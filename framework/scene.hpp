@@ -22,6 +22,7 @@ struct Scene
 	Color ambient;
 	Camera cam;
 	Renderer render;
+
 };
 
 

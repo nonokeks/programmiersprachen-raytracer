@@ -20,6 +20,7 @@ Sdf_loader::Sdf_loader():file_{""} {}
 Sdf_loader::~Sdf_loader(){}
 
 Scene Sdf_loader::loadScene(std::string file) const{
+	//file_ = file; // noetig?
 
 	ifstream datei(file, ios::in);
  	Scene s{};
@@ -88,7 +89,6 @@ Scene Sdf_loader::loadScene(std::string file) const{
 		 			sstr << word;
 		 			sstr >> b;
 		 			Color ka(r,g,b);
-
 		 			
 		 			//red
 		 			datei >> word;
@@ -103,7 +103,6 @@ Scene Sdf_loader::loadScene(std::string file) const{
 		 			sstr << word;
 		 			sstr >> b;
 		 			Color kd(r,g,b);
-
 		 			
 		 			//red
 		 			datei >> word;

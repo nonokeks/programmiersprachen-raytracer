@@ -8,6 +8,9 @@
 #include "box.hpp"
 #include "color.hpp"
 #include "ray.hpp"
+#include "scene.hpp"
+#include "camera.hpp"
+#include "light_source.hpp"
 #include <iostream>
 #include <string>
 #include <map>
@@ -194,6 +197,39 @@ TEST_CASE("material", "[mat]"){
 	 	std::cout << it->second << std::endl;
 	}
 }
+
+
+TEST_CASE("camera", "[cam]"){
+	Camera c1{"cam", 22.3f};
+	std::string s = "cam";
+	REQUIRE(s.compare(c1.get_name()) == 0);
+	REQUIRE(c1.get_ancle() == Approx(22.3));
+
+	Camera c2{};
+	REQUIRE(c2.get_name().compare("") == 0);
+	REQUIRE(c2.get_ancle() == Approx(0.0));
+}
+
+TEST_CASE("lights", "[light]"){
+	glm::vec3 vec1{-1.0f,-1.0f,-1.0f};
+	Light_source l{"light", vec1, 2.0f, 1.0f};
+	REQUIRE(l.get_name().compare("light") == 0);
+	REQUIRE(l.get_position() == vec1);
+	REQUIRE(l.get_ambiente() == Approx(2.0));
+	REQUIRE(l.get_diffuse() == Approx(1.0));
+
+	glm::vec3 vec2{0.0,0.0,0.0};
+	Light_source l2{};
+	REQUIRE(l2.get_name().compare("") == 0);
+	REQUIRE(l2.get_position() == vec2);
+	REQUIRE(l2.get_ambiente() == Approx(0.0));
+	REQUIRE(l2.get_diffuse() == Approx(0.0));
+}
+
+/*
+TEST_CASE("scene", "[scene]"){
+	
+}*/
 
 int main(int argc, char *argv[])
 {
