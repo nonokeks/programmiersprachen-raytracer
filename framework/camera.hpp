@@ -8,6 +8,8 @@ public:
 	Camera();
 	~Camera();
 
+	Camera& operator= (Camera const& rhs);
+
 	//getter
 	std::string get_name() const;
 	float get_ancle() const;

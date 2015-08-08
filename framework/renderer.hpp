@@ -30,9 +30,15 @@ public:
     return colorbuffer_;
   }
 
+
+  //------- new
+
+  //getter
   unsigned get_width() const;
   unsigned get_height() const;
   std::string get_filename() const;
+
+  Renderer& operator= (Renderer const& rhs);
 
 
 private:

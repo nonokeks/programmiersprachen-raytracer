@@ -35,6 +35,12 @@ std::string Renderer::get_filename() const{
   return filename_;
 }
 
+Renderer& Renderer::operator= (Renderer const& rhs){
+  width_ = rhs.get_width();
+  height_ = rhs.get_height();
+  filename_ = rhs.get_filename();
+  return *this;
+}
 
 
 

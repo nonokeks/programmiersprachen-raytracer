@@ -11,3 +11,9 @@ std::string Camera::get_name() const{
 float Camera::get_ancle() const{
 	return fov_x_;
 }
+
+Camera& Camera::operator= (Camera const& rhs){
+	name_ = rhs.get_name();
+	fov_x_ = rhs.get_ancle();
+	return *this;
+}

@@ -24,6 +24,13 @@ struct Scene
 	Camera cam;
 	Renderer render;
 
+	Scene& operator= (Scene const& rhs){
+		ambient = rhs.ambient;
+		cam = rhs.cam;
+		render = rhs.render;
+		return *this;
+	}
+
 };
 
 

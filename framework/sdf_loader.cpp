@@ -30,10 +30,8 @@ Scene Sdf_loader::load_scene(std::string file) const{
  	std::stringstream sstr; //für String to Float
  	if (datei.good())
  	{
- 		//while(getline(datei, line)){
- 			
 
-			while(datei >> word){
+		while(datei >> word){
  			if (word.compare("#") == 0)//Kommentarzeilen werden ignoriert
 	 		{
 	 			//do nothing BRAUCHEN WIR DAS??
@@ -220,45 +218,7 @@ Scene Sdf_loader::load_scene(std::string file) const{
 	 			}
 		 		
 	 		}	
-			}
-
- 			/*
- 			//compare(pos,leng,string)
- 			if (line.compare(0,1,"#") == 0)//Kommentarzeilen werden ignoriert
-	 		{
-	 			//do nothing BRAUCHEN WIR DAS??
-	 		}
-	 		else if (line.compare(0,6,"camera") == 0)//Kamera
-	 		{
-	 			
-	 		}
-	 		else if (line.compare(0,6,"render") == 0)//Renderer
-	 		{
-	 			
-	 		}
-	 		else if (line.compare(0,6,"define") == 0)//Klassendefinierung
-	 		{
-	 			if (line.compare(7,8,"material") == 0)//Materials für Shapes
-		 		{
-		 			
-		 		}
-		 		else if (line.compare(7,5,"light") == 0)//Lichquellen
-		 		{
-		 			
-		 		}
-	 			else if ("define shape box")//Shapes (Box)
-		 		{
-		 			
-		 		}
-		 		else if ("define shape shpere")//Shapes (Sphere)
-		 		{
-		 			
-		 		}
-		 		
-	 		}*/
- 		//}
- 	
- 		
+		}
 
 
  	}

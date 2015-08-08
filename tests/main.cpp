@@ -253,6 +253,8 @@ TEST_CASE("scene", "[scene]"){
 	REQUIRE(s2.render.get_filename() == render2.get_filename());
 }
 
+/*
+
 TEST_CASE("Sdf_loader_material", "[sdf_loader]"){
 	
 	Sdf_loader loader{"./materials.txt"};
@@ -279,16 +281,6 @@ TEST_CASE("Sdf_loader_lights", "[sdf_loader]"){
 }
 
 
-//benoetigt Copyconstruktor bzw =overloading
-TEST_CASE("Sdf_loader_camera", "[sdf_loader]"){
-	
-	Sdf_loader loader{"./camera.txt"};
-	Scene s = loader.load_scene("./camera.txt");
-
-	
-	std::cout << s.cam.get_name() << " " << s.cam.get_ancle() << std::endl;
-}
-
 TEST_CASE("Sdf_loader_shapes", "[sdf_loader]"){
 	
 	Sdf_loader loader{"./geometry.txt"};
@@ -300,9 +292,39 @@ TEST_CASE("Sdf_loader_shapes", "[sdf_loader]"){
 	for(std::vector<std::shared_ptr <Shape>>::iterator it = s.shapes.begin(); it != s.shapes.end(); ++it){
 	 	std::cout << **it << std::endl;
 	}
+}*/
+
+
+TEST_CASE("Sdf_loader_complete", "[sdf_loader]"){
+	
+	Sdf_loader loader{"./test.txt"};
+	Scene s = loader.load_scene("./test.txt");
+	std::cout << std::endl;
+
+	for(std::vector<std::shared_ptr <Shape>>::iterator it = s.shapes.begin(); it != s.shapes.end(); ++it){
+	 	std::cout << **it << std::endl;
+	}
+	for(std::vector<Light_source>::iterator it = s.lights.begin(); it != s.lights.end(); ++it){
+		Light_source i = *it;
+	 	std::cout << i.get_name() << " " ;
+	 	std::cout << i.get_position().x << " " << i.get_position().y << " " << i.get_position().z;
+	 	std::cout << " " << i.get_ambiente() << " " << i.get_diffuse() << std::endl;
+	}
+	for(std::map<std::string, Material>::iterator it = s.material.begin(); it != s.material.end(); ++it){
+	 	std::cout << it->second << std::endl;
+	}
 }
 
+//benoetigt Copyconstruktor bzw =overloading
+TEST_CASE("Sdf_loader_camera", "[sdf_loader]"){
+	
+	Sdf_loader loader{"./camera.txt"};
+	Scene s{};
+	s = loader.load_scene("./camera.txt");
 
+	
+	std::cout << s.cam.get_name() << " " << s.cam.get_ancle() << std::endl;
+}
 
 int main(int argc, char *argv[])
 {
