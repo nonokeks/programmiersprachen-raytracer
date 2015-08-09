@@ -25,8 +25,8 @@ Scene Sdf_loader::load_scene(std::string file) const{
 	ifstream datei(file, ios::in);
  	Scene s{};
  	//std::string line;
- 	std::string word;
- 	std::string name;
+ 	std::string word = " ";
+ 	std::string name = " ";
  	std::stringstream sstr; //für String to Float
  	if (datei.good())
  	{
@@ -38,15 +38,16 @@ Scene Sdf_loader::load_scene(std::string file) const{
 	 		}
 	 		else if (word.compare("camera") == 0)//Kamera
 	 		{
+	 			datei >> word;// sonst camera 0
 	 			datei >> name;
 	 			datei >> word;
 	 			//String to Float
 				sstr << word; 
-				float ancle; 
-				sstr >> ancle;
+				float a; 
+				sstr >> a;
 				sstr.clear();
 
-				Camera c{name, ancle};
+				Camera c{name, a};
 				s.cam = c;
 
 	 		}
@@ -216,6 +217,7 @@ Scene Sdf_loader::load_scene(std::string file) const{
 	 				//define <class> <name> <arg> ...
 	 				//Für evtl neue Klassen
 	 			}
+	 			sstr.clear(); 
 		 		
 	 		}	
 		}
