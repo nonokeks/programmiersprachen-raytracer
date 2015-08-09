@@ -12,7 +12,7 @@ public:
 
 	//getter
 	std::string get_name() const;
-	float get_ancle() const;
+	float get_angle() const;
 
 private:
 	std::string name_;
