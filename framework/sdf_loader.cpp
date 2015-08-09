@@ -43,11 +43,11 @@ Scene Sdf_loader::load_scene(std::string file) const{
 	 			datei >> word;
 	 			//String to Float
 				sstr << word; 
-				float a; 
-				sstr >> a;
+				float angle;
+				sstr >> angle;
 				sstr.clear();
 
-				Camera c{name, a};
+				Camera c{name, angle};
 				s.cam = c;
 
 	 		}
