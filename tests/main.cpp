@@ -205,11 +205,11 @@ TEST_CASE("camera", "[cam]"){
 	Camera c1{"cam", 22.3f};
 	std::string s = "cam";
 	REQUIRE(s.compare(c1.get_name()) == 0);
-	REQUIRE(c1.get_ancle() == Approx(22.3));
+	REQUIRE(c1.get_angle() == Approx(22.3));
 
 	Camera c2{};
 	REQUIRE(c2.get_name().compare("") == 0);
-	REQUIRE(c2.get_ancle() == Approx(0.0));
+	REQUIRE(c2.get_angle() == Approx(0.0));
 }
 
 TEST_CASE("lights", "[light]"){
@@ -235,7 +235,7 @@ TEST_CASE("scene", "[scene]"){
 	Renderer render{800,600,"notyet.txt"};
 	Scene s{red, cam, render};
 	REQUIRE(s.cam.get_name() == cam.get_name());
-	REQUIRE(s.cam.get_ancle() == cam.get_ancle());
+	REQUIRE(s.cam.get_angle() == cam.get_angle());
 	REQUIRE(s.ambient == red);
 	REQUIRE(s.render.get_height() == render.get_height());
 	REQUIRE(s.render.get_width() == render.get_width());
@@ -246,7 +246,7 @@ TEST_CASE("scene", "[scene]"){
 	Camera cam2{};
 	Renderer render2{};
 	REQUIRE(s2.cam.get_name() == cam2.get_name());
-	REQUIRE(s2.cam.get_ancle() == cam2.get_ancle());
+	REQUIRE(s2.cam.get_angle() == cam2.get_angle());
 	REQUIRE(s2.ambient == farb);
 	REQUIRE(s2.render.get_height() == render2.get_height());
 	REQUIRE(s2.render.get_width() == render2.get_width());
@@ -292,7 +292,17 @@ TEST_CASE("Sdf_loader_shapes", "[sdf_loader]"){
 	for(std::vector<std::shared_ptr <Shape>>::iterator it = s.shapes.begin(); it != s.shapes.end(); ++it){
 	 	std::cout << **it << std::endl;
 	}
-}*/
+}
+TEST_CASE("Sdf_loader_camera", "[sdf_loader]"){
+	
+	Sdf_loader loader{"./camera.txt"};
+	Scene s{};
+	s = loader.load_scene("./camera.txt");
+
+	
+	std::cout << s.cam.get_name() << " " << s.cam.get_angle() << std::endl;
+}
+*/
 
 
 TEST_CASE("Sdf_loader_complete", "[sdf_loader]"){
@@ -313,18 +323,11 @@ TEST_CASE("Sdf_loader_complete", "[sdf_loader]"){
 	for(std::map<std::string, Material>::iterator it = s.material.begin(); it != s.material.end(); ++it){
 	 	std::cout << it->second << std::endl;
 	}
+	std::cout << s.cam.get_name() << " " << s.cam.get_angle() << std::endl;
+	std::cout << s.render.get_filename() << " " << s.render.get_width() << " " << s.render.get_height()  << std::endl;
 }
 
-//benoetigt Copyconstruktor bzw =overloading
-TEST_CASE("Sdf_loader_camera", "[sdf_loader]"){
-	
-	Sdf_loader loader{"./camera.txt"};
-	Scene s{};
-	s = loader.load_scene("./camera.txt");
 
-	
-	std::cout << s.cam.get_name() << " " << s.cam.get_ancle() << std::endl;
-}
 
 int main(int argc, char *argv[])
 {

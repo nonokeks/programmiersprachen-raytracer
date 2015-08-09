@@ -27,7 +27,7 @@ public:
 	virtual float area() const = 0;
 	virtual float volume() const = 0;
 	virtual std::ostream& print(std::ostream& os) const{
-		os << "Name: " << name_ << "\n" << matname_;
+		os << "Name: " << name_ << " Material: " << matname_ << std::endl;;
 		return os;
 	}
 
