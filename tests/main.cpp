@@ -325,6 +325,7 @@ TEST_CASE("Sdf_loader_complete", "[sdf_loader]"){
 	}
 	std::cout << s.cam.get_name() << " " << s.cam.get_angle() << std::endl;
 	std::cout << s.render.get_filename() << " " << s.render.get_width() << " " << s.render.get_height()  << std::endl;
+	std::cout << "Ambient: " << s.ambient << std::endl;
 }
 
 

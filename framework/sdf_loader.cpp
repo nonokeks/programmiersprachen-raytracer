@@ -69,6 +69,24 @@ Scene Sdf_loader::load_scene(std::string file) const{
 	 			Renderer render{x_res, y_res, filename};
 	 			s.render = render;
 	 		}
+	 		else if (word.compare("ambient") == 0)//Color ambient
+	 		{
+	 			float r,g,b;
+		 		datei >> word;
+	 			//Color
+	 			datei >> word;
+	 			sstr << word << ' ';
+	 			datei >> word;
+	 			sstr << word << ' ';
+	 			datei >> word;
+	 			sstr << word;
+	 			sstr >> r >> g >> b;
+	 			Color a(r,g,b);
+
+	 			sstr.clear();
+	 			
+	 			s.ambient = a;
+	 		}
 	 		else if (word.compare("define") == 0)//Klassendefinierung
 	 		{
 	 			datei >> word;
@@ -232,7 +250,8 @@ Scene Sdf_loader::load_scene(std::string file) const{
  	return s;
 
  }
-	
+
+/*	
 void Sdf_loader::load_material(std::string file, std::map<std::string, Material>& material) {
 	ifstream datei;
 	datei.open(file, ios::in);
@@ -363,3 +382,4 @@ void Sdf_loader::load_material(std::string file, std::map<std::string, Material>
 std::string Sdf_loader::get_file() const{
 	return file_;
 }
+*/

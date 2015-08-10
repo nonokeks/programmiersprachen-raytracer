@@ -17,7 +17,7 @@ public:
 
 	Scene load_scene(std::string file) const;
 	
-	void load_material(std::string file, std::map<std::string, Material>& material);
+	//void load_material(std::string file, std::map<std::string, Material>& material);
 	std::string get_file() const;
 
 
