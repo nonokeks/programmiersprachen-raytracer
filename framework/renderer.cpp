@@ -8,6 +8,8 @@
 // -----------------------------------------------------------------------------
 
 #include "renderer.hpp"
+#include "optional_hit.hpp"
+#include "ray.hpp"
 
 Renderer::Renderer(unsigned w, unsigned h, std::string const& file)
   : width_(w)
@@ -77,4 +79,35 @@ void Renderer::write(Pixel const& p)
   }
 
   ppm_.write(p);
+}
+
+
+Optional_hit Renderer::intersect(Ray const& ray) const{
+  Optional_hit o;
+  return o;
+}
+
+Color Renderer::raytrace(Ray const& ray, unsigned depth, Color const& ambient){
+  if(depth == 0){
+    Color c(0,0,0);
+    return c;
+  }
+  else{
+    Optional_hit o = intersect(ray);
+
+    if(o.hit) {
+      
+      //bei mehreren Hits -> welches Shape am vordersten?
+      //woher kennt er alle Scene eigenschaften (ambient material..) 
+      //--- evtl einen Scene* als Member?
+
+      //render
+      
+
+      //temp
+      return ambient;
+
+      }
+    else return ambient;
+  }
 }

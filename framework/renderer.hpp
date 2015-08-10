@@ -15,6 +15,8 @@
 #include "ppmwriter.hpp"
 #include <string>
 #include <glm/glm.hpp>
+#include "ray.hpp"
+#include "optional_hit.hpp"
 
 class Renderer
 {
@@ -39,6 +41,10 @@ public:
   std::string get_filename() const;
 
   Renderer& operator= (Renderer const& rhs);
+
+  Optional_hit intersect(Ray const& ray) const;
+
+  Color raytrace(Ray const& ray, unsigned depth, Color const& ambient);
 
 
 private:
