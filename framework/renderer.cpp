@@ -82,8 +82,21 @@ void Renderer::write(Pixel const& p)
 }
 
 
-Optional_hit Renderer::intersect(Ray const& ray) const{
+Optional_hit Renderer::intersect(Ray const& ray, /*schapes*/) const{
   Optional_hit o;
+  std::vector<float> dis;
+  float distance;
+  /* 
+  for (shapes)
+  {
+    shape.intersect(ray, distance)
+    dis.push_back(distance);
+  }
+
+  //suche geringste distance und passendes Shape dazu
+  int min_pos = distance(dis.begin(), min_element(dis.begin(), dis.end()));
+  o.shape = shapes[min_pos];*/
+
   return o;
 }
 
@@ -97,7 +110,6 @@ Color Renderer::raytrace(Ray const& ray, unsigned depth, Color const& ambient){
 
     if(o.hit) {
       
-      //bei mehreren Hits -> welches Shape am vordersten?
       //woher kennt er alle Scene eigenschaften (ambient material..) 
       //--- evtl einen Scene* als Member?
 

@@ -9,7 +9,7 @@ struct Optional_hit{
 
 	bool hit;
 	Shape* shape;
-	float Strahlparam; //Oberflächenpunkt
+	float strahlparam; //Oberflächenpunkt
 
 
 };
