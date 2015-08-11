@@ -5,7 +5,7 @@
 
 struct Optional_hit{
 	
-	Optional_hit() : hit{0}, Strahlparam{0.0f}{} 
+	Optional_hit() : hit{0}, strahlparam{0.0f}{} 
 
 	bool hit;
 	Shape* shape;

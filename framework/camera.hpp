@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 #include "ray.hpp"
-#include "renderer.hpp"
+
 
 class Camera
 {
@@ -18,7 +18,7 @@ public:
 	std::string get_name() const;
 	float get_angle() const;
 
-	void generate_rays(Renderer r, std::vector<Ray> & rays);
+	void generate_rays(unsigned width, unsigned height, std::vector<Ray> & rays);
 
 private:
 	std::string name_;

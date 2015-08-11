@@ -6,9 +6,9 @@
 #include "shape.hpp"
 #include "ray.hpp"
 #include "material.hpp"
-#include "camera.hpp"
+//#include "camera.hpp"
 #include "light_source.hpp"
-#include "renderer.hpp"
+//#include "renderer.hpp"
 #include <map>
 #include <vector>
 #include <memory>

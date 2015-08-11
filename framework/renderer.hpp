@@ -17,6 +17,7 @@
 #include <glm/glm.hpp>
 #include "ray.hpp"
 #include "optional_hit.hpp"
+#include "scene.hpp"
 
 class Renderer
 {
@@ -44,8 +45,8 @@ public:
 
   Optional_hit intersect(Ray const& ray) const;
 
-  Color raytrace(Ray const& ray, unsigned depth, Color const& ambient);
-
+  Color raytrace(Ray const& ray, unsigned depth);
+  void render(std::string filename); 
 
 private:
   unsigned width_;
@@ -53,6 +54,8 @@ private:
   std::vector<Color> colorbuffer_;
   std::string filename_;
   PpmWriter ppm_;
+
+  Scene scene_;
 };
 
 #endif // #ifndef BUW_RENDERER_HPP

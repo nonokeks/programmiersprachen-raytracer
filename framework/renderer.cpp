@@ -10,6 +10,10 @@
 #include "renderer.hpp"
 #include "optional_hit.hpp"
 #include "ray.hpp"
+#include "scene.hpp"
+#include "camera.hpp"
+#include "sdf_loader.hpp"
+#include "color.hpp"
 
 Renderer::Renderer(unsigned w, unsigned h, std::string const& file)
   : width_(w)
@@ -17,6 +21,7 @@ Renderer::Renderer(unsigned w, unsigned h, std::string const& file)
   , colorbuffer_(w*h, Color(0.0, 0.0, 0.0))
   , filename_(file)
   , ppm_(width_, height_)
+  , scene_()
 {}
 
 Renderer::Renderer()
@@ -25,6 +30,7 @@ Renderer::Renderer()
   , colorbuffer_(0, Color(0.0, 0.0, 0.0))
   , filename_("")
   , ppm_(width_, height_)
+  , scene_()
 {}
 
 unsigned Renderer::get_width() const{
@@ -82,25 +88,26 @@ void Renderer::write(Pixel const& p)
 }
 
 
-Optional_hit Renderer::intersect(Ray const& ray, /*schapes*/) const{
+Optional_hit Renderer::intersect(Ray const& ray) const{
   Optional_hit o;
   std::vector<float> dis;
   float distance;
-  /* 
-  for (shapes)
+  
+  for (std::vector<std::shared_ptr <Shape>>::iterator it = scene_.shapes.begin(); it != scene_.shapes.end(); ++it)
   {
-    shape.intersect(ray, distance)
+    Shape s = **it;
+    s.intersect(ray, distance);
     dis.push_back(distance);
   }
 
   //suche geringste distance und passendes Shape dazu
   int min_pos = distance(dis.begin(), min_element(dis.begin(), dis.end()));
-  o.shape = shapes[min_pos];*/
+  o.shape = shapes[min_pos];
 
   return o;
 }
 
-Color Renderer::raytrace(Ray const& ray, unsigned depth, Color const& ambient){
+Color Renderer::raytrace(Ray const& ray, unsigned depth){
   if(depth == 0){
     Color c(0,0,0);
     return c;
@@ -117,9 +124,30 @@ Color Renderer::raytrace(Ray const& ray, unsigned depth, Color const& ambient){
       
 
       //temp
-      return ambient;
+      return scene_.ambient;
 
       }
-    else return ambient;
+    else return scene_.ambient;
+  }
+}
+
+
+//ungefähres Prozedere? was ist mit den Methoden vom Bernstein?
+void Renderer::render(std::string filename){
+  Sdf_loader loader();
+  scene_  = loader.load_scene(filename);
+  width_ = scene_.render.get_width();
+  height_ = scene_.render.get_height();
+  filename_=scene_.render.get_filename();
+
+  std::vector<Ray> rays;
+  scene_.cam.generate_rays(this, rays);
+
+  std::vector<Color> colors;
+  Color temp();
+  unsigned depth = 1;
+  for (std::vector<Ray>::iterator i = rays.begin(); i < rays.end(); ++i)
+  {
+    temp = raytrace(*i, depth); 
   }
 }
