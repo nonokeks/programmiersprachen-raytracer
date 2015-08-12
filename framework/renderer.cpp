@@ -44,6 +44,9 @@ unsigned Renderer::get_height() const{
 std::string Renderer::get_filename() const{
   return filename_;
 }
+Scene Renderer::get_scene() const{
+  return scene_;
+}
 
 Renderer& Renderer::operator= (Renderer const& rhs){
   width_ = rhs.get_width();
@@ -132,14 +135,14 @@ Color Renderer::raytrace(Ray const& ray, unsigned depth){
       }
     else {
       return scene_.ambient;
-      return c;
+      //return c;
     }
   }
 }
 
 
 //ungefähres Prozedere? was ist mit den Methoden vom Bernstein?
-void Renderer::render(std::string filename){
+void Renderer::render_scene(std::string filename){
 
   Sdf_loader loader{filename};
   scene_ = loader.load_scene(filename);

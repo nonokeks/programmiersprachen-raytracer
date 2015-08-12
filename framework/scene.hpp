@@ -31,6 +31,18 @@ struct Scene
 		return *this;
 	}
 
+	bool operator==(Scene const& rhs){
+		if(ambient == rhs.ambient && !cam.get_name().compare(rhs.cam.get_name())
+			&& cam.get_angle() == rhs.cam.get_angle() && render.width == rhs.render.width
+			&& render.height == rhs.render.height && render.camera_name.compare(rhs.render.camera_name)
+			&& render.filename.compare(rhs.render.filename)){
+			return true;
+		}
+		
+		
+		return false;
+	}
+
 };
 
 

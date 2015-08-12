@@ -40,13 +40,14 @@ public:
   unsigned get_width() const;
   unsigned get_height() const;
   std::string get_filename() const;
+  Scene get_scene() const;
 
   Renderer& operator= (Renderer const& rhs);
 
   Optional_hit intersect(Ray const& ray) const;
 
   Color raytrace(Ray const& ray, unsigned depth);
-  void render(std::string filename); 
+  void render_scene(std::string filename); 
 
 private:
   unsigned width_;
