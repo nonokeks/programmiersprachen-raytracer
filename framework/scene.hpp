@@ -8,7 +8,7 @@
 #include "material.hpp"
 #include "camera.hpp"
 #include "light_source.hpp"
-#include "renderer.hpp"
+#include "renderer_data.hpp"
 #include <map>
 #include <vector>
 #include <memory>
@@ -16,13 +16,13 @@
 struct Scene
 {
 	Scene(): ambient(), cam(), render(){}
-	Scene(Color const& ambient_color, Camera const& camera, Renderer const& renderer): ambient(ambient_color), cam(camera), render(renderer){}
+	Scene(Color const& ambient_color, Camera const& camera, Renderer_data const& renderer): ambient(ambient_color), cam(camera), render(renderer){}
 	std::map<std::string, Material> material;
 	std::vector<std::shared_ptr <Shape>> shapes; 
 	std::vector<Light_source> lights;
 	Color ambient;
 	Camera cam;
-	Renderer render;
+	Renderer_data render;
 
 	Scene& operator= (Scene const& rhs){
 		ambient = rhs.ambient;

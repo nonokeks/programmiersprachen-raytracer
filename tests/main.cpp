@@ -232,25 +232,25 @@ TEST_CASE("lights", "[light]"){
 TEST_CASE("scene", "[scene]"){
 	Color red{1.0,0.0,0.0};
 	Camera cam{"cam", 22.3f};
-	Renderer render{800,600,"notyet.txt"};
+	Renderer_data render{800,600, "cam", "notyet.txt"};
 	Scene s{red, cam, render};
 	REQUIRE(s.cam.get_name() == cam.get_name());
 	REQUIRE(s.cam.get_angle() == cam.get_angle());
 	REQUIRE(s.ambient == red);
-	REQUIRE(s.render.get_height() == render.get_height());
-	REQUIRE(s.render.get_width() == render.get_width());
-	REQUIRE(s.render.get_filename() == render.get_filename());
+	REQUIRE(s.render.height == render.height);
+	REQUIRE(s.render.width == render.width);
+	REQUIRE(s.render.filename == render.filename);
 	
 	Scene s2{};
 	Color farb{};
 	Camera cam2{};
-	Renderer render2{};
+	Renderer_data render2{};
 	REQUIRE(s2.cam.get_name() == cam2.get_name());
 	REQUIRE(s2.cam.get_angle() == cam2.get_angle());
 	REQUIRE(s2.ambient == farb);
-	REQUIRE(s2.render.get_height() == render2.get_height());
-	REQUIRE(s2.render.get_width() == render2.get_width());
-	REQUIRE(s2.render.get_filename() == render2.get_filename());
+	REQUIRE(s2.render.height == render2.height);
+	REQUIRE(s2.render.width == render2.width);
+	REQUIRE(s2.render.filename == render2.filename);
 }
 
 /*
@@ -324,7 +324,7 @@ TEST_CASE("Sdf_loader_complete", "[sdf_loader]"){
 	 	std::cout << it->second << std::endl;
 	}
 	std::cout << s.cam.get_name() << " " << s.cam.get_angle() << std::endl;
-	std::cout << s.render.get_filename() << " " << s.render.get_width() << " " << s.render.get_height()  << std::endl;
+	std::cout << s.render.filename << " " << s.render.width << " " << s.render.height << std::endl;
 	std::cout << "Ambient: " << s.ambient << std::endl;
 }
 

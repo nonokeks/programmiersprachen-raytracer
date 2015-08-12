@@ -12,6 +12,7 @@
 #include "shape.hpp"
 #include "box.hpp"
 #include "sphere.hpp"
+#include "renderer_data.hpp"
 #include <map>
 using namespace std;
 
@@ -66,7 +67,7 @@ Scene Sdf_loader::load_scene(std::string file) const{
 	 			sstr >> x_res >> y_res;
 	 			sstr.clear();
 
-	 			Renderer render{x_res, y_res, filename};
+	 			Renderer_data render{x_res, y_res, name, filename};
 	 			s.render = render;
 	 		}
 	 		else if (word.compare("ambient") == 0)//Color ambient

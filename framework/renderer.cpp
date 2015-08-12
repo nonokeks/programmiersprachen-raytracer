@@ -14,6 +14,8 @@
 #include "camera.hpp"
 #include "sdf_loader.hpp"
 #include "color.hpp"
+#include "shape.hpp"
+#include <algorithm> // min_element
 
 Renderer::Renderer(unsigned w, unsigned h, std::string const& file)
   : width_(w)
@@ -88,27 +90,28 @@ void Renderer::write(Pixel const& p)
 }
 
 
-Optional_hit Renderer::intersect(Ray const& ray /*,shapes*/) const{
+Optional_hit Renderer::intersect(Ray const& ray) const{
   Optional_hit o;
   std::vector<float> dis;
   float distance;
   
-  /*
-  for (std::vector<std::shared_ptr <Shape>>::iterator it = scene_->shapes.begin(); it != scene_->shapes.end(); ++it)
+  
+  for (std::vector<std::shared_ptr <Shape>>::const_iterator it = scene_.shapes.begin(); it != scene_.shapes.end(); ++it)
   {
-    Shape s = **it;
-    s.intersect(ray, distance);
+    std::shared_ptr <Shape> s_ptr = *it;
+    //Shape s = *s_ptr;
+    s_ptr->intersect(ray, distance);
     dis.push_back(distance);
   }
 
   //suche geringste distance und passendes Shape dazu
-  int min_pos = distance(dis.begin(), min_element(dis.begin(), dis.end()));
-  o.shape = shapes[min_pos];
-  */
+  int min_pos = std::distance(dis.begin(), std::min_element(dis.begin(), dis.end()));
+  o.shape = &*scene_.shapes[min_pos];
+  
   return o;
 }
 
-Color Renderer::raytrace(Ray const& ray, unsigned depth, Color const& ambient){
+Color Renderer::raytrace(Ray const& ray, unsigned depth){
   Color c(0,0,0);
   if(depth == 0){
     //c
@@ -119,19 +122,16 @@ Color Renderer::raytrace(Ray const& ray, unsigned depth, Color const& ambient){
 
     if(o.hit) {
       
-      //woher kennt er alle Scene eigenschaften (ambient material..) 
-      //--- evtl einen Scene* als Member?
-
-      //render
+      //shading -> woher kommt das licht/wie spielt das mit dem Material zusammen..
       
 
       //temp
-      return ambient;
+      return scene_.ambient;
       //return c;
 
       }
     else {
-      return ambient;
+      return scene_.ambient;
       return c;
     }
   }
@@ -142,22 +142,22 @@ Color Renderer::raytrace(Ray const& ray, unsigned depth, Color const& ambient){
 void Renderer::render(std::string filename){
 
   Sdf_loader loader{filename};
-  Scene scene = loader.load_scene(filename);
+  scene_ = loader.load_scene(filename);
 
-  width_ = scene.render.get_width();
-  height_ = scene.render.get_height();
-  filename_= scene.render.get_filename();
+  width_ = scene_.render.width;
+  height_ = scene_.render.height;
+  filename_= scene_.render.filename;
 
   
   std::vector<Ray> rays;
-  scene.cam.generate_rays(width_, height_, rays);
+  scene_.cam.generate_rays(width_, height_, rays);
 
   std::vector<Color> colors;
   unsigned depth = 1;
   
   for (std::vector<Ray>::iterator i = rays.begin(); i < rays.end(); ++i)
   {
-    Color temp = raytrace(*i, depth, scene.ambient);
+    Color temp = raytrace(*i, depth);
     colors.push_back(temp); 
   }
 }
