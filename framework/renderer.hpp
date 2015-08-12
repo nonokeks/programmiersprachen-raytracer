@@ -17,7 +17,7 @@
 #include <glm/glm.hpp>
 #include "ray.hpp"
 #include "optional_hit.hpp"
-#include "scene.hpp"
+//#include "scene.hpp"
 
 class Renderer
 {
@@ -55,7 +55,7 @@ private:
   std::string filename_;
   PpmWriter ppm_;
 
-  Scene scene_;
+  //Scene* scene_;
 };
 
 #endif // #ifndef BUW_RENDERER_HPP

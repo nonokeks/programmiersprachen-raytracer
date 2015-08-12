@@ -6,17 +6,17 @@
 #include "shape.hpp"
 #include "ray.hpp"
 #include "material.hpp"
-//#include "camera.hpp"
+#include "camera.hpp"
 #include "light_source.hpp"
-//#include "renderer.hpp"
+#include "renderer.hpp"
 #include <map>
 #include <vector>
 #include <memory>
 
 struct Scene
 {
-	Scene(): ambient(), cam(), render(){};
-	Scene(Color const& ambient_color, Camera const& camera, Renderer const& renderer): ambient(ambient_color), cam(camera), render(renderer){};
+	Scene(): ambient(), cam(), render(){}
+	Scene(Color const& ambient_color, Camera const& camera, Renderer const& renderer): ambient(ambient_color), cam(camera), render(renderer){}
 	std::map<std::string, Material> material;
 	std::vector<std::shared_ptr <Shape>> shapes; 
 	std::vector<Light_source> lights;
