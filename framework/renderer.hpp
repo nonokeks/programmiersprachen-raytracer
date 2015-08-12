@@ -45,7 +45,7 @@ public:
 
   Optional_hit intersect(Ray const& ray) const;
 
-  Color raytrace(Ray const& ray, unsigned depth);
+  Color raytrace(Ray const& ray, unsigned depth, Color const& ambient);
   void render(std::string filename); 
 
 private:

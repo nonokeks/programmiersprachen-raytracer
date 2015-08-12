@@ -88,7 +88,7 @@ void Renderer::write(Pixel const& p)
 }
 
 
-Optional_hit Renderer::intersect(Ray const& ray) const{
+Optional_hit Renderer::intersect(Ray const& ray /*,shapes*/) const{
   Optional_hit o;
   std::vector<float> dis;
   float distance;
@@ -108,7 +108,7 @@ Optional_hit Renderer::intersect(Ray const& ray) const{
   return o;
 }
 
-Color Renderer::raytrace(Ray const& ray, unsigned depth){
+Color Renderer::raytrace(Ray const& ray, unsigned depth, Color const& ambient){
   Color c(0,0,0);
   if(depth == 0){
     //c
@@ -126,12 +126,12 @@ Color Renderer::raytrace(Ray const& ray, unsigned depth){
       
 
       //temp
-      // return scene_->ambient;
-      return c;
+      return ambient;
+      //return c;
 
       }
     else {
-      //return scene_->ambient;
+      return ambient;
       return c;
     }
   }
@@ -148,16 +148,16 @@ void Renderer::render(std::string filename){
   height_ = scene.render.get_height();
   filename_= scene.render.get_filename();
 
-  /*
+  
   std::vector<Ray> rays;
-  scene_->cam.generate_rays(width_, height_, rays);
+  scene.cam.generate_rays(width_, height_, rays);
 
   std::vector<Color> colors;
-  Color temp();
   unsigned depth = 1;
-
+  
   for (std::vector<Ray>::iterator i = rays.begin(); i < rays.end(); ++i)
   {
-    temp = raytrace(*i, depth); 
-  }*/
+    Color temp = raytrace(*i, depth, scene.ambient);
+    colors.push_back(temp); 
+  }
 }
