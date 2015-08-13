@@ -25,15 +25,22 @@ struct Scene
 	Renderer_data render;
 
 	Scene& operator= (Scene const& rhs){
-		material = rhs.material;
-		
-		for(std::vector<std::shared_ptr <Shape>>::const_iterator it = rhs.shapes.begin(); it != rhs.shapes.end(); ++it){
-	 		shapes.push_back(*it);
-		}
-		for(std::vector<Light_source>::const_iterator it = rhs.lights.begin(); it != rhs.lights.end(); ++it){
-			lights.push_back(*it);
-		}
 
+		material.clear();
+		shapes.clear();
+		lights.clear();
+
+		//for(std::vector<std::shared_ptr <Shape>>::const_iterator it = rhs.shapes.begin(); it != rhs.shapes.end(); ++it){
+	 	//	shapes.push_back(*it);
+		//}
+		
+		//for(std::vector<Light_source>::const_iterator it = rhs.lights.begin(); it != rhs.lights.end(); ++it){
+		//	lights.push_back(*it);
+		//}
+
+		material.insert(rhs.material.begin(), rhs.material.end());
+		std::copy(rhs.lights.begin(), rhs.lights.end(), lights.begin());
+		std::copy( rhs.shapes.begin(),  rhs.shapes.end(), shapes.begin() );
 
 		ambient = rhs.ambient;
 		cam = rhs.cam;
