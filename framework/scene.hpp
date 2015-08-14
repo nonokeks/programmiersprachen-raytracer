@@ -39,8 +39,13 @@ struct Scene
 		//}
 
 		material.insert(rhs.material.begin(), rhs.material.end());
-		std::copy(rhs.lights.begin(), rhs.lights.end(), lights.begin());
-		std::copy( rhs.shapes.begin(),  rhs.shapes.end(), shapes.begin() );
+
+		//Problem für SIGSEV
+		//std::copy(rhs.lights.begin(), rhs.lights.end(), lights.begin());
+		//std::copy( rhs.shapes.begin(),  rhs.shapes.end(), shapes.begin() );
+
+		shapes.insert(shapes.begin(), rhs.shapes.begin(), rhs.shapes.end());
+		lights.insert(lights.begin(), rhs.lights.begin(), rhs.lights.end());
 
 		ambient = rhs.ambient;
 		cam = rhs.cam;

@@ -302,13 +302,14 @@ TEST_CASE("Sdf_loader_camera", "[sdf_loader]"){
 	
 	std::cout << s.cam.get_name() << " " << s.cam.get_angle() << std::endl;
 }
-
+*/
 
 
 TEST_CASE("Sdf_loader_complete", "[sdf_loader]"){
 	
 	Sdf_loader loader{"./test.txt"};
-	Scene s = loader.load_scene("./test.txt");
+	Scene s;
+	s = loader.load_scene("./test.txt");
 	std::cout << std::endl;
 
 	for(std::vector<std::shared_ptr <Shape>>::iterator it = s.shapes.begin(); it != s.shapes.end(); ++it){
@@ -326,41 +327,42 @@ TEST_CASE("Sdf_loader_complete", "[sdf_loader]"){
 	std::cout << s.cam.get_name() << " " << s.cam.get_angle() << std::endl;
 	std::cout << s.render.filename << " " << s.render.width << " " << s.render.height << std::endl;
 	std::cout << "Ambient: " << s.ambient << std::endl;
-}*/
+}
 
 
 TEST_CASE("Render_test1", "[renderer]"){
 	
 	Renderer r;
 
-	r.render_scene("./test.txt"); //segmentation SIGSEV
+	r.render_scene("./test.txt"); 
 
+	Scene s = r.get_scene();
 
 	std::cout << std::endl;
 
-	/*
-	for(std::map<std::string, Material>::const_iterator it = r.get_scene().material.begin(); it != r.get_scene().material.end(); ++it){
-	 	std::cout << it->second << std::endl;
-	}*/
-
-	/*
-	for(std::vector<std::shared_ptr <Shape>>::const_iterator it = r.get_scene().shapes.begin(); it != r.get_scene().shapes.end(); ++it){
-	 	std::cout << **it << std::endl;
-	}*/
 	
-	/*
-	for(std::vector<Light_source>::const_iterator it = r.get_scene().lights.begin(); it != r.get_scene().lights.end(); ++it){
+	for(std::map<std::string, Material>::const_iterator it = s.material.begin(); it != s.material.end(); ++it){
+	 	std::cout << it->second << std::endl;
+	}
+
+	
+	for(std::vector<std::shared_ptr <Shape>>::iterator it = s.shapes.begin(); it != s.shapes.end(); ++it){
+	 	std::cout << **it << std::endl;
+	}
+	
+	
+	for(std::vector<Light_source>::const_iterator it = s.lights.begin(); it != s.lights.end(); ++it){
 		Light_source i = *it;
 	 	std::cout << i.get_name() << " " ;
 	 	std::cout << i.get_position().x << " " << i.get_position().y << " " << i.get_position().z;
 	 	std::cout << " " << i.get_ambiente() << " " << i.get_diffuse() << std::endl;
-	}*/
+	}
 	
-	//std::cout << r.get_scene().cam.get_name() << " " << r.get_scene().cam.get_angle() << std::endl;
-	//std::cout << r.get_scene().render.camera_name << " " << r.get_scene().render.filename << " " << r.get_scene().render.width << " " << r.get_scene().render.height << std::endl;
-	//std::cout << "Ambient: " << r.get_scene().ambient << std::endl;
+	std::cout << s.cam.get_name() << " " << s.cam.get_angle() << std::endl;
+	std::cout << s.render.camera_name << " " << s.render.filename << " " << s.render.width << " " << s.render.height << std::endl;
+	std::cout << "Ambient: " << s.ambient << std::endl;
 	
-	
+
 	
 }
 
