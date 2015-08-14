@@ -3,20 +3,9 @@
 #include <string>
 #include "color.hpp"
 
-Material::Material():
-	name_{""},
-	ka_{0.0, 0.0, 0.0},
-	kd_{0.0, 0.0, 0.0},
-	ks_{0.0, 0.0, 0.0},
-	m_{0.0f}{}
-
-Material::Material(std::string name, Color const& ka, Color const& kd, Color const& ks, float m):
-	name_{name},
-	ka_{ka},
-	kd_{kd},
-	ks_{ks},
-	m_{m}{}
-
+Material::Material(): name_{""}, ka_{0.0, 0.0, 0.0}, kd_{0.0, 0.0, 0.0}, ks_{0.0, 0.0, 0.0}, m_{0.0f}{}
+Material::Material(std::string name, Color const& ka, Color const& kd, Color const& ks, float m): name_{name}, 
+ka_{ka}, kd_{kd}, ks_{ks}, m_{m}{}
 Material::~Material(){}
 //getter
 std::string const& Material::get_name()const{

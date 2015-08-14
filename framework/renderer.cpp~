@@ -160,7 +160,7 @@ void Renderer::render_scene(std::string filename){
   scene_.cam.generate_rays(width_, height_, rays);
 
   std::vector<Color> colors;
-  unsigned depth = 1;//depth anders, aus intersect?
+  unsigned depth = 1;
   
   for (std::vector<Ray>::iterator i = rays.begin(); i < rays.end(); ++i)
   {
