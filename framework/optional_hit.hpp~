@@ -8,11 +8,7 @@
 
 struct Optional_hit{
 	
-	Optional_hit():
-		hit{0},
-		distance{0.0f}, 
-		intersection{0.0f, 0.0f, 0.0f},
-		normal{0.0f, 0.0f, 0.0f}{} 
+	Optional_hit() : hit{0}, distance{0.0f}{} 
 
 	bool hit;
 	Shape* shape; //std::shared_ptr<Shape> shape;??
@@ -21,17 +17,17 @@ struct Optional_hit{
 	glm::vec3 normal;
 	
 
-	Optional_hit& operator=(const Optional_hit& rhs){
-		if(this==&rhs){
+	Optional_hit& operator=(const Optional_hit& rhs) {
+		if(this==&rhs) {
 			return *this;
 		}
-
 		hit = rhs.hit;
 		distance = rhs.distance;
 		intersection = rhs.intersection;
 		normal = rhs.normal;
 		object = rhs.object;
 	}
+
 
 };
 
