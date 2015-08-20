@@ -22,7 +22,7 @@ struct Optional_hit{
 	
 
 	Optional_hit& operator=(const Optional_hit& rhs){
-		if(this==&rhs){
+		if(this==&rhs){ //Operator ist nicht implementiert..?
 			return *this;
 		}
 
@@ -30,7 +30,8 @@ struct Optional_hit{
 		distance = rhs.distance;
 		intersection = rhs.intersection;
 		normal = rhs.normal;
-		object = rhs.object;
+		shape = rhs.shape;
+		return *this;
 	}
 
 };

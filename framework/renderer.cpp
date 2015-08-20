@@ -125,17 +125,19 @@ Color Renderer::raytrace(Ray const& ray, unsigned depth){
     Optional_hit o = intersect(ray);
 
     if(o.hit) {
-		Light_source l{"licht", {0,0,0}, {255,255,255}, {100,100,100}};
-		float tmp = glm::dot(glm::normalize(ray.direction), glm::normalize(l.get_position() - o.intersection)); //intersection ausrechnen lassen bei intersect!
-		float red = (*o.shape).material().get_kd().r * l.get_ld().r * tmp;
-		float green = (*o.shape).material().get_kd().g * l.get_ld().g * tmp;
-		float blue = (*o.shape).material().get_kd().b * l.get_ld().b * tmp;
-		return Color(red, green, blue);
+      
+  		Light_source l{"licht", {0,0,0}, {255,255,255}, {100,100,100}}; 
+      float tmp = glm::dot(glm::normalize(ray.direction), glm::normalize(l.get_position() - o.intersection)); //intersection ausrechnen lassen bei intersect!
+      Material temp_mat = scene_.material[(*o.shape).get_material()];
+      float red = temp_mat.get_kd().r * l.get_diffuse().r * tmp;
+      float green = temp_mat.get_kd().g * l.get_diffuse().g * tmp;
+      float blue = temp_mat.get_kd().b * l.get_diffuse().b * tmp;
+      return Color(red, green, blue);
 
-      //temp
-      //return scene_.ambient;
-      //return c;
-      }
+        //temp
+        //return scene_.ambient;
+        //return c;
+        }
 
     else {
       return scene_.ambient;

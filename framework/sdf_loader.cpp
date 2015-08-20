@@ -155,14 +155,29 @@ Scene Sdf_loader::load_scene(std::string file) const{
 		 			sstr >> x >> y >> z;
 		 			glm::vec3 position(x,y,z);
 		 			sstr.clear(); // Clear stringstream
-
-		 			float ld, la;
+					
+					//La
+					float r, g, b;
+					datei >> word;
+		 			sstr << word << ' ';
 		 			datei >> word;
 		 			sstr << word << ' ';
 		 			datei >> word;
 		 			sstr << word;
-		 			sstr >> la >> ld;
+		 			sstr >> r >> g >> b;
+		 			Color la(r,g,b);
 		 			sstr.clear(); //Clear stringstream
+
+		 			//Ld
+					datei >> word;
+		 			sstr << word << ' ';
+		 			datei >> word;
+		 			sstr << word << ' ';
+		 			datei >> word;
+		 			sstr << word;
+		 			sstr >> r >> g >> b;
+		 			Color ld(r,g,b);
+		 			sstr.clear(); 
 
 		 			Light_source light(name, position, la, ld);
 		 			s.lights.push_back(light);

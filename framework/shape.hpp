@@ -34,6 +34,10 @@ public:
 	std::string const& get_name()const{
 		return name_;
 	}
+	
+	std::string const& get_material()const{
+		return matname_;
+	}
 	/*Material const& get_material() const{
 		return material_;
 	}*/
