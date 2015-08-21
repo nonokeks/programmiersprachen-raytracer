@@ -110,6 +110,7 @@ Optional_hit Renderer::intersect(Ray const& ray) const{
   //suche geringste distance und passendes Shape dazu
   int min_pos = std::distance(dis.begin(), std::min_element(dis.begin(), dis.end()));
   o.shape = &*scene_.shapes[min_pos];
+  o.distance = *std::min_element(dis.begin(), dis.end());
 	//normal, ... berechnen
   
   return o;
