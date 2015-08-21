@@ -110,6 +110,7 @@ Optional_hit Renderer::intersect(Ray const& ray) const{
   //suche geringste distance und passendes Shape dazu
   int min_pos = std::distance(dis.begin(), std::min_element(dis.begin(), dis.end()));
   o.shape = &*scene_.shapes[min_pos];
+  o.distance = *std::min_element(dis.begin(), dis.end());
 	//normal, ... berechnen
   
   return o;
@@ -125,7 +126,7 @@ Color Renderer::raytrace(Ray const& ray, unsigned depth){
     Optional_hit o = intersect(ray);
 
     if(o.hit) {
-      
+
   		Light_source l{"licht", {0,0,0}, {255,255,255}, {100,100,100}}; 
       float tmp = glm::dot(glm::normalize(ray.direction), glm::normalize(l.get_position() - o.intersection)); //intersection ausrechnen lassen bei intersect!
       Material temp_mat = scene_.material[(*o.shape).get_material()];
