@@ -19,7 +19,7 @@ public:
 
 //operator<<
 	friend std::ostream& operator<<(std::ostream& os, Material const& mat);
-//Shape ändern
+
 
 
 private:
