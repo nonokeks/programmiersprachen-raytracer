@@ -116,58 +116,54 @@ Optional_hit Renderer::intersect(Ray const& ray) const{
   return o;
 }
 
-Color Renderer::raytrace(Ray const& ray, unsigned depth){
-  Color c(0,0,0);
-  if(depth == 0){
-    //c
-    return c;
+Color Renderer::raytrace(Ray const& ray){
+  Optional_hit o = intersect(ray);
+  if(o.distance == 0){ //ehemalige depth
+    return scene_.ambient;
   }
-  else{
-    Optional_hit o = intersect(ray);
 
-    if(o.hit) {
-      
-  		Light_source l{"licht", {0,0,0}, {255,255,255}, {100,100,100}}; 
-      float tmp = glm::dot(glm::normalize(ray.direction), glm::normalize(l.get_position() - o.intersection)); //intersection ausrechnen lassen bei intersect!
-      Material temp_mat = scene_.material[(*o.shape).get_material()];
-      float red = temp_mat.get_kd().r * l.get_diffuse().r * tmp;
-      float green = temp_mat.get_kd().g * l.get_diffuse().g * tmp;
-      float blue = temp_mat.get_kd().b * l.get_diffuse().b * tmp;
-      return Color(red, green, blue);
+  if(o.hit) {
+    
+		Light_source l{"licht", {0,0,0}, {255,255,255}, {100,100,100}}; 
+    float tmp = glm::dot(glm::normalize(ray.direction), glm::normalize(l.get_position() - o.intersection)); //intersection ausrechnen lassen bei intersect!
+    Material temp_mat = scene_.material[(*o.shape).get_material()];
+    float red = temp_mat.get_kd().r * l.get_diffuse().r * tmp;
+    float green = temp_mat.get_kd().g * l.get_diffuse().g * tmp;
+    float blue = temp_mat.get_kd().b * l.get_diffuse().b * tmp;
+    return Color(red, green, blue);
 
-        //temp
-        //return scene_.ambient;
-        //return c;
-        }
-
-    else {
-      return scene_.ambient;
-      //return c;
-    }
+     
+  } 
+  else {
+    return scene_.ambient;
   }
+  
 }
 
 
 //ungefähres Prozedere? was ist mit den Methoden vom Bernstein?
 void Renderer::render_scene(std::string filename){
 
+  //Scene wird geladen
   Sdf_loader loader{filename};
   scene_ = loader.load_scene(filename);
 
+  //Daten aus Transferobejkt in den Renderer schreiben
   width_ = scene_.render.width;
   height_ = scene_.render.height;
   filename_= scene_.render.filename;
 
-  
+  //Rays für das Bild gernerieren
   std::vector<Ray> rays;
   scene_.cam.generate_rays(width_, height_, rays);
 
-  std::vector<Color> colors;
-  unsigned depth = 1;//depth anders, aus intersect?
-  
+  //Farbe für jeden Pixel berechnen
   for (std::vector<Ray>::iterator i = rays.begin(); i < rays.end(); ++i)
   {
-    Color temp = raytrace(*i, depth);
-    colors.push_back(temp);
+    Color temp = raytrace(*i);
+    Pixel p_temp((*i).direction.x+(width_/2), (*i).direction.x+(height_ /2));
+    p_temp.color = temp;
+    write(p_temp);
   }
+  ppm_.save(filename_);
 }
