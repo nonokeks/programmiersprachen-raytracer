@@ -103,7 +103,7 @@ Optional_hit Renderer::intersect(Ray const& ray) const{
   {
     std::shared_ptr <Shape> s_ptr = *it;
     //Shape s = *s_ptr;
-    s_ptr->intersect(ray, distance);
+    s_ptr->intersect(ray, distance, o);
     dis.push_back(distance);
   }
 
