@@ -69,3 +69,36 @@ bool Box::intersect(Ray const& ray, float& distance) const{
     }
     return false;
 }
+
+bool Box::intersect(Ray const& ray, float& distance, Optional_hit& o) const{
+    double a = (get_min().x - ray.origin.x) * ray.inv_direction.x;
+    double b = (get_max().x - ray.origin.x) * ray.inv_direction.x;
+    double tmin = std::min(a, b);
+    double tmax = std::max(a, b);
+
+    a = (get_min().y - ray.origin.y) * ray.inv_direction.y;
+    b = (get_max().y - ray.origin.y) * ray.inv_direction.y;
+    tmin = std::max(tmin, std::min(a, b));
+    tmax = std::min(tmax, std::max(a, b));
+
+    a = (get_min().z - ray.origin.z) * ray.inv_direction.z;
+    b = (get_max().z - ray.origin.z) * ray.inv_direction.z;
+    tmin = std::max(tmin, std::min(a, b));
+    tmax = std::min(tmax, std::max(a, b));
+	//neu
+    float t = tmin;
+    if (t < 0){
+    	t = tmax;
+    	if (t < 0) return false;
+    }
+    
+    o.intersection = ray.origin + ray.direction * t;
+    //normale???
+//ende neu
+    if (tmax > std::max(0.0, tmin)) {
+        distance = sqrt(tmin * tmin * (ray.direction.x * ray.direction.x + ray.direction.y * ray.direction.y + ray.direction.z * ray.direction.z));
+        return true;
+    }
+    return false;
+}
+
