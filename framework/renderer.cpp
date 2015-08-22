@@ -123,8 +123,7 @@ Color Renderer::raytrace(Ray const& ray){
   }
 
   if(o.hit) {
-    
-		Light_source l{"licht", {0,0,0}, {255,255,255}, {100,100,100}}; 
+    Light_source l{"licht", {0,0,0}, {1.0,1.0,1.0}, {0.4,0.4,0.4}}; 
     float tmp = glm::dot(glm::normalize(ray.direction), glm::normalize(l.get_position() - o.intersection)); //intersection ausrechnen lassen bei intersect!
     Material temp_mat = scene_.material[(*o.shape).get_material()];
     float red = temp_mat.get_kd().r * l.get_diffuse().r * tmp;
