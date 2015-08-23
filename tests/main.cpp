@@ -148,7 +148,7 @@ using namespace std;
 // 	delete s2;
 // }
 
-
+/*
 //7
 TEST_CASE("box_intersect", "[intersect_box]"){
 	glm::vec3 vec1{0.0f,0.0f,0.0f};
@@ -185,7 +185,7 @@ TEST_CASE("box_intersect3", "[intersect_box3]"){
 	float distance(0.0);
 	REQUIRE(b1.intersect(r, distance));
 	std::cout <<"\n" << distance << std::endl;
-}
+}*/
 
 /*
 TEST_CASE("material", "[mat]"){
@@ -200,7 +200,7 @@ TEST_CASE("material", "[mat]"){
 	}
 }*/
 
-
+/*
 TEST_CASE("camera", "[cam]"){
 	Camera c1{"cam", 22.3f};
 	std::string s = "cam";
@@ -210,7 +210,7 @@ TEST_CASE("camera", "[cam]"){
 	Camera c2{};
 	REQUIRE(c2.get_name().compare("") == 0);
 	REQUIRE(c2.get_angle() == Approx(0.0));
-}
+}*/
 
 /*
 NEU - Light_source - Color
@@ -228,7 +228,7 @@ TEST_CASE("lights", "[light]"){
 	
 }*/
 
-
+/*
 TEST_CASE("scene", "[scene]"){
 	Color red{1.0,0.0,0.0};
 	Camera cam{"cam", 22.3f};
@@ -251,7 +251,7 @@ TEST_CASE("scene", "[scene]"){
 	REQUIRE(s2.render.height == render2.height);
 	REQUIRE(s2.render.width == render2.width);
 	REQUIRE(s2.render.filename == render2.filename);
-}
+}*/
 
 /*
 
@@ -361,7 +361,7 @@ TEST_CASE("Render_test1", "[renderer]"){
 	std::cout << s.cam.get_name() << " " << s.cam.get_angle() << std::endl;
 	std::cout << s.render.camera_name << " " << s.render.filename << " " << s.render.width << " " << s.render.height << std::endl;
 	std::cout << "Ambient: " << s.ambient << std::endl;
-
+	/*
 	std::vector<Ray> rays;
 	s.cam.generate_rays(r.get_width(), r.get_height() , rays);
 
@@ -372,7 +372,7 @@ TEST_CASE("Render_test1", "[renderer]"){
         {
             std::cout << o.distance << " " << o.shape->get_name() << std::endl;
         } 
-  	}
+  	}*/
 
 	
 }

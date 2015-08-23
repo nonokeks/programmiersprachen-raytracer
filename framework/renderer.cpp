@@ -110,7 +110,7 @@ Optional_hit Renderer::intersect(Ray const& ray) const{
 
   //suche geringste distance und passendes Shape dazu
   int min_pos = std::distance(dis.begin(), std::min_element(dis.begin(), dis.end()));
-  //std::cout << "test" << std::endl;
+  std::cout << "test intersect" << std::endl;
   o.shape = &*scene_.shapes[min_pos];
   o.distance = *std::min_element(dis.begin(), dis.end());
 	
@@ -121,6 +121,7 @@ Optional_hit Renderer::intersect(Ray const& ray) const{
 
 Color Renderer::raytrace(Ray const& ray){
   Optional_hit o = intersect(ray);
+  std::cout << "test raytrace" << std::endl;
   if(o.distance == 0){ //ehemalige depth
     return scene_.ambient;
   }
@@ -159,14 +160,27 @@ void Renderer::render_scene(std::string filename){
   //Rays für das Bild gernerieren
   std::vector<Ray> rays;
   scene_.cam.generate_rays(width_, height_, rays);
+  std::cout << rays.size() << std::endl;
+  
+  std::vector<Pixel> pixel;
+  for (unsigned i = 0; i < height_; ++i)
+  {
+    for (unsigned j = 0; j < width_; ++j)
+    {
+      Pixel p_temp(j,i);
+      pixel.push_back(p_temp);
+    }
+  }
 
+
+  std::vector<Pixel>::iterator j = pixel.begin();
   //Farbe für jeden Pixel berechnen
   for (std::vector<Ray>::iterator i = rays.begin(); i < rays.end(); ++i)
   {
     Color temp = raytrace(*i);
-    Pixel p_temp((*i).direction.x+(width_/2), (*i).direction.x+(height_ /2));
-    p_temp.color = temp;
-    write(p_temp);
+    (*j).color = temp;
+    ++j;
+    write(*j);
   }
   ppm_.save(filename_);
 }

@@ -23,17 +23,20 @@ Camera& Camera::operator= (Camera const& rhs){
 	return *this;
 }
 
-void Camera::generate_rays(unsigned width, unsigned height, std::vector<Ray> & rays){
+void Camera::generate_rays(unsigned width, unsigned height, std::vector<Ray>& rays){
 	float distance = ((width/2) / tan(fov_x_ * M_PI / 360)); 
 	glm::vec3 origin(0,0,0);
 
-	for (unsigned y = -(height/2); y < height/2; ++y)
+
+	for (int y = (height/-2); y < height/2; ++y)
 	{
-		for (unsigned x = -(width/2); x < width/2; ++x)
+		for (int x = (width/-2); x < width/2; ++x)
 		{
-			glm::vec3 direction(float(x), float(y), -(distance));
+			glm::vec3 direction(x, y, -(distance));
 			Ray temp_ray(origin, direction);
 			rays.push_back(temp_ray);
+			std::cout << "ok" << std::endl;
 		}
 	}
+
 }

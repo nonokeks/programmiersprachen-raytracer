@@ -18,7 +18,7 @@ public:
 	std::string get_name() const;
 	float get_angle() const;
 
-	void generate_rays(unsigned width, unsigned height, std::vector<Ray> & rays);
+	void generate_rays(unsigned width, unsigned height, std::vector<Ray>& rays);
 
 private:
 	std::string name_;
