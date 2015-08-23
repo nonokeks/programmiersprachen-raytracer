@@ -1,10 +1,10 @@
 #ifndef BUW_OPTIONAL_HIT_HPP
 #define BUW_OPTIONAL_HIT_HPP 
 
-#include "shape.hpp"
 #include <glm/vec3.hpp>
 #include <ray.hpp>
 #include <memory>
+#include "shape.hpp"
 
 struct Optional_hit{
 	

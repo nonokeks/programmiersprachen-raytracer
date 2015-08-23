@@ -70,7 +70,7 @@ bool Box::intersect(Ray const& ray, float& distance) const{
     return false;
 }
 
-bool Box::intersect(Ray const& ray, float& distance, Optional_hit& o) const{
+bool Box::intersect_optional(Ray const& ray, float& distance, glm::vec3& intersection, glm::vec3& normal) const{
     double a = (get_min().x - ray.origin.x) * ray.inv_direction.x;
     double b = (get_max().x - ray.origin.x) * ray.inv_direction.x;
     double tmin = std::min(a, b);
@@ -92,7 +92,7 @@ bool Box::intersect(Ray const& ray, float& distance, Optional_hit& o) const{
     	if (t < 0) return false;
     }
     
-    o.intersection = ray.origin + ray.direction * t;
+    intersection = ray.origin + ray.direction * t;
     //normale???
 //ende neu
     if (tmax > std::max(0.0, tmin)) {

@@ -17,6 +17,7 @@
 #include "shape.hpp"
 #include <algorithm> // min_element
 
+
 Renderer::Renderer(unsigned w, unsigned h, std::string const& file):
 	width_(w),
 	height_(h),
@@ -103,15 +104,17 @@ Optional_hit Renderer::intersect(Ray const& ray) const{
   {
     std::shared_ptr <Shape> s_ptr = *it;
     //Shape s = *s_ptr;
-    s_ptr->intersect(ray, distance, o);
+    s_ptr->intersect_optional(ray, distance, o.intersection, o.normal);
     dis.push_back(distance);
   }
 
   //suche geringste distance und passendes Shape dazu
   int min_pos = std::distance(dis.begin(), std::min_element(dis.begin(), dis.end()));
+  //std::cout << "test" << std::endl;
   o.shape = &*scene_.shapes[min_pos];
   o.distance = *std::min_element(dis.begin(), dis.end());
-	//normal, ... berechnen
+	
+  //normal, ... berechnen
   
   return o;
 }
@@ -123,6 +126,7 @@ Color Renderer::raytrace(Ray const& ray){
   }
 
   if(o.hit) {
+
     Light_source l{"licht", {0,0,0}, {1.0,1.0,1.0}, {0.4,0.4,0.4}}; 
     float tmp = glm::dot(glm::normalize(ray.direction), glm::normalize(l.get_position() - o.intersection)); //intersection ausrechnen lassen bei intersect!
     Material temp_mat = scene_.material[(*o.shape).get_material()];

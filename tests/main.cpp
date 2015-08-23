@@ -304,7 +304,7 @@ TEST_CASE("Sdf_loader_camera", "[sdf_loader]"){
 }
 */
 
-
+/*
 TEST_CASE("Sdf_loader_complete", "[sdf_loader]"){
 	
 	Sdf_loader loader{"./test.txt"};
@@ -327,7 +327,7 @@ TEST_CASE("Sdf_loader_complete", "[sdf_loader]"){
 	std::cout << s.cam.get_name() << " " << s.cam.get_angle() << std::endl;
 	std::cout << s.render.filename << " " << s.render.width << " " << s.render.height << std::endl;
 	std::cout << "Ambient: " << s.ambient << std::endl;
-}
+}*/
 
 
 TEST_CASE("Render_test1", "[renderer]"){
@@ -361,7 +361,18 @@ TEST_CASE("Render_test1", "[renderer]"){
 	std::cout << s.cam.get_name() << " " << s.cam.get_angle() << std::endl;
 	std::cout << s.render.camera_name << " " << s.render.filename << " " << s.render.width << " " << s.render.height << std::endl;
 	std::cout << "Ambient: " << s.ambient << std::endl;
-	
+
+	std::vector<Ray> rays;
+	s.cam.generate_rays(r.get_width(), r.get_height() , rays);
+
+	for (std::vector<Ray>::iterator i = rays.begin(); i < rays.end(); ++i)
+  	{
+    	Optional_hit o = r.intersect(*i);
+        if (o.hit)
+        {
+            std::cout << o.distance << " " << o.shape->get_name() << std::endl;
+        } 
+  	}
 
 	
 }
