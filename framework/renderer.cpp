@@ -102,13 +102,12 @@ Optional_hit Renderer::intersect(Ray const& ray) const{
   {
     std::shared_ptr <Shape> s_ptr = *it;
     //Shape s = *s_ptr;
-    s_ptr->intersect_optional(ray, distance, o.intersection, o.normal);
+    o.hit = s_ptr->intersect_optional(ray, distance, o.intersection, o.normal);
     dis.push_back(distance);
   }
 
   //suche geringste distance und passendes Shape dazu
   int min_pos = std::distance(dis.begin(), std::min_element(dis.begin(), dis.end()));
-  //std::cout << "test intersect" << std::endl;
   o.shape = &*scene_.shapes[min_pos];
   o.distance = *std::min_element(dis.begin(), dis.end());
 	
@@ -119,19 +118,20 @@ Optional_hit Renderer::intersect(Ray const& ray) const{
 
 Color Renderer::raytrace(Ray const& ray){
   Optional_hit o = intersect(ray);
-  //std::cout << "test raytrace" << std::endl;
   if(o.distance == 0){ //ehemalige depth
     return scene_.ambient;
   }
 
   if(o.hit) {
-
-    Light_source l{"licht", {0,0,0}, {1.0,1.0,1.0}, {0.4,0.4,0.4}}; 
+    //Light_source l{"licht", {0,0,0}, {1.0,1.0,1.0}, {0.4,0.4,0.4}}; 
+    //Schleife für alle lights?
+    Light_source l = scene_.lights[0];
     float tmp = glm::dot(glm::normalize(ray.direction), glm::normalize(l.get_position() - o.intersection)); //intersection ausrechnen lassen bei intersect!
     Material temp_mat = scene_.material[(*o.shape).get_material()];
     float red = temp_mat.get_kd().r * l.get_diffuse().r * tmp;
     float green = temp_mat.get_kd().g * l.get_diffuse().g * tmp;
     float blue = temp_mat.get_kd().b * l.get_diffuse().b * tmp;
+    std::cout << tmp << std::endl;
     return Color(red, green, blue);
 
      
