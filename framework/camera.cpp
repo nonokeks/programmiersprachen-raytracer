@@ -28,15 +28,15 @@ void Camera::generate_rays(unsigned width, unsigned height, std::vector<Ray>& ra
 	glm::vec3 origin(0,0,0);
 
 
-	for (int y = (height/-2); y < height/2; ++y)
+	for (int y = ((int)height/-2); y < (int)height/2; ++y)
 	{
-		for (int x = (width/-2); x < width/2; ++x)
+		for (int x = ((int)width/-2); x < (int)width/2; ++x)
 		{
 			glm::vec3 direction(x, y, -(distance));
 			Ray temp_ray(origin, direction);
 			rays.push_back(temp_ray);
-			std::cout << "ok" << std::endl;
 		}
 	}
+	
 
 }
