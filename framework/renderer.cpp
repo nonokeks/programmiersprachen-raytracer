@@ -156,6 +156,9 @@ void Renderer::render_scene(std::string filename){
   filename_= scene_.render.filename;
   std::vector<Color> buffer(width_*height_, Color(0.0, 0.0, 0.0));
   colorbuffer_=buffer;
+  PpmWriter ppm(width_, height_);
+  ppm_ = ppm;
+
 
   //Rays für das Bild gernerieren
   std::vector<Ray> rays;
