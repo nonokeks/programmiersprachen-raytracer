@@ -24,7 +24,6 @@ Renderer::Renderer(unsigned w, unsigned h, std::string const& file):
 	colorbuffer_(w*h, Color(0.0, 0.0, 0.0)),
 	filename_(file),
 	ppm_(width_, height_)
- // , scene_() ??
 	{}
 
 Renderer::Renderer():
@@ -33,7 +32,6 @@ Renderer::Renderer():
 	colorbuffer_(0, Color(0.0, 0.0, 0.0)),
 	filename_(""),
 	ppm_(width_, height_)
- // , scene_()??
 	{}
 
 unsigned Renderer::get_width() const{
@@ -110,7 +108,7 @@ Optional_hit Renderer::intersect(Ray const& ray) const{
 
   //suche geringste distance und passendes Shape dazu
   int min_pos = std::distance(dis.begin(), std::min_element(dis.begin(), dis.end()));
-  std::cout << "test intersect" << std::endl;
+  //std::cout << "test intersect" << std::endl;
   o.shape = &*scene_.shapes[min_pos];
   o.distance = *std::min_element(dis.begin(), dis.end());
 	
@@ -121,7 +119,7 @@ Optional_hit Renderer::intersect(Ray const& ray) const{
 
 Color Renderer::raytrace(Ray const& ray){
   Optional_hit o = intersect(ray);
-  std::cout << "test raytrace" << std::endl;
+  //std::cout << "test raytrace" << std::endl;
   if(o.distance == 0){ //ehemalige depth
     return scene_.ambient;
   }
@@ -156,6 +154,8 @@ void Renderer::render_scene(std::string filename){
   width_ = scene_.render.width;
   height_ = scene_.render.height;
   filename_= scene_.render.filename;
+  std::vector<Color> buffer(width_*height_, Color(0.0, 0.0, 0.0));
+  colorbuffer_=buffer;
 
   //Rays für das Bild gernerieren
   std::vector<Ray> rays;
