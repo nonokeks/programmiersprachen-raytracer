@@ -187,3 +187,16 @@ void Renderer::render_scene(std::string filename){
   }
   ppm_.save(filename_);
 }
+
+
+Ray Renderer::spiegelRay(Ray normale, glm::vec3 rayDirection){
+	float normaleLength = sqrt(normaleDirection.x*normaleDirection.x + normaleDirection.y*normaleDirection.y + normaleDirection.z*normaleDirection.z); //Länge eines Vektors
+	glm::vec3 n{(normaleDirection.x/normaleLength), (normaleDirection.y/normaleLength), (normaleDirection.z/normaleLength)}; //normale normiert
+	glm::vec3 spiegel{0.0f, 0.0f, 0.0f}; //neuer Ray direction kommt hier rein, origin ist dasselbe wie die Normale
+	spiegel.x = (2*n.x*n.x*rayDirection.x + 2*n.x*n.y*rayDirection.y + 2*n.x*n.z*rayDirection.z - rayDirection.x);
+	spiegel.y = (2*n.x*n.y*rayDirection.x + 2*n.x*n.y*rayDirection.y + 2*n.y*n.z*rayDirection.z - rayDirection.y);
+	spiegel.z = (2*n.y*n.z*rayDirection.x + 2*n.y*n.z*rayDirection.y + 2*n.z*n.z*rayDirection.z - rayDirection.z);
+	Ray neuerRay{normale.origin, spiegel}; //spiegel muss vielleicht *-1 genommen werden, bin mir nicht sicher ob der in die richtige Richtung zeigt
+	return neuerRay;
+
+}
