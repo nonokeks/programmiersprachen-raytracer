@@ -48,6 +48,7 @@ public:
 
   Color raytrace(Ray const& ray);
   void render_scene(std::string filename); 
+  Ray reflect_ray(Ray const& normale, glm::vec3 const& rayDirection) const;
 
 private:
   unsigned width_;
