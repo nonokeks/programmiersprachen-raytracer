@@ -144,7 +144,7 @@ bool Box::intersect(Ray const& ray, float& distance, glm::vec3& intersection, gl
 
 glm::vec3 Box::normale_box(glm::vec3 const& p1, glm::vec3 const& p2, glm::vec3 const& p3)const{
     glm::vec3 normale(0.0,0.0,0.0);
-    // überprüfen ob Ebende möglich
+    // überprüfen ob Ebene möglich
     float rx = (p3.x-p1.x)/(p2.x-p1.x);
     float ry = (p3.y-p1.y)/(p2.y-p1.y);
     float rz = (p3.z-p3.z)/(p2.z-p1.z);
@@ -153,6 +153,7 @@ glm::vec3 Box::normale_box(glm::vec3 const& p1, glm::vec3 const& p2, glm::vec3 c
         //Normale der Gerade berechnen (richtungsvektor*normalenvektor = 0)
         normale.x = (p2.y-p1.y) * -1;
         normale.y = (p2.x-p1.x);
+        //normale.z ??
     }
     else{
         //Kreuzprodukt der beiden Richtungsvektoren
