@@ -192,7 +192,7 @@ void Renderer::render_scene(std::string filename){
 Ray Renderer::reflect_ray(glm::vec3 const& intersection, glm::vec3 const& normale, glm::vec3 const& rayDirection) const{
 	float normaleLength = sqrt(normale.x*normale.x + normale.y*normale.y + normale.z*normale.z); //Länge eines Vektors
 	glm::vec3 n{(normale.x/normaleLength), (normale.y/normaleLength), (normale.z/normaleLength)}; //normale normiert
-	glm::vec3 spiegel{0.0f, 0.0f, 0.0f}; //neuer Ray direction kommt hier rein, origin ist dasselbe wie die Normale
+	glm::vec3 spiegel{0.0f, 0.0f, 0.0f}; //neuer Ray direction kommt hier rein, origin ist intersection
 	spiegel.x = (2*n.x*n.x*rayDirection.x + 2*n.x*n.y*rayDirection.y + 2*n.x*n.z*rayDirection.z - rayDirection.x);
 	spiegel.y = (2*n.x*n.y*rayDirection.x + 2*n.x*n.y*rayDirection.y + 2*n.y*n.z*rayDirection.z - rayDirection.y);
 	spiegel.z = (2*n.y*n.z*rayDirection.x + 2*n.y*n.z*rayDirection.y + 2*n.z*n.z*rayDirection.z - rayDirection.z);
