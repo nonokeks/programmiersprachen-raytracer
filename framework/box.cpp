@@ -5,6 +5,7 @@
 #include "color.hpp"
 #include "ray.hpp"
 #include "material.hpp"
+#include <glm/glm.hpp>
 
 Box::Box() : Shape{}, min_{0.0f, 0.0f, 0.0f}, max_{0.0f, 0.0f, 0.0f} {}
 Box::Box(glm::vec3 const& min, glm::vec3 const& max):Shape{}, min_{min}, max_{max} {}
@@ -71,20 +72,21 @@ bool Box::intersect(Ray const& ray, float& distance) const{
 }
 
 bool Box::intersect(Ray const& ray, float& distance, glm::vec3& intersection, glm::vec3& normal) const{
-    double a = (get_min().x - ray.origin.x) * ray.inv_direction.x;
-    double b = (get_max().x - ray.origin.x) * ray.inv_direction.x;
+    double a = (min_.x - ray.origin.x) * ray.inv_direction.x;
+    double b = (max_.x - ray.origin.x) * ray.inv_direction.x;
     double tmin = std::min(a, b);
     double tmax = std::max(a, b);
 
-    a = (get_min().y - ray.origin.y) * ray.inv_direction.y;
-    b = (get_max().y - ray.origin.y) * ray.inv_direction.y;
+    a = (min_.y - ray.origin.y) * ray.inv_direction.y;
+    b = (max_.y - ray.origin.y) * ray.inv_direction.y;
     tmin = std::max(tmin, std::min(a, b));
     tmax = std::min(tmax, std::max(a, b));
 
-    a = (get_min().z - ray.origin.z) * ray.inv_direction.z;
-    b = (get_max().z - ray.origin.z) * ray.inv_direction.z;
+    a = (min_.z - ray.origin.z) * ray.inv_direction.z;
+    b = (max_.z - ray.origin.z) * ray.inv_direction.z;
     tmin = std::max(tmin, std::min(a, b));
     tmax = std::min(tmax, std::max(a, b));
+
 	//neu
     float t = tmin;
     if (t < 0){
@@ -92,9 +94,47 @@ bool Box::intersect(Ray const& ray, float& distance, glm::vec3& intersection, gl
     	if (t < 0) return false;
     }
     
+    //Intersectionpoint
     intersection = ray.origin + ray.direction * t;
-    //normale???
-//ende neu
+  
+
+    //normale
+    //Ein Wert des Intersectionpoint muss mit min oder max übereinstimmen
+
+    if (min_.x == intersection.x)
+    {
+        //vorne
+        normal = normale_box(min_, intersection, glm::vec3(min_.x, max_.y, max_.z) );
+    }
+    else if (max_.x == intersection.x)
+    {
+        //hinten
+        normal = normale_box(max_, intersection, glm::vec3(max_.x, min_.y, min_.z) );
+    }
+    else if (min_.y == intersection.y)
+    {
+        //links
+        normal = normale_box(min_, intersection, glm::vec3(max_.x, min_.y, max_.z) );
+    }
+    else if (max_.y == intersection.y)
+    {
+        //rechts
+        normal = normale_box(max_, intersection, glm::vec3(min_.x, max_.y, min_.z) );
+    }
+    else if (min_.z == intersection.z)
+    {
+        //unten
+        normal = normale_box(min_, intersection, glm::vec3(max_.x, max_.y, min_.z) );
+    }
+    else if (max_.z == intersection.z)
+    {
+        //oben
+        normal = normale_box(max_, intersection, glm::vec3(min_.x, min_.y, max_.z) );
+    }
+
+
+
+    //ende neu
     if (tmax > std::max(0.0, tmin)) {
         distance = sqrt(tmin * tmin * (ray.direction.x * ray.direction.x + ray.direction.y * ray.direction.y + ray.direction.z * ray.direction.z));
         return true;
@@ -102,3 +142,25 @@ bool Box::intersect(Ray const& ray, float& distance, glm::vec3& intersection, gl
     return false;
 }
 
+glm::vec3 Box::normale_box(glm::vec3 const& p1, glm::vec3 const& p2, glm::vec3 const& p3)const{
+    glm::vec3 normale(0.0,0.0,0.0);
+    // überprüfen ob Ebende möglich
+    float rx = (p3.x-p1.x)/(p2.x-p1.x);
+    float ry = (p3.y-p1.y)/(p2.y-p1.y);
+    float rz = (p3.z-p3.z)/(p2.z-p1.z);
+
+    if(rx == ry && ry == rz){
+        //Normale der Gerade berechnen (richtungsvektor*normalenvektor = 0)
+        normale.x = (p2.y-p1.y) * -1;
+        normale.y = (p2.x-p1.x);
+    }
+    else{
+        //Kreuzprodukt der beiden Richtungsvektoren
+        normale.x = (((p2.y-p1.y) * (p3.z-p1.z)) - ((p2.z-p1.z) * (p3.y-p1.y)));
+        normale.y = (((p2.z-p1.z) * (p3.x-p1.x)) - ((p2.x-p1.x) * (p3.z-p1.z)));
+        normale.z = (((p2.x-p1.x) * (p3.y-p1.y)) - ((p2.y-p1.y) * (p3.x-p1.x)));
+    }
+    normale = glm::normalize(normale);
+    return normale;
+
+}
