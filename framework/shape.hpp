@@ -47,7 +47,7 @@ public:
 	}
 
 	virtual bool intersect(Ray const& ray, float& distance) const = 0;
-	virtual bool intersect_optional(Ray const& ray, float& distance, glm::vec3& intersection,
+	virtual bool intersect(Ray const& ray, float& distance, glm::vec3& intersection,
 	glm::vec3& normal) const = 0;
 
 private:

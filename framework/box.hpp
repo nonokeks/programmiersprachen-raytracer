@@ -29,7 +29,7 @@ public:
 	/*virtual*/ std::ostream& print(std::ostream& os) const;
 
 	bool intersect(Ray const& ray, float& distance) const;
-	bool intersect_optional(Ray const& ray, float& distance, glm::vec3& intersection, glm::vec3& normal) const;
+	bool intersect(Ray const& ray, float& distance, glm::vec3& intersection, glm::vec3& normal) const;
 
 private:
 	glm::vec3 min_;

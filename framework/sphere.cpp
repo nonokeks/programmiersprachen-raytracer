@@ -35,7 +35,7 @@ bool Sphere::intersect(Ray const& ray, float& distance)const{
 	return glm::intersectRaySphere(ray.origin, direct, center_, radius_*radius_, distance);
 }
 
-bool Sphere::intersect_optional(Ray const& ray, float& distance, glm::vec3& intersection, glm::vec3& normal)const{
+bool Sphere::intersect(Ray const& ray, float& distance, glm::vec3& intersection, glm::vec3& normal)const{
 	glm::vec3 direct = glm::normalize(ray.direction);
 	return glm::intersectRaySphere(ray.origin, direct, center_, radius_, intersection, normal);
 }
