@@ -48,8 +48,52 @@ Scene Sdf_loader::load_scene(std::string file) const{
 				sstr >> angle;
 				sstr.clear();
 
-				Camera c{name, angle};
-				s.cam = c;
+				datei >> word;
+			
+				if (word.compare("#") != 0 || word.compare("render") != 0 || 
+					word.compare("ambient") != 0 || word.compare("define") != 0)
+				{
+
+					float x, y, z;
+		 			sstr << word << ' ';
+		 			datei >> word;
+		 			sstr << word << ' ';
+		 			datei >> word;
+		 			sstr << word;
+		 			sstr >> x >> y >> z;
+		 			glm::vec3 position(x,y,z);
+		 			sstr.clear(); // Clear stringstream
+
+		 			datei >> word;
+		 			sstr << word << ' ';
+		 			datei >> word;
+		 			sstr << word << ' ';
+		 			datei >> word;
+		 			sstr << word;
+		 			sstr >> x >> y >> z;
+		 			glm::vec3 direction(x,y,z);
+		 			sstr.clear(); // Clear stringstream
+
+		 			datei >> word;
+		 			sstr << word << ' ';
+		 			datei >> word;
+		 			sstr << word << ' ';
+		 			datei >> word;
+		 			sstr << word;
+		 			sstr >> x >> y >> z;
+		 			glm::vec3 up(x,y,z);
+		 			sstr.clear(); // Clear stringstream
+
+		 			Camera c{name, angle, position, direction, up};
+		 			s.cam = c;
+				}
+				else{
+					Camera c{name, angle};
+					s.cam = c;
+				}
+
+				
+				
 
 	 		}
 	 		else if (word.compare("render") == 0)//Renderer

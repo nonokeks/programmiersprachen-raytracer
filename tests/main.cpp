@@ -359,6 +359,8 @@ TEST_CASE("Render_test1", "[renderer]"){
 	}
 	
 	std::cout << s.cam.get_name() << " " << s.cam.get_angle() << std::endl;
+	std::cout << "pos " << s.cam.get_position().x << " " << s.cam.get_position().y << " " << s.cam.get_position().z << " "
+	<< s.cam.get_direction().x << " " << s.cam.get_direction().y << " " << s.cam.get_direction().z << std::endl;
 	std::cout << s.render.camera_name << " " << s.render.filename << " " << s.render.width << " " << s.render.height << std::endl;
 	std::cout << "Ambient: " << s.ambient << std::endl;
 	/*
