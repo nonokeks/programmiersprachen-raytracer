@@ -131,8 +131,10 @@ Color Renderer::raytrace(Ray const& ray){
     float red = temp_mat.get_kd().r * l.get_diffuse().r * tmp;
     float green = temp_mat.get_kd().g * l.get_diffuse().g * tmp;
     float blue = temp_mat.get_kd().b * l.get_diffuse().b * tmp;
-    std::cout << tmp << std::endl;
+    //std::cout << temp_mat.get_kd() << std::endl;
     return Color(red, green, blue);
+
+    //return temp_mat.get_kd();
 
      
   } 
@@ -182,10 +184,12 @@ void Renderer::render_scene(std::string filename){
   {
     Color temp = raytrace(*i);
     (*j).color = temp;
-    ++j;
     write(*j);
+    ++j;
   }
   ppm_.save(filename_);
+  
+  
 }
 
 

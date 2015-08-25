@@ -153,7 +153,6 @@ glm::vec3 Box::normale_box(glm::vec3 const& p1, glm::vec3 const& p2, glm::vec3 c
         //Normale der Gerade berechnen (richtungsvektor*normalenvektor = 0)
         normale.x = (p2.y-p1.y) * -1;
         normale.y = (p2.x-p1.x);
-        //normale.z ??
     }
     else{
         //Kreuzprodukt der beiden Richtungsvektoren
