@@ -111,14 +111,20 @@ Optional_hit Renderer::intersect(Ray const& ray) const{
   o.shape = &*scene_.shapes[min_pos];
   o.distance = *std::min_element(dis.begin(), dis.end());
 	
-  //normal, ... berechnen
+  
   
   return o;
 }
 
 Color Renderer::raytrace(Ray const& ray){
   Optional_hit o = intersect(ray);
-  if(o.distance == 0){ //ehemalige depth
+  //reflect, wieder intersect, shade, usw hier rein?
+  
+}
+
+Color Renderer::shade(Ray const& ray, Optional_hit const& o, int depth){ //braucht man noch color? wenn ja woher?
+	
+	if(o.depth == 0){ //distance wieder zu depth, ist anscheinend Recursion depth? Wo muss es noch geändert werden?
     return scene_.ambient;
   }
 
@@ -141,7 +147,6 @@ Color Renderer::raytrace(Ray const& ray){
   else {
     return scene_.ambient;
   }
-  
 }
 
 
@@ -152,7 +157,7 @@ void Renderer::render_scene(std::string filename){
   Sdf_loader loader{filename};
   scene_ = loader.load_scene(filename);
 
-  //Daten aus Transferobejkt in den Renderer schreiben
+  //Daten aus Transferobjekt in den Renderer schreiben
   width_ = scene_.render.width;
   height_ = scene_.render.height;
   filename_= scene_.render.filename;
@@ -191,6 +196,8 @@ void Renderer::render_scene(std::string filename){
   
   
 }
+
+//warum haben wir render und render_scene?
 
 
 Ray Renderer::reflect_ray(glm::vec3 const& intersection, glm::vec3 const& normale, glm::vec3 const& rayDirection) const{
