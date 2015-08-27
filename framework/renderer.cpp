@@ -119,10 +119,10 @@ Optional_hit Renderer::intersect(Ray const& ray) const{
 Color Renderer::raytrace(Ray const& ray){
   Optional_hit o = intersect(ray);
   //reflect, wieder intersect, shade, usw hier rein?
-  
+  return shade(ray, o);
 }
 
-Color Renderer::shade(Ray const& ray, Optional_hit const& o){ //braucht man noch color und recursion depth statt distance? wenn ja woher?
+Color Renderer::shade(Ray const& ray, Optional_hit const& o)const{ //braucht man noch color und recursion depth statt distance? wenn ja woher?
 	
   if(o.distance == 0){
     return scene_.ambient;
@@ -139,8 +139,6 @@ Color Renderer::shade(Ray const& ray, Optional_hit const& o){ //braucht man noch
     float blue = temp_mat.get_kd().b * l.get_diffuse().b * tmp;
     //std::cout << temp_mat.get_kd() << std::endl;
     return Color(red, green, blue);
-
-    //return temp_mat.get_kd();
 
      
   } 
