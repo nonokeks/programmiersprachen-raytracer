@@ -16,6 +16,7 @@
 #include "color.hpp"
 #include "shape.hpp"
 #include <algorithm> // min_element
+#include <glm/glm.hpp>
 
 
 Renderer::Renderer(unsigned w, unsigned h, std::string const& file):
@@ -119,32 +120,74 @@ Optional_hit Renderer::intersect(Ray const& ray) const{
 Color Renderer::raytrace(Ray const& ray){
   Optional_hit o = intersect(ray);
   //reflect, wieder intersect, shade, usw hier rein?
-  return shade(ray, o);
+  if(o.hit) return shade(ray, o);
+  else return scene_.ambient;
 }
 
 Color Renderer::shade(Ray const& ray, Optional_hit const& o)const{ //braucht man noch color und recursion depth statt distance? wenn ja woher?
 	
-  if(o.distance == 0){
-    return scene_.ambient;
-  }
+  //Light_source l{"licht", {0,0,0}, {1.0,1.0,1.0}, {0.4,0.4,0.4}}; 
+  //Schleife für alle lights?
+  Light_source light = scene_.lights[0];
+  Material temp_mat = scene_.material[(*o.shape).get_material()];
+  float r = 0, g = 0, b = 0;
+  float red = 0, green = 0, blue = 0;
 
-  if(o.hit) {
-    //Light_source l{"licht", {0,0,0}, {1.0,1.0,1.0}, {0.4,0.4,0.4}}; 
-    //Schleife für alle lights?
-    Light_source l = scene_.lights[0];
-    float tmp = glm::dot(glm::normalize(ray.direction), glm::normalize(l.get_position() - o.intersection));
-    Material temp_mat = scene_.material[(*o.shape).get_material()];
-    float red = temp_mat.get_kd().r * l.get_diffuse().r * tmp;
-    float green = temp_mat.get_kd().g * l.get_diffuse().g * tmp;
-    float blue = temp_mat.get_kd().b * l.get_diffuse().b * tmp;
-    //std::cout << temp_mat.get_kd() << std::endl;
-    return Color(red, green, blue);
+  for(std::vector<Light_source>::const_iterator l = scene_.lights.begin(); l != scene_.lights.end(); ++l)
+  {
 
-     
-  } 
-  else {
-    return scene_.ambient;
+    //Ray von Schnittpunkt zu Lichtquelle
+    Ray lightray(o.intersection, glm::normalize((*l).get_position()));
+
+    //Lichtintensität (Skalarprodukt, wird dann mit Reflexionskoeffizient und Helligkeit der Lichtquelle multipliziert)
+    //oder Winkel zwischen Normale und Lichtquelle 
+    float tmp = glm::dot(o.normal, glm::normalize((*l).get_position()-o.intersection) );
+
+    float temp_r = 0, temp_g = 0, temp_b = 0;
+
+    Optional_hit shadow = intersect(lightray);
+    if(!shadow.hit){
+
+      //Winkel Kamera/Lichquelle
+      float cam_light_angle = glm::dot(glm::normalize(o.intersection - scene_.cam.get_position()), glm::normalize((*l).get_position() - o.intersection));
+
+
+      /* Reflection ??
+      float reflection = cam_light_angle - (2* tmp);
+
+      //Reflektionsvecktor ?
+      glm::vec3 reflect_vec((2 * tmp * o.normal.x - (*l).get_position().x), (2 * tmp * o.normal.y - (*l).get_position().y), (2 * tmp * o.normal.z - (*l).get_position().z));
+
+      Ray reflection_ray(o.intersection, reflect_vec);
+      //oder Ray reflection_ray = reflect_ray(o.intersection, o.normale, l.get_position()); ?
+
+      
+      temp_r = temp_mat.get_ks().r; //* pow(reflection, ke);
+      temp_g = temp_mat.get_ks().g; //* pow(reflection, ke);
+      temp_b = temp_mat.get_ks().b; //* pow(reflection, ke);
+      */
+
+      r += (*l).get_diffuse().r * (tmp * temp_mat.get_kd().r + temp_mat.get_ks().r);
+      g += (*l).get_diffuse().g * (tmp * temp_mat.get_kd().g + temp_mat.get_ks().g);
+      b += (*l).get_diffuse().b * (tmp * temp_mat.get_kd().b + temp_mat.get_ks().b);
+
+    }
+    else{
+      //Wenn im Schatten werden die Werde berechnet, sonst 0 ( Operator shadow.hit ? 1 : 0)
+      r += temp_mat.get_kd().r * (*l).get_diffuse().r * tmp;
+      g += temp_mat.get_kd().g * (*l).get_diffuse().g * tmp;
+      b += temp_mat.get_kd().b * (*l).get_diffuse().b * tmp;
+    }
+  
   }
+  //mit Ambiente
+  red = temp_mat.get_ka().r * light.get_ambiente().r + r;
+  green = temp_mat.get_ka().g * light.get_ambiente().g + g;
+  blue = temp_mat.get_ka().b * light.get_ambiente().b + b;
+
+
+  return Color(red, green, blue);
+
 }
 
 
@@ -168,7 +211,7 @@ void Renderer::render_scene(std::string filename){
   //Rays für das Bild gernerieren
   std::vector<Ray> rays;
   scene_.cam.generate_rays(width_, height_, rays);
-  std::cout << rays.size() << std::endl;
+  //std::cout << rays.size() << std::endl;
   
   std::vector<Pixel> pixel;
   for (unsigned i = 0; i < height_; ++i)
@@ -199,12 +242,13 @@ void Renderer::render_scene(std::string filename){
 
 
 Ray Renderer::reflect_ray(glm::vec3 const& intersection, glm::vec3 const& normale, glm::vec3 const& rayDirection) const{
-	float normaleLength = sqrt(normale.x*normale.x + normale.y*normale.y + normale.z*normale.z); //Länge eines Vektors
-	glm::vec3 n{(normale.x/normaleLength), (normale.y/normaleLength), (normale.z/normaleLength)}; //normale normiert
+	//float normaleLength = sqrt(normale.x*normale.x + normale.y*normale.y + normale.z*normale.z); //Länge eines Vektors
+	//glm::vec3 n{(normale.x/normaleLength), (normale.y/normaleLength), (normale.z/normaleLength)}; //normale normiert
+  //normale ist normiert
 	glm::vec3 spiegel{0.0f, 0.0f, 0.0f}; //neuer Ray direction kommt hier rein, origin ist intersection
-	spiegel.x = (2*n.x*n.x*rayDirection.x + 2*n.x*n.y*rayDirection.y + 2*n.x*n.z*rayDirection.z - rayDirection.x);
-	spiegel.y = (2*n.x*n.y*rayDirection.x + 2*n.x*n.y*rayDirection.y + 2*n.y*n.z*rayDirection.z - rayDirection.y);
-	spiegel.z = (2*n.y*n.z*rayDirection.x + 2*n.y*n.z*rayDirection.y + 2*n.z*n.z*rayDirection.z - rayDirection.z);
+	spiegel.x = (2*normale.x*normale.x*rayDirection.x + 2*normale.x*normale.y*rayDirection.y + 2*normale.x*normale.z*rayDirection.z - rayDirection.x);
+	spiegel.y = (2*normale.x*normale.y*rayDirection.x + 2*normale.x*normale.y*rayDirection.y + 2*normale.y*normale.z*rayDirection.z - rayDirection.y);
+	spiegel.z = (2*normale.y*normale.z*rayDirection.x + 2*normale.y*normale.z*rayDirection.y + 2*normale.z*normale.z*rayDirection.z - rayDirection.z);
 	Ray newRay{intersection, spiegel}; //spiegel muss vielleicht *-1 genommen werden, bin mir nicht sicher ob der in die richtige Richtung zeigt
 	return newRay;
 
