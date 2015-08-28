@@ -28,7 +28,7 @@ glm::vec3 const& Box::get_max()const{
 }
 
 
-float Box::area() const{
+/*float Box::area() const{
 	float depth = fabs(max_.x - min_.x);
 	float width = fabs(max_.y - min_.y);
 	float high = fabs(max_.z - min_.z);
@@ -39,7 +39,7 @@ float Box::volume() const{
 	float width = fabs(max_.y - min_.y);
 	float high = fabs(max_.z - min_.z);
 	return (high * width * depth);
-}
+}*/
 
 std::ostream& Box::print(std::ostream& os) const{
 	Shape::print(os);
