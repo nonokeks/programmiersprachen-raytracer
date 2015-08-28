@@ -24,8 +24,8 @@ public:
 	glm::vec3 const& get_max()const;
 	
 
-	/*virtual*/ float area() const;
-	/*virtual*/ float volume() const;
+	// /*virtual*/ float area() const;
+	// /*virtual*/ float volume() const;
 	/*virtual*/ std::ostream& print(std::ostream& os) const;
 
 	bool intersect(Ray const& ray, float& distance) const;
