@@ -24,8 +24,7 @@ public:
 	Shape(std::string name, std::string material): name_{name}, matname_{material} {}
 	
 
-	virtual float area() const = 0;
-	virtual float volume() const = 0;
+
 	virtual std::ostream& print(std::ostream& os) const{
 		os << "Name: " << name_ << " Material: " << matname_ << std::endl;;
 		return os;
