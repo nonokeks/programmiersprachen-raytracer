@@ -1,7 +1,6 @@
-#ifndef BUW_OPTIONAL_HIT_HPP
+﻿#ifndef BUW_OPTIONAL_HIT_HPP
 #define BUW_OPTIONAL_HIT_HPP 
 
-#include "shape.hpp"
 
 struct Optional_hit{
 	
