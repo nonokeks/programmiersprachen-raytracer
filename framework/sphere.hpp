@@ -24,8 +24,8 @@ public:
 	bool intersect(Ray const& ray, float& distance)const;
 	bool intersect(Ray const& ray, float& distance, glm::vec3& intersection, glm::vec3& normal)const;
 
-	/*virtual*/ float area() const;
-	/*virtual*/ float volume() const;
+	// /*virtual*/ float area() const;
+	// /*virtual*/ float volume() const;
 	/*virtual*/ std::ostream& print(std::ostream& os) const;
 
 private:
