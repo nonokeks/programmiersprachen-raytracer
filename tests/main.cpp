@@ -334,7 +334,7 @@ TEST_CASE("Render_test1", "[renderer]"){
 	
 	Renderer r;
 
-	r.render_scene("./test3.txt"); 
+	r.render_scene("./test11.txt"); 
 
 	Scene s = r.get_scene();
 

@@ -25,7 +25,7 @@ Scene Sdf_loader::load_scene(std::string file) const{
 
 	ifstream datei(file, ios::in);
  	Scene s{};
- 	//std::string line;
+ 	std::string line;
  	std::string word = " ";
  	std::string name = " ";
  	std::stringstream sstr; //für String to Float
@@ -33,13 +33,24 @@ Scene Sdf_loader::load_scene(std::string file) const{
  	{
 
 		while(datei >> word){
+
  			if (word.compare("#") == 0)//Kommentarzeilen werden ignoriert
 	 		{
-	 			//do nothing BRAUCHEN WIR DAS??
+	 			datei >> word; // Nächstes Word wird eingelesen und somit die Zeile ignoriert
+
+	 			//Komplette Zeile automatisch?
+
+	 			/*
+	 			if(word.compare("camera") == 0 ||
+				   word.compare("render") == 0 || word.compare("define") == 0){
+	 			    
+	 			    //datei >> word;
+	 			}*/
+	 			
 	 		}
 	 		else if (word.compare("camera") == 0)//Kamera
 	 		{
-	 			datei >> word;// sonst camera 0
+	 			
 	 			datei >> name;
 	 			datei >> word;
 	 			//String to Float
@@ -50,8 +61,8 @@ Scene Sdf_loader::load_scene(std::string file) const{
 
 				datei >> word;
 			
-				if (word.compare("#") != 0 || word.compare("render") != 0 || 
-					word.compare("ambient") != 0 || word.compare("define") != 0)
+				if (word.compare("#") != 0 && word.compare("render") != 0 && 
+				   word.compare("ambient") != 0 && word.compare("define") != 0)
 				{
 
 					float x, y, z;
@@ -114,6 +125,7 @@ Scene Sdf_loader::load_scene(std::string file) const{
 	 			Renderer_data render{x_res, y_res, name, filename};
 	 			s.render = render;
 	 		}
+	 		/*
 	 		else if (word.compare("ambient") == 0)//Color ambient
 	 		{
 	 			float r,g,b;
@@ -131,7 +143,7 @@ Scene Sdf_loader::load_scene(std::string file) const{
 	 			sstr.clear();
 	 			
 	 			s.ambient = a;
-	 		}
+	 		}*/
 	 		else if (word.compare("define") == 0)//Klassendefinierung
 	 		{
 	 			datei >> word;
@@ -298,6 +310,15 @@ Scene Sdf_loader::load_scene(std::string file) const{
 	 			sstr.clear(); 
 		 		
 	 		}	
+		}
+
+		//Ambiente berechnen aus allen Lichtquellen
+
+		for (std::vector<Light_source>::const_iterator it = s.lights.begin(); it != s.lights.end(); ++it)
+		{
+			s.ambient.r += (*it).get_ambiente().r;
+			s.ambient.g += (*it).get_ambiente().g;
+			s.ambient.b += (*it).get_ambiente().b;
 		}
 
 
