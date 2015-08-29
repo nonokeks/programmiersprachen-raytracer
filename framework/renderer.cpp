@@ -102,9 +102,9 @@ Optional_hit Renderer::intersect(Ray const& ray) const{
   
   for (std::vector<std::shared_ptr <Shape>>::const_iterator it = scene_.shapes.begin(); it != scene_.shapes.end(); ++it)
   {
-    std::shared_ptr <Shape> s_ptr = *it;
+    //std::shared_ptr <Shape> s_ptr = *it;
     //Shape s = *s_ptr;
-    o.hit = s_ptr->intersect(ray, distance, o.intersection, o.normal);
+    o.hit = (*it)->intersect(ray, distance, o.intersection, o.normal);
     dis.push_back(distance);
     distance = 0;
   }
@@ -117,7 +117,7 @@ Optional_hit Renderer::intersect(Ray const& ray) const{
   distance = 0;
   o.shape->intersect(ray, distance, o.intersection, o.normal);
  
-  //if(o.hit) std::cout << o.shape->get_material()<< " ";
+  if(o.hit) std::cout << o.shape->get_name()<< " ";
  
   return o;
 }
@@ -219,15 +219,15 @@ Color Renderer::shade(Ray const& ray, Optional_hit const& o, int depth){
     if(glm::dot(o.normal, sRay.direction) > 0){
       // Wieviel Licht wird von opaken und transparenten Flächen blockiert?
       Optional_hit shadow= intersect(sRay);
+      float shading = glm::dot(o.normal, glm::normalize((*l).get_position()-o.intersection) );
       
-      if (shadow.hit)
+      if (!shadow.hit)
       {
-        Material temp_mat_shadow = scene_.material[shadow.shape->get_material()];
-        float light_blocked = temp_mat_shadow.get_opacity();
-        color +=  (*l).get_diffuse() * ((temp_mat.get_kd() *  light_blocked));
+        color +=  (*l).get_diffuse() * (( temp_mat.get_kd() * shading) + temp_mat.get_ks());
       }
       else{
-        color +=  (*l).get_diffuse() * ((temp_mat.get_kd() + temp_mat.get_ks()));
+        //Wenn im Schatten überhaupt farbe?
+        color +=  (*l).get_diffuse() * (( temp_mat.get_kd() * shading));
       }
       
       
@@ -242,11 +242,11 @@ Color Renderer::shade(Ray const& ray, Optional_hit const& o, int depth){
       rRay = reflect_ray(o.intersection, o.normal, o.intersection);
       rColor = raytrace(rRay, depth + 1);
       rColor *= temp_mat.get_m();
-      rColor *= temp_mat.get_ks();
+      //rColor *= temp_mat.get_ks();
       color += rColor; 
     } 
     /*
-    if (temp_mat.get_opacity() != 1)//Objekt transparent
+    if (temp_mat.get_opacity() != 0)//Objekt transparent
     {
       //Ray in Brechungsrichtung
       tRay = Ray (o.intersection, (o.intersection + o.intersection * temp_mat.get_opacity()));
@@ -258,6 +258,8 @@ Color Renderer::shade(Ray const& ray, Optional_hit const& o, int depth){
     }
   }*/
 
+  //ambiente Beleuchtung
+  //color += temp_mat.get_ka() * scene_.ambient;
 
   return color;
 }
