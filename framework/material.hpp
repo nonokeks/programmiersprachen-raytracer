@@ -32,7 +32,7 @@ private:
 	Color ka_;
 	Color kd_;
 	Color ks_;
-	float m_;
+	float m_; // Spiegel
 
 	float refract_; //Brechungindex
 	float opacity_; //Transparenz

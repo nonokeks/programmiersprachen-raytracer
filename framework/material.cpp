@@ -17,7 +17,7 @@ Material::Material(std::string name, Color const& ka, Color const& kd,
 	kd_{kd},
 	ks_{ks},
 	m_{m},
-	refract_{refract}
+	refract_{refract},
 	opacity_{opacity}{}
 
 Material::~Material(){}
