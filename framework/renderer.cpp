@@ -117,15 +117,19 @@ Optional_hit Renderer::intersect(Ray const& ray) const{
   distance = 0;
   o.shape->intersect(ray, distance, o.intersection, o.normal);
  
-  if(o.hit) std::cout << o.shape->get_material()<< " ";
+  //if(o.hit) std::cout << o.shape->get_material()<< " ";
  
   return o;
 }
 
-Color Renderer::raytrace(Ray const& ray){
+Color Renderer::raytrace(Ray const& ray, int depth){
   Optional_hit o = intersect(ray);
   //reflect, wieder intersect, shade, usw hier rein?
-  if(o.hit) return shade(ray, o);
+  /*test
+  std::string name = o.shape->get_material();
+  Material temp_mat = scene_.material[name];
+  if (o.hit) return temp_mat.get_kd();*/
+  if(o.hit) return shade(ray, o, depth);
   else return scene_.ambient;
 }
 
@@ -202,6 +206,62 @@ Color Renderer::shade(Ray const& ray, Optional_hit const& o){ //braucht man noch
 
 }
 
+Color Renderer::shade(Ray const& ray, Optional_hit const& o, int depth){
+  Color color; /* Farbe des Strahls */
+  Ray rRay, tRay, sRay; /* Reflexions-, Brechungs- und Schattenstrahlen */
+  Color rColor, tColor; /* Farbe des reflektierten und gebrochenen Strahls */
+  Material temp_mat = scene_.material[o.shape->get_material()]; // Material des geschnittenen Shapes
+
+  for (std::vector<Light_source>::const_iterator l = scene_.lights.begin(); l != scene_.lights.end(); ++l)
+  {
+    sRay = Ray(o.intersection, glm::normalize((*l).get_position()));
+    //Teste ob Skalarprodukt von Normalen und sRay.direction positiv ist
+    if(glm::dot(o.normal, sRay.direction) > 0){
+      // Wieviel Licht wird von opaken und transparenten Flächen blockiert?
+      Optional_hit shadow= intersect(sRay);
+      
+      if (shadow.hit)
+      {
+        Material temp_mat_shadow = scene_.material[shadow.shape->get_material()];
+        float light_blocked = temp_mat_shadow.get_opacity();
+        color +=  (*l).get_diffuse() * ((temp_mat.get_kd() *  light_blocked));
+      }
+      else{
+        color +=  (*l).get_diffuse() * ((temp_mat.get_kd() + temp_mat.get_ks()));
+      }
+      
+      
+    }
+  }
+  /*
+  if (depth <= 3)//3 = Max depth,
+  {
+    if (temp_mat.get_m() != 0)//Objekt reflektiert
+    {
+      //Reflektionsray mit Reflektionsrichtung (ist der Einfallsvektor = Schnittpunkt?)
+      rRay = reflect_ray(o.intersection, o.normal, o.intersection);
+      rColor = raytrace(rRay, depth + 1);
+      rColor *= temp_mat.get_m();
+      rColor *= temp_mat.get_ks();
+      color += rColor; 
+    } 
+    /*
+    if (temp_mat.get_opacity() != 1)//Objekt transparent
+    {
+      //Ray in Brechungsrichtung
+      tRay = Ray (o.intersection, (o.intersection + o.intersection * temp_mat.get_opacity()));
+      if(temp_mat.get_m() != 1)
+        tColor = raytrace(tRay, depth + 1);
+        tColor *= temp_mat.get_opacity();
+        color += tColor;
+
+    }
+  }*/
+
+
+  return color;
+}
+
 
 //ungefähres Prozedere? was ist mit den Methoden vom Bernstein?
 void Renderer::render_scene(std::string filename){
@@ -243,7 +303,7 @@ void Renderer::render_scene(std::string filename){
   //Farbe für jeden Pixel berechnen
   for (std::vector<Ray>::iterator i = rays.begin(); i < rays.end(); ++i)
   {
-    Color temp = raytrace(*i);
+    Color temp = raytrace(*i,1);
     //std::cout << " :: " ;
     (*j).color = temp;
     write(*j);
@@ -257,8 +317,7 @@ void Renderer::render_scene(std::string filename){
 //warum haben wir render und render_scene?
 
 
-Ray Renderer::reflect_ray(glm::vec3 const& intersection, glm::vec3 & normale, glm::vec3 const& rayDirection) const{
-  normale = glm::normalize(normale);
+Ray Renderer::reflect_ray(glm::vec3 const& intersection, glm::vec3 const& normale, glm::vec3 const& rayDirection) const{
 	glm::vec3 spiegel{0.0f, 0.0f, 0.0f}; //neuer Ray direction kommt hier rein, origin ist intersection
 	spiegel.x = (2*normale.x*normale.x*rayDirection.x + 2*normale.x*normale.y*rayDirection.y + 2*normale.x*normale.z*rayDirection.z - rayDirection.x);
 	spiegel.y = (2*normale.x*normale.y*rayDirection.x + 2*normale.x*normale.y*rayDirection.y + 2*normale.y*normale.z*rayDirection.z - rayDirection.y);

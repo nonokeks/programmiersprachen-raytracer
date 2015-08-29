@@ -46,10 +46,11 @@ public:
 
   Optional_hit intersect(Ray const& ray) const;
 
-  Color raytrace(Ray const& ray);
+  Color raytrace(Ray const& ray, int depth);
   void render_scene(std::string filename); 
-  Ray reflect_ray(glm::vec3 const& intersection, glm::vec3 & normale, glm::vec3 const& rayDirection) const;
-  Color shade(Ray const& ray, Optional_hit const& o) ;
+  Ray reflect_ray(glm::vec3 const& intersection, glm::vec3 const& normale, glm::vec3 const& rayDirection) const;
+  Color shade(Ray const& ray, Optional_hit const& o);
+  Color shade(Ray const& ray, Optional_hit const& o, int depth);
 
 private:
   unsigned width_;
