@@ -35,7 +35,7 @@ glm::vec3 const& Cone::get_height() const {
 }
 
 /*glm::vec3 const& Cone::get_center2() const {
-	//Berechnung Spitze
+	//Berechnung der Spitze
 	
 }*/
 

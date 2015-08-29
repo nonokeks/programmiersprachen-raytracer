@@ -42,15 +42,15 @@ glm::vec3 const& Cylinder::get_height() const {
 bool Cylinder::intersect(Ray const& ray, float& distance, glm::vec3& intersection, glm::vec3& normal)const{
 	/*To intersect a ray with a cylinder with caps:
 
-intersect with the infinite cylinder;
+-intersect with the infinite cylinder;
 
-check if the intersection is between the planes;
+-check if the intersection is between the planes;
 
-intersect with each plane;
+-intersect with each plane;
 
-determine if the intersections are inside caps;
+-determine if the intersections are inside caps;
 
-out of all intersections choose the on with minimal t */
+-out of all intersections choose the on with minimal t */
 }
 
 std::ostream& Cylinder::print(std::ostream& os) const{

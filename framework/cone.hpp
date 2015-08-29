@@ -24,7 +24,7 @@ public:
 	float const& get_radius() const;
 	float const& get_height() const;
 	
-	//glm::vec3 const& get_center2() const;
+	//glm::vec3 const& get_center2() const; //Spitze
 	
 	bool intersect(Ray const& ray, float& distance, glm::vec3& intersection, glm::vec3& normal)const;
 
