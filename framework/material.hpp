@@ -8,7 +8,9 @@ class Material
 {
 public:
 	Material();
-	Material(std::string name, Color const& ka, Color const& kd, Color const& ks, float m);
+	Material(std::string name, Color const& ka, Color const& kd,
+			 Color const& ks, float m, float refract, 
+			 float opacity);
 	~Material();
 //getter
 	std::string const& get_name()const;
@@ -16,9 +18,12 @@ public:
 	Color const& get_kd() const;
 	Color const& get_ks() const;
 	float get_m() const;
+	float get_refract() const; 
+	float get_opacity() const; 
 
 //operator<<
-	friend std::ostream& operator<<(std::ostream& os, Material const& mat);
+	friend std::ostream& operator<<(std::ostream& os, 
+		Material const& mat);
 
 
 
@@ -28,6 +33,9 @@ private:
 	Color kd_;
 	Color ks_;
 	float m_;
+
+	float refract_; //Brechungindex
+	float opacity_; //Transparenz
 
 
 

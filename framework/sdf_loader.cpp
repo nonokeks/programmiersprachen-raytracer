@@ -151,48 +151,55 @@ Scene Sdf_loader::load_scene(std::string file) const{
 		 		{
 		 			float r,g,b;
 		 			datei >> name;
+		 			//nur wenn matname eindeutig
+		 			if(s.material.find(name) == s.material.end()){
+		 				//ka
+			 			datei >> word;
+			 			sstr << word << ' ';
+			 			datei >> word;
+			 			sstr << word << ' ';
+			 			datei >> word;
+			 			sstr << word;
+			 			sstr >> r >> g >> b;
+			 			Color ka(r,g,b);
+			 			sstr.clear();
+			 			
+			 			//kd
+			 			datei >> word;
+			 			sstr << word << ' ';
+			 			datei >> word;
+			 			sstr << word << ' ';
+			 			datei >> word;
+			 			sstr << word;
+			 			sstr >> r >> g >> b;
+			 			Color kd(r,g,b);
+			 			sstr.clear();
 
-		 			//ka
-		 			datei >> word;
-		 			sstr << word << ' ';
-		 			datei >> word;
-		 			sstr << word << ' ';
-		 			datei >> word;
-		 			sstr << word;
-		 			sstr >> r >> g >> b;
-		 			Color ka(r,g,b);
-		 			sstr.clear();
+			 			//ks
+			 			datei >> word;
+			 			sstr << word << ' ';
+			 			datei >> word;
+			 			sstr << word << ' ';
+			 			datei >> word;
+			 			sstr << word;
+			 			sstr >> r >> g >> b;
+			 			Color ks(r,g,b);
+			 			sstr.clear();
+
+			 			float m, r, o;
+			 			datei >> word;
+			 			sstr << word << ' ';
+			 			datei >> word;
+			 			sstr << word << ' ';
+			 			datei >> word;
+			 			sstr << word;
+			 			sstr >> m, r, o;
+			 			sstr.clear();
+
+			 			Material mat{name, ka, kd, ks, m, r, o};
+					    s.material[name] = mat;
+		 			}
 		 			
-		 			//kd
-		 			datei >> word;
-		 			sstr << word << ' ';
-		 			datei >> word;
-		 			sstr << word << ' ';
-		 			datei >> word;
-		 			sstr << word;
-		 			sstr >> r >> g >> b;
-		 			Color kd(r,g,b);
-		 			sstr.clear();
-
-		 			//ks
-		 			datei >> word;
-		 			sstr << word << ' ';
-		 			datei >> word;
-		 			sstr << word << ' ';
-		 			datei >> word;
-		 			sstr << word;
-		 			sstr >> r >> g >> b;
-		 			Color ks(r,g,b);
-		 			sstr.clear();
-
-		 			float m;
-		 			datei >> word;
-		 			sstr << word;
-		 			sstr >> m;
-		 			sstr.clear();
-
-		 			Material mat{name, ka, kd, ks, m};
-				    s.material[name] = mat;
 
 
 		 		}

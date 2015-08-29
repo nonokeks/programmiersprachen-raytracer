@@ -10,12 +10,15 @@ Material::Material():
 	ks_{0.0, 0.0, 0.0},
 	m_{0.0f}{}
 
-Material::Material(std::string name, Color const& ka, Color const& kd, Color const& ks, float m):
+Material::Material(std::string name, Color const& ka, Color const& kd, 
+	Color const& ks, float m, float refract, float opacity):
 	name_{name},
 	ka_{ka},
 	kd_{kd},
 	ks_{ks},
-	m_{m}{}
+	m_{m},
+	refract_{refract}
+	opacity_{opacity}{}
 
 Material::~Material(){}
 //getter
@@ -33,6 +36,12 @@ Color const& Material::get_ks() const{
 }
 float Material::get_m() const{
 	return m_;
+}
+float Material::get_refract() const{
+	return refract_;
+}
+float Material::get_opacity() const{
+	return opacity_;
 }
 
 //operator<<
