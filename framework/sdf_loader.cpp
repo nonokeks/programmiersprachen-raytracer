@@ -154,6 +154,7 @@ Scene Sdf_loader::load_scene(std::string file) const{
 		 			//nur wenn matname eindeutig
 		 			if(s.material.find(name) == s.material.end()){
 		 				//ka
+		 				sstr.clear();
 			 			datei >> word;
 			 			sstr << word << ' ';
 			 			datei >> word;
@@ -186,17 +187,17 @@ Scene Sdf_loader::load_scene(std::string file) const{
 			 			Color ks(r,g,b);
 			 			sstr.clear();
 
-			 			float m, r, o;
+			 			float m, re, o;
 			 			datei >> word;
 			 			sstr << word << ' ';
 			 			datei >> word;
 			 			sstr << word << ' ';
 			 			datei >> word;
 			 			sstr << word;
-			 			sstr >> m, r, o;
+			 			sstr >> m >> re >> o;
 			 			sstr.clear();
 
-			 			Material mat{name, ka, kd, ks, m, r, o};
+			 			Material mat{name, ka, kd, ks, m, re, o};
 					    s.material[name] = mat;
 		 			}
 		 			
