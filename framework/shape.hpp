@@ -41,7 +41,10 @@ public:
 		return material_;
 	}*/
 	
-	bool solveQuadratic(const float &a, const float &b, const float &c, float &x0, float &x1){ //abc Formel, x0, x1 geben t0,t1 Auftreffpunkte
+	
+	
+	//Ausgangsgleichung: ax^2 + bx + c = 0
+	bool solveQuadratic(const float &a, const float &b, const float &c, float &x0, float &x1){ //x0, x1 geben t0,t1 Auftreffpunkte
 		float discr = b * b - 4 * a * c;
 		if (discr < 0){
 			return false;
