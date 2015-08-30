@@ -101,39 +101,45 @@ bool Box::intersect(Ray const& ray, float& distance, glm::vec3& intersection, gl
     //normale
     
     //Ein Wert des Intersectionpoint muss mit min oder max übereinstimmen
-
+    
     if (min_.x == intersection.x)
     {
         //vorne
-        normal = normale_box(min_, intersection, glm::vec3(min_.x, max_.y, max_.z) );
+        //normal = normale_box(min_, intersection, glm::vec3(min_.x, max_.y, max_.z) );
+        normal = normale_box(glm::vec3(min_.x, max_.y, max_.z));
     }
     else if (max_.x == intersection.x)
     {
         //hinten
-        normal = normale_box(max_, intersection, glm::vec3(max_.x, min_.y, min_.z) );
+        //normal = normale_box(max_, intersection, glm::vec3(max_.x, min_.y, min_.z) );
+        normal = normale_box(glm::vec3(max_.x, min_.y, min_.z));
     }
     else if (min_.y == intersection.y)
     {
         //links
-        normal = normale_box(min_, intersection, glm::vec3(max_.x, min_.y, max_.z) );
+        //normal = normale_box(min_, intersection, glm::vec3(max_.x, min_.y, max_.z) );
+        normal = normale_box(glm::vec3(max_.x, min_.y, max_.z));
     }
     else if (max_.y == intersection.y)
     {
         //rechts
-        normal = normale_box(max_, intersection, glm::vec3(min_.x, max_.y, min_.z) );
+        //normal = normale_box(max_, intersection, glm::vec3(min_.x, max_.y, min_.z) );
+        normal = normale_box(glm::vec3(min_.x, max_.y, min_.z) );
     }
     else if (min_.z == intersection.z)
     {
         //unten
-        normal = normale_box(min_, intersection, glm::vec3(max_.x, max_.y, min_.z) );
+        //normal = normale_box(min_, intersection, glm::vec3(max_.x, max_.y, min_.z) );
+        normal = normale_box(glm::vec3(max_.x, max_.y, min_.z));
     }
     else if (max_.z == intersection.z)
     {
         //oben
-        normal = normale_box(max_, intersection, glm::vec3(min_.x, min_.y, max_.z) );
+        //normal = normale_box(max_, intersection, glm::vec3(min_.x, min_.y, max_.z) );
+        normal = normale_box(glm::vec3(min_.x, min_.y, max_.z));
     }
     
-    //normal = normale_box(intersection);
+    
 
     //ende neu
     if (tmax > std::max(0.0, tmin)) {
@@ -163,32 +169,43 @@ glm::vec3 Box::normale_box(glm::vec3 const& p1, glm::vec3 const& p2, glm::vec3 c
         normale.y = (((p2.z-p1.z) * (p3.x-p1.x)) - ((p2.x-p1.x) * (p3.z-p1.z)));
         normale.z = (((p2.x-p1.x) * (p3.y-p1.y)) - ((p2.y-p1.y) * (p3.x-p1.x)));
     }
-    /*
-    if (max_.x < origin.x)
-    {
-        normale.x = 1; 
-    }
-    else{
-        normale.x = -1;
-    }
-
-    if (max_.y < origin.y)
-    {
-        normale.y = 1; 
-    }
-    else{
-        normale.y = -1;
-    }
-
-    if (max_.z < origin.z)
-    {
-        normale.z = 1; 
-    }
-    else{
-        normale.z = -1;
-    }*/
+    
 
     normale = glm::normalize(normale);
     return normale;
 
+}
+
+glm::vec3 Box::normale_box(glm::vec3 const& v)const{
+    glm::vec3 normale(0.0,0.0,0.0);
+
+    
+    if (max_.x - v.x > 0)
+    {
+        normale.x = 1; 
+    }
+    else if (max_.x - v.x < 0)
+    {
+        normale.x = -1;
+    }
+
+    if (max_.y - v.y > 0)
+    {
+        normale.y = 1; 
+    }
+    else if (max_.y - v.y < 0)
+    {
+        normale.y = -1;
+    }
+
+    if (max_.z - v.z > 0)
+    {
+        normale.z = 1; 
+    }
+    else if (max_.z - v.z < 0)
+    {
+        normale.z = -1;
+    }
+
+    return normale;
 }

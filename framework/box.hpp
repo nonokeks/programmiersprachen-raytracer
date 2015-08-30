@@ -31,6 +31,7 @@ public:
 	bool intersect(Ray const& ray, float& distance) const;
 	bool intersect(Ray const& ray, float& distance, glm::vec3& intersection, glm::vec3& normal) const;
 	glm::vec3 normale_box(glm::vec3 const& p1, glm::vec3 const& p2, glm::vec3 const& p3)const;
+	glm::vec3 normale_box(glm::vec3 const& v)const;
 
 private:
 	glm::vec3 min_;
