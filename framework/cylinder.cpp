@@ -61,7 +61,7 @@ bool Cylinder::intersect(Ray const& ray, float& distance, glm::vec3& intersectio
 	//-check if the intersection is between the planes;
 	
 	vec3 q1 = p + v*x1
-	if (x1 > 0 && (glm::dot(v_a, (q1 - center))) > 0){
+	if (x1 > 0 && (glm::dot(v_a, (q1 - center))) > 0){ //ist && das richtige?? beides muss true sein
 		possibleT[0] = x1;
 	}
 	
