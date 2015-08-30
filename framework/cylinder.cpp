@@ -30,27 +30,58 @@ glm::vec3 const& Cylinder::get_radius() const {
 	return radius_;
 }
 
-glm::vec3 const& Cylinder::get_height() const {
-	return height_;
-}
 
-/*glm::vec3 const& Cylinder::get_center2() const {
-	//Berechnung center des oberen Kreises
-}*/
+glm::vec3 const& Cylinder::get_center2() const {
+	return center2_;
+}
 
 
 bool Cylinder::intersect(Ray const& ray, float& distance, glm::vec3& intersection, glm::vec3& normal)const{
-	/*To intersect a ray with a cylinder with caps:
+	//To intersect a ray with a cylinder with caps:
 
--intersect with the infinite cylinder;
+	//-intersect with the infinite cylinder;
+	//Gerade durch Mitte des Zylinders: p_a + v_a * t, p_a = Stützvektor = center unten, v_a = Richtungsvektor = center oben-center unten
+	glm::vec3 p_a = center;
+	glm::vec3 v_a = center2 - center;
+	
+	glm::vec3 p = ray.origin;
+	glm::vec3 v = ray.direction;
+	
+	float a = (v-((glm::dot(v,v_a))*v_a))*(v-((glm::dot(v,v_a))*v_a));
+	float b = 2*((v-(glm::dot(v,v_a))*(glm::dot(v_a,(p-p_a))))-((glm::dot((p-p_a),v_a))*v_a));
+	float c = ((p-p_a)-(glm::dot((p-p_a),v_a))*v_a)* ((p-p_a)-(glm::dot((p-p_a),v_a))*v_a)- (radius*radius);
+	
+	float possibleT[4];
+	
+	float x1;
+	float x2;
+	
+	bool lsg = solveQuadratic(a, b, c, x1, x2);
+	
+	//-check if the intersection is between the planes;
+	
+	vec3 q1 = p + v*x1
+	if (x1 > 0 && (glm::dot(v_a, (q1 - center))) > 0){
+		possibleT[0] = x1;
+	}
+	
+	vec3 q2 = p + v*x2
+	if (x2 > 0 && (glm::dot(v_a, (q2 - center2))) > 0){
+		possibleT[1] = x2;
+	}
 
--check if the intersection is between the planes;
+	//-intersect with each plane;
 
--intersect with each plane;
+	//-determine if the intersections are inside caps;
 
--determine if the intersections are inside caps;
-
--out of all intersections choose the on with minimal t */
+	//-out of all intersections choose the on with minimal t
+	float t = possibleT[0];
+	for (int i = 1; i < 4; i++){
+		if(possibleT[i] < t){
+			t = possibleT[i]
+		}
+	}
+	//true oder false zurückgeben
 }
 
 std::ostream& Cylinder::print(std::ostream& os) const{

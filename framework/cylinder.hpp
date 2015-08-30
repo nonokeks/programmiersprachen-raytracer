@@ -20,11 +20,10 @@ public:
 	//Cylinder(glm::vec3 const& center, float radius, float height, std::string name, Material const& mat);
 	//Cylinder(glm::vec3 const& center, gfloat radius, float height, std::string name, std::string name_mat, Color const& ka, Color const& kd, Color const& ks, float m);
 
-	glm::vec3 const& get_center() const;
+	glm::vec3 const& get_center() const; //Basis Mittelpunkt
+	glm::vec3 const& get_center2() const; //oberer Mittelpunkt
 	float const& get_radius() const;
-	float const& get_height() const;
 	
-	//glm::vec3 const& get_center2() const; //oberer Mittelpunkt
 	
 	
 	bool intersect(Ray const& ray, float& distance, glm::vec3& intersection, glm::vec3& normal)const;
@@ -33,8 +32,9 @@ public:
 
 private:
 	glm::vec3 center_;
+	glm::vec3 center2_;
 	float radius_;
-	float height_;
+	
 };
 
 #endif // #ifndef BUW_CYLINDER_HPP
