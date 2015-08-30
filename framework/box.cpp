@@ -99,6 +99,7 @@ bool Box::intersect(Ray const& ray, float& distance, glm::vec3& intersection, gl
   
 
     //normale
+    
     //Ein Wert des Intersectionpoint muss mit min oder max übereinstimmen
 
     if (min_.x == intersection.x)
@@ -131,8 +132,8 @@ bool Box::intersect(Ray const& ray, float& distance, glm::vec3& intersection, gl
         //oben
         normal = normale_box(max_, intersection, glm::vec3(min_.x, min_.y, max_.z) );
     }
-
-
+    
+    //normal = normale_box(intersection);
 
     //ende neu
     if (tmax > std::max(0.0, tmin)) {
@@ -144,6 +145,8 @@ bool Box::intersect(Ray const& ray, float& distance, glm::vec3& intersection, gl
 
 glm::vec3 Box::normale_box(glm::vec3 const& p1, glm::vec3 const& p2, glm::vec3 const& p3)const{
     glm::vec3 normale(0.0,0.0,0.0);
+
+    
     // überprüfen ob Ebene möglich
     float rx = (p3.x-p1.x)/(p2.x-p1.x);
     float ry = (p3.y-p1.y)/(p2.y-p1.y);
@@ -160,6 +163,31 @@ glm::vec3 Box::normale_box(glm::vec3 const& p1, glm::vec3 const& p2, glm::vec3 c
         normale.y = (((p2.z-p1.z) * (p3.x-p1.x)) - ((p2.x-p1.x) * (p3.z-p1.z)));
         normale.z = (((p2.x-p1.x) * (p3.y-p1.y)) - ((p2.y-p1.y) * (p3.x-p1.x)));
     }
+    /*
+    if (max_.x < origin.x)
+    {
+        normale.x = 1; 
+    }
+    else{
+        normale.x = -1;
+    }
+
+    if (max_.y < origin.y)
+    {
+        normale.y = 1; 
+    }
+    else{
+        normale.y = -1;
+    }
+
+    if (max_.z < origin.z)
+    {
+        normale.z = 1; 
+    }
+    else{
+        normale.z = -1;
+    }*/
+
     normale = glm::normalize(normale);
     return normale;
 
