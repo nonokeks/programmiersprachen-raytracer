@@ -2,6 +2,7 @@
 #define RAY_HPP
 
 #include <glm/vec3.hpp>
+#include <iostream>
 
 struct Ray {
 
@@ -26,6 +27,12 @@ struct Ray {
 
     ~Ray(){}
 
+    friend std::ostream& operator<<(std::ostream& os, Ray const& ray)
+    {
+        os << "(" << ray.origin.x << "," << ray.origin.y << "," << ray.origin.z << ")";
+        os << " (" << ray.direction.x << "," << ray.direction.y << "," << ray.direction.z << ")\n";
+        return os;
+    }
 };
 
 #endif
