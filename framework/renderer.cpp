@@ -96,28 +96,53 @@ void Renderer::write(Pixel const& p)
 
 Optional_hit Renderer::intersect(Ray const& ray) const{
   Optional_hit o;
-  std::vector<float> dis;
-  float distance;
-  
+  Optional_hit temp;
+  std::vector<float> hits;  
   
   for (std::vector<std::shared_ptr <Shape>>::const_iterator it = scene_.shapes.begin(); it != scene_.shapes.end(); ++it)
   {
+    /*
     //std::shared_ptr <Shape> s_ptr = *it;
     //Shape s = *s_ptr;
-    o.hit = (*it)->intersect(ray, distance, o.intersection, o.normal);
-    dis.push_back(distance);
-    distance = 0;
-  }
+    o.hit = (*it)->intersect(ray, o.distance, o.intersection, o.normal);
+    hits.push_back(o.distance);
+    //dis.push_back(o.distance);
+    o.distance = 0;*/
 
+    if (it == scene_.shapes.begin() || !o.hit)
+    {
+      o.hit = (*it)->intersect(ray, o.distance, o.intersection, o.normal);
+      o.shape = &**it;
+    }
+    else
+    {
+      temp.hit = (*it)->intersect(ray, temp.distance, temp.intersection, temp.normal);
+      temp.shape = &**it;
+      if(o.distance > temp.distance && temp.distance > 0)
+      {
+        o = temp;
+      }
+    }
+
+  }
+  /*
   //suche geringste distance und passendes Shape dazu
-  int min_pos = std::distance(dis.begin(), std::min_element(dis.begin(), dis.end()));
+  std::replace(hits.begin(), hits.end(), 0.0f, *(std::max_element(hits.begin(), hits.end()))+1);
+  int min_pos = std::distance(hits.begin(), std::min_element(hits.begin(), hits.end()));
   o.shape = &*scene_.shapes[min_pos];
-  o.distance = *std::min_element(dis.begin(), dis.end());
+
+  //o.distance = *std::min_element(dis.begin(), dis.end());
   //sichergehen das intersection + normal richtig ist
-  distance = 0;
-  o.shape->intersect(ray, distance, o.intersection, o.normal);
- 
-  if(o.hit) std::cout << o.shape->get_name()<< " ";
+  o.hit = o.shape->intersect(ray, o.distance, o.intersection, o.normal);
+
+  
+ /*
+  if(o.hit){
+    std::cout << "("<< o.normal.x << "," <<o.normal.y << "," <<o.normal.z << ") ";
+    std::cout << "("<< o.intersection.x << "," <<o.intersection.y << "," <<o.intersection.z << ")\n ";
+  }*/
+
+  std::cout << o.shape->get_name() << std::endl;
  
   return o;
 }
@@ -133,11 +158,9 @@ Color Renderer::raytrace(Ray const& ray, int depth){
   else return scene_.ambient;
 }
 
-Color Renderer::shade(Ray const& ray, Optional_hit const& o){ //braucht man noch color und recursion depth statt distance? wenn ja woher?
+Color Renderer::shade(Ray const& ray, Optional_hit const& o, int depth){ //braucht man noch color und recursion depth statt distance? wenn ja woher?
 	
-  //Light_source l{"licht", {0,0,0}, {1.0,1.0,1.0}, {0.4,0.4,0.4}}; 
-  //Schleife für alle lights?
-  Light_source light = scene_.lights[0];
+  
   Material temp_mat = scene_.material[o.shape->get_material()]; // faild?
 
   //std::cout << o.shape->get_material()<< " ";
@@ -155,6 +178,7 @@ Color Renderer::shade(Ray const& ray, Optional_hit const& o){ //braucht man noch
     //Lichtintensität (Skalarprodukt, wird dann mit Reflexionskoeffizient und Helligkeit der Lichtquelle multipliziert)
     //oder Winkel zwischen Normale und Lichtquelle 
     float tmp = glm::dot(o.normal, glm::normalize((*l).get_position()-o.intersection) );
+    float angle_n_l = std::max(tmp, 0.0f);
 
     float temp_r = 0, temp_g = 0, temp_b = 0;
 
@@ -178,21 +202,21 @@ Color Renderer::shade(Ray const& ray, Optional_hit const& o){ //braucht man noch
       
       Ray reflection_ray = reflect_ray(o.intersection, o.normal, (*l).get_position());
 
-      temp_r = temp_mat.get_ks().r; //* pow(reflection, ke);
-      temp_g = temp_mat.get_ks().g; //* pow(reflection, ke);
-      temp_b = temp_mat.get_ks().b; //* pow(reflection, ke);
+      temp_r = temp_mat.get_ks().r; //* pow(reflection, m);
+      temp_g = temp_mat.get_ks().g; //* pow(reflection, m);
+      temp_b = temp_mat.get_ks().b; //* pow(reflection, m);
       */
 
-      r += (*l).get_diffuse().r * (tmp * temp_mat.get_kd().r + temp_mat.get_ks().r);
-      g += (*l).get_diffuse().g * (tmp * temp_mat.get_kd().g + temp_mat.get_ks().g);
-      b += (*l).get_diffuse().b * (tmp * temp_mat.get_kd().b + temp_mat.get_ks().b);
+      r += (*l).get_diffuse().r * (angle_n_l * temp_mat.get_kd().r + temp_mat.get_ks().r);
+      g += (*l).get_diffuse().g * (angle_n_l * temp_mat.get_kd().g + temp_mat.get_ks().g);
+      b += (*l).get_diffuse().b * (angle_n_l * temp_mat.get_kd().b + temp_mat.get_ks().b);
 
     }
     else{
       //Wenn im Schatten werden die Werde berechnet, sonst 0 ( Operator shadow.hit ? 1 : 0)
-      r += temp_mat.get_kd().r * (*l).get_diffuse().r * tmp;
-      g += temp_mat.get_kd().g * (*l).get_diffuse().g * tmp;
-      b += temp_mat.get_kd().b * (*l).get_diffuse().b * tmp;
+      r += temp_mat.get_kd().r * (*l).get_diffuse().r * angle_n_l;
+      g += temp_mat.get_kd().g * (*l).get_diffuse().g * angle_n_l;
+      b += temp_mat.get_kd().b * (*l).get_diffuse().b * angle_n_l;
     }
   
   }
@@ -206,10 +230,11 @@ Color Renderer::shade(Ray const& ray, Optional_hit const& o){ //braucht man noch
 
 }
 
+/*
 Color Renderer::shade(Ray const& ray, Optional_hit const& o, int depth){
-  Color color; /* Farbe des Strahls */
-  Ray rRay, tRay, sRay; /* Reflexions-, Brechungs- und Schattenstrahlen */
-  Color rColor, tColor; /* Farbe des reflektierten und gebrochenen Strahls */
+  Color color; // Farbe des Strahls 
+  Ray rRay, tRay, sRay; // Reflexions-, Brechungs- und Schattenstrahlen 
+  Color rColor, tColor; // Farbe des reflektierten und gebrochenen Strahls 
   Material temp_mat = scene_.material[o.shape->get_material()]; // Material des geschnittenen Shapes
 
   for (std::vector<Light_source>::const_iterator l = scene_.lights.begin(); l != scene_.lights.end(); ++l)
@@ -220,14 +245,15 @@ Color Renderer::shade(Ray const& ray, Optional_hit const& o, int depth){
       // Wieviel Licht wird von opaken und transparenten Flächen blockiert?
       Optional_hit shadow= intersect(sRay);
       float shading = glm::dot(o.normal, glm::normalize((*l).get_position()-o.intersection) );
+      float shading_pos = std::max(shading, 0.0f);
       
       if (!shadow.hit)
       {
-        color +=  (*l).get_diffuse() * (( temp_mat.get_kd() * shading) + temp_mat.get_ks());
+        color +=  (*l).get_diffuse() * (( temp_mat.get_kd() * shading_pos) + temp_mat.get_ks());
       }
       else{
         //Wenn im Schatten überhaupt farbe?
-        color +=  (*l).get_diffuse() * (( temp_mat.get_kd() * shading));
+        color +=  (*l).get_diffuse() * (( temp_mat.get_kd() * shading_pos));
       }
       
       
@@ -256,13 +282,13 @@ Color Renderer::shade(Ray const& ray, Optional_hit const& o, int depth){
         color += tColor;
 
     }
-  }*/
+  }
 
   //ambiente Beleuchtung
   //color += temp_mat.get_ka() * scene_.ambient;
 
   return color;
-}
+}*/
 
 
 //ungefähres Prozedere? was ist mit den Methoden vom Bernstein?
@@ -306,8 +332,8 @@ void Renderer::render_scene(std::string filename){
   for (std::vector<Ray>::iterator i = rays.begin(); i < rays.end(); ++i)
   {
     Color temp = raytrace(*i,1);
-    //std::cout << " :: " ;
     (*j).color = temp;
+    //std::cout << temp;
     write(*j);
     ++j;
   }
