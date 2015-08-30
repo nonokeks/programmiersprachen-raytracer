@@ -5,6 +5,7 @@
 #include "color.hpp"
 #include "ray.hpp"
 #include "material.hpp"
+#include <math.h>
 
 class Shape
 {
