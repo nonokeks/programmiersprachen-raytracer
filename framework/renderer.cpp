@@ -101,13 +101,6 @@ Optional_hit Renderer::intersect(Ray const& ray) const{
   
   for (std::vector<std::shared_ptr <Shape>>::const_iterator it = scene_.shapes.begin(); it != scene_.shapes.end(); ++it)
   {
-    /*
-    //std::shared_ptr <Shape> s_ptr = *it;
-    //Shape s = *s_ptr;
-    o.hit = (*it)->intersect(ray, o.distance, o.intersection, o.normal);
-    hits.push_back(o.distance);
-    //dis.push_back(o.distance);
-    o.distance = 0;*/
 
     if (it == scene_.shapes.begin() || !o.hit)
     {
@@ -125,46 +118,25 @@ Optional_hit Renderer::intersect(Ray const& ray) const{
     }
 
   }
-  /*
-  //suche geringste distance und passendes Shape dazu
-  std::replace(hits.begin(), hits.end(), 0.0f, *(std::max_element(hits.begin(), hits.end()))+1);
-  int min_pos = std::distance(hits.begin(), std::min_element(hits.begin(), hits.end()));
-  o.shape = &*scene_.shapes[min_pos];
-
-  //o.distance = *std::min_element(dis.begin(), dis.end());
-  //sichergehen das intersection + normal richtig ist
-  o.hit = o.shape->intersect(ray, o.distance, o.intersection, o.normal);
-
+ 
   
- /*
-  if(o.hit){
-    std::cout << "("<< o.normal.x << "," <<o.normal.y << "," <<o.normal.z << ") ";
-    std::cout << "("<< o.intersection.x << "," <<o.intersection.y << "," <<o.intersection.z << ")\n ";
-  }*/
-
-  std::cout << o.shape->get_name() << std::endl;
+  //std::cout << o.shape->get_name() << std::endl;
  
   return o;
 }
 
 Color Renderer::raytrace(Ray const& ray, int depth){
   Optional_hit o = intersect(ray);
-  //reflect, wieder intersect, shade, usw hier rein?
-  /*test
-  std::string name = o.shape->get_material();
-  Material temp_mat = scene_.material[name];
-  if (o.hit) return temp_mat.get_kd();*/
+  
   if(o.hit) return shade(ray, o, depth);
   else return scene_.ambient;
 }
 
+/*
 Color Renderer::shade(Ray const& ray, Optional_hit const& o, int depth){ //braucht man noch color und recursion depth statt distance? wenn ja woher?
 	
   
-  Material temp_mat = scene_.material[o.shape->get_material()]; // faild?
-
-  //std::cout << o.shape->get_material()<< " ";
-  //std::cout << temp_mat.get_name()<< "- ";
+  Material temp_mat = scene_.material[o.shape->get_material()]; 
 
   float r = 0, g = 0, b = 0;
   float red = 0, green = 0, blue = 0;
@@ -205,7 +177,7 @@ Color Renderer::shade(Ray const& ray, Optional_hit const& o, int depth){ //brauc
       temp_r = temp_mat.get_ks().r; //* pow(reflection, m);
       temp_g = temp_mat.get_ks().g; //* pow(reflection, m);
       temp_b = temp_mat.get_ks().b; //* pow(reflection, m);
-      */
+      //......
 
       r += (*l).get_diffuse().r * (angle_n_l * temp_mat.get_kd().r + temp_mat.get_ks().r);
       g += (*l).get_diffuse().g * (angle_n_l * temp_mat.get_kd().g + temp_mat.get_ks().g);
@@ -228,9 +200,9 @@ Color Renderer::shade(Ray const& ray, Optional_hit const& o, int depth){ //brauc
 
   return Color(red, green, blue);
 
-}
+}*/
 
-/*
+
 Color Renderer::shade(Ray const& ray, Optional_hit const& o, int depth){
   Color color; // Farbe des Strahls 
   Ray rRay, tRay, sRay; // Reflexions-, Brechungs- und Schattenstrahlen 
@@ -252,14 +224,14 @@ Color Renderer::shade(Ray const& ray, Optional_hit const& o, int depth){
         color +=  (*l).get_diffuse() * (( temp_mat.get_kd() * shading_pos) + temp_mat.get_ks());
       }
       else{
-        //Wenn im Schatten überhaupt farbe?
+        //Wenn im Schatten 
         color +=  (*l).get_diffuse() * (( temp_mat.get_kd() * shading_pos));
       }
       
       
     }
   }
-  /*
+  
   if (depth <= 3)//3 = Max depth,
   {
     if (temp_mat.get_m() != 0)//Objekt reflektiert
@@ -281,14 +253,14 @@ Color Renderer::shade(Ray const& ray, Optional_hit const& o, int depth){
         tColor *= temp_mat.get_opacity();
         color += tColor;
 
-    }
+    }*/
   }
 
   //ambiente Beleuchtung
-  //color += temp_mat.get_ka() * scene_.ambient;
+  color += temp_mat.get_ka() * scene_.ambient;
 
   return color;
-}*/
+}
 
 
 //ungefähres Prozedere? was ist mit den Methoden vom Bernstein?
