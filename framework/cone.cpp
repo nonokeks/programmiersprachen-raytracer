@@ -60,6 +60,15 @@ bool Cone::intersect(Ray const& ray, float& distance, glm::vec3& intersection, g
 	solveQuadratic(a, b, c, x1, x2);
 	
 	//schauen ob die intersection zwischen Spitze und Basis ist
+	glm::vec3 q1 = p + v*x1
+	if (//Bedingung?? gleiche wie bei cylinder?){
+		possibleT[0] = x1;
+	}
+	
+	glm::vec3 q2 = p + v*x2
+	if (){
+		possibleT[1] = x2;
+	}
 	
 	//unten
 	v_a = glm::normalize(v_a);
