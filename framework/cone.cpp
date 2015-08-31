@@ -45,7 +45,7 @@ bool Cone::intersect(Ray const& ray, float& distance, glm::vec3& intersection, g
 	glm::vec3 v = ray.direction;
 	
 	float height = glm::length(v_a);
-	float beta = atan(height/radius) * PI/180; //Winkel an der Fläche
+	float beta = atan(height/radius); //Winkel an der Fläche
 	float alpha = PI/2 - beta; //Winkel an der Spitze = zwischen Gerade und einer Seite
 	
 	float a = cos(alpha) * cos(alpha) * (v - glm::dot(v, v_a) * v_a) * (v - glm::dot(v, v_a) * v_a) - sin(alpha) * sin(alpha) * (glm::dot(v, v_a)) * (glm::dot(v, v_a));
