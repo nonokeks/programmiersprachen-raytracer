@@ -111,6 +111,7 @@ bool Cylinder::intersect(Ray const& ray, float& distance, glm::vec3& intersectio
 		intersection = p + v*t;
 		
 		if(t == x1 || t == x2){
+			//Lotfußpunktberechnung
 			glm::vec3 b = intersection - p_a;
 			float r = (glm::dot(b, v_a))/glm::length(v_a);
 			glm::vec3 f = p_a + (r/glm::length(v_a))*v_a;
