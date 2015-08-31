@@ -15,10 +15,10 @@ public:
 	Cone(glm::vec3 const& center, float radius, glm::vec3 const& center2);
 	Cone(std::string name, glm::vec3 const& center, float radius, glm::vec3 const& center2, std::string material);
 	
-	//Cone(glm::vec3 const& center, float radius, float height, std::string name, Color const& color);
+	//Cone(glm::vec3 const& center, float radius, glm::vec3 const& center2, std::string name, Color const& color);
 	//~Cone();
-	//Cone(glm::vec3 const& center, float radius, float height, std::string name, Material const& mat);
-	//Cone(glm::vec3 const& center, gfloat radius, float height, std::string name, std::string name_mat, Color const& ka, Color const& kd, Color const& ks, float m);
+	//Cone(glm::vec3 const& center, float radius, glm::vec3 const& center2, std::string name, Material const& mat);
+	//Cone(glm::vec3 const& center, float radius, glm::vec3 const& center2, std::string name, std::string name_mat, Color const& ka, Color const& kd, Color const& ks, float m);
 
 	glm::vec3 const& get_center() const;
 	float const& get_radius() const;

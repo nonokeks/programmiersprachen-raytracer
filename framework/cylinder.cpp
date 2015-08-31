@@ -70,7 +70,7 @@ bool Cylinder::intersect(Ray const& ray, float& distance, glm::vec3& intersectio
 	}
 
 	//-intersect with each plane;
-	//-determine if the intersections are inside caps;
+	
 	v_a = glm::normalize(v_a);
 	v_a2 = glm::normalize(center_ - center2_)
 	glm::vec3 c = glm::normalize(center_);
@@ -84,17 +84,19 @@ bool Cylinder::intersect(Ray const& ray, float& distance, glm::vec3& intersectio
 	intersectDisk(v_a, c, radius, origin, direction, x3);
 	intersectDisk(v_a2, c2, radius, origin, direction, x4);
 	
-	vec3 q3 = p + v*x3
+	//-determine if the intersections are inside caps;  wird eigentlich schon in intersectdisk geprüft, soll man x3/x4 einfach so in possible t setzen?
+	glm::vec3 q3 = p + v*x3
 	if (x3 > 0 && (((q3 - center_)*(q3 - center_)) < r*r)){ 
 		possibleT[2] = x3;
 	}
 	
-	vec3 q4 = p + v*x4
+	glm::vec3 q4 = p + v*x4
 	if (x4 > 0 && (((q4 - center2_)*(q4 - center2_)) < r*r)){
 		possibleT[3] = x4;
 	}
 
 	//-out of all intersections choose the on with minimal t
+	// geht bestimmt kürzer
 	float t = possibleT[0];
 	for (int i = 1; i < 4; i++){
 		if (t == 0 && possibleT[i] > 0){
@@ -108,13 +110,12 @@ bool Cylinder::intersect(Ray const& ray, float& distance, glm::vec3& intersectio
 	if (t > 0){
 		intersection = p + v*t;
 		
-		if(t == x1){
-			//??
+		if(t == x1 || t == x2){
+			glm::vec3 b = intersection - p_a;
+			float r = (glm::dot(b, v_a))/glm::length(v_a);
+			glm::vec3 f = p_a + (r/glm::length(v_a))*v_a;
+			normal = intersection - f;
 		}		
-		
-		else if(t == x2){
-			//??
-		}	
 		
 		else if(t == x3){
 		normal = v_a;

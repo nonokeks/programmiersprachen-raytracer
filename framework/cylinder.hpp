@@ -15,10 +15,10 @@ public:
 	Cylinder(glm::vec3 const& center, float radius, glm::vec3 const& center2);
 	Cylinder(std::string name, glm::vec3 const& center, float radius, glm::vec3 const& center2, std::string material);
 	
-	//Cylinder(glm::vec3 const& center, float radius, float height, std::string name, Color const& color);
+	//Cylinder(glm::vec3 const& center, float radius, glm::vec3 const& center2, std::string name, Color const& color);
 	//~Cylinder();
-	//Cylinder(glm::vec3 const& center, float radius, float height, std::string name, Material const& mat);
-	//Cylinder(glm::vec3 const& center, gfloat radius, float height, std::string name, std::string name_mat, Color const& ka, Color const& kd, Color const& ks, float m);
+	//Cylinder(glm::vec3 const& center, float radius, glm::vec3 const& center2, std::string name, Material const& mat);
+	//Cylinder(glm::vec3 const& center, gfloat radius, glm::vec3 const& center2, std::string name, std::string name_mat, Color const& ka, Color const& kd, Color const& ks, float m);
 
 	glm::vec3 const& get_center() const; //Basis Mittelpunkt
 	glm::vec3 const& get_center2() const; //oberer Mittelpunkt
