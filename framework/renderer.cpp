@@ -234,7 +234,7 @@ Color Renderer::shade(Ray const& ray, Optional_hit const& o, int depth){
   
   if (depth <= 3)//3 = Max depth,
   {
-    if (temp_mat.get_m() != 0)//Objekt reflektiert
+    if (temp_mat.get_m() != 0)//Objekt reflektiert(spiegelt)
     {
       //Reflektionsray mit Reflektionsrichtung (ist der Einfallsvektor = Schnittpunkt?)
       rRay = reflect_ray(o.intersection, o.normal, o.intersection);
@@ -244,10 +244,10 @@ Color Renderer::shade(Ray const& ray, Optional_hit const& o, int depth){
       color += rColor; 
     } 
     /*
-    if (temp_mat.get_opacity() != 0)//Objekt transparent
+    if (temp_mat.get_opacity() != 0)//Objekt transparent(mit Refraktion)
     {
       //Ray in Brechungsrichtung
-      tRay = Ray (o.intersection, (o.intersection + o.intersection * temp_mat.get_opacity()));
+      tRay = Ray (o.intersection, (o.intersection + o.intersection * temp_mat.get_refract()));
       if(temp_mat.get_m() != 1)
         tColor = raytrace(tRay, depth + 1);
         tColor *= temp_mat.get_opacity();
@@ -263,7 +263,6 @@ Color Renderer::shade(Ray const& ray, Optional_hit const& o, int depth){
 }
 
 
-//ungefähres Prozedere? was ist mit den Methoden vom Bernstein?
 void Renderer::render_scene(std::string filename){
 
   //Scene wird geladen
@@ -279,15 +278,11 @@ void Renderer::render_scene(std::string filename){
   PpmWriter ppm(width_, height_);
   ppm_ = ppm;
 
-  //for(std::map<std::string, Material>::const_iterator it = scene_.material.begin(); it != scene_.material.end(); ++it){
-  //  std::cout << it->second << std::endl;
-  //}
-
   //Rays für das Bild gernerieren
   std::vector<Ray> rays;
   scene_.cam.generate_rays(width_, height_, rays);
-  //std::cout << rays.size() << std::endl;
-  
+
+  //Pixel für die Rays generieren
   std::vector<Pixel> pixel;
   for (unsigned i = 0; i < height_; ++i)
   {
@@ -314,7 +309,6 @@ void Renderer::render_scene(std::string filename){
   
 }
 
-//warum haben wir render und render_scene?
 
 
 Ray Renderer::reflect_ray(glm::vec3 const& intersection, glm::vec3 const& normale, glm::vec3 const& rayDirection) const{
