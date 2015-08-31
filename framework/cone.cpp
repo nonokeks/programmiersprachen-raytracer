@@ -92,6 +92,7 @@ bool Cone::intersect(Ray const& ray, float& distance, glm::vec3& intersection, g
 	
 	if (t > 0){
 		intersection = p + v*t;
+		distance = glm::length(intersection);
 		
 		if(t == x1 || t == x2){
 			glm::vec3 b = intersection - p_a;
