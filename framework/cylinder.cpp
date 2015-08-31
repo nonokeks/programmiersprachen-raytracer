@@ -26,19 +26,22 @@ glm::vec3 const& Cylinder::get_center() const {
 	return center_;
 }
 
-glm::vec3 const& Cylinder::get_radius() const {
+float const& Cylinder::get_radius() const {
 	return radius_;
 }
-
 
 glm::vec3 const& Cylinder::get_center2() const {
 	return center2_;
 }
 
+float const& Cylinder::get_height() const{
+	return height_;
+}
+
 
 bool Cylinder::intersect(Ray const& ray, float& distance, glm::vec3& intersection, glm::vec3& normal)const{
 	//To intersect a ray with a cylinder with caps:
-
+	/*
 	//-intersect with the infinite cylinder;
 	//Gerade durch Mitte des Zylinders: p_a + v_a * t, p_a = Stützvektor = center unten, v_a = Richtungsvektor = center oben-center unten
 	glm::vec3 p_a = center;
@@ -81,13 +84,16 @@ bool Cylinder::intersect(Ray const& ray, float& distance, glm::vec3& intersectio
 			t = possibleT[i]
 		}
 	}
-	//true oder false zurückgeben
+	//true oder false zurückgeben*/
+
 }
 
 std::ostream& Cylinder::print(std::ostream& os) const{
 	Shape::print(os);
 	//os << "Name: " << get_name() << ", Color: " << get_color().r << " " << get_color().g << " " << get_color().b << "\n";
-	os << "Mittelpunkt Basis: " << center_ << "," << "Radius: " << radius_ << "," << "Höhe: " << height_ /*<< "," << "oberer Mittelpunkt: " << get_center2()*/;
+	os << "Mittelpunkt Basis: " << center_.x << " " << center_.y << " ";
+	os << center_.z << "," << "Radius: " << radius_ << "," << "Hoehe: ";
+	os << height_; /*<< "," << "oberer Mittelpunkt: " << get_center2()*/;
 
 	return os;
 }

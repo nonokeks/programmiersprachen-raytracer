@@ -26,11 +26,11 @@ glm::vec3 const& Cone::get_center() const {
 	return center_;
 }
 
-glm::vec3 const& Cone::get_radius() const {
+float const& Cone::get_radius() const {
 	return radius_;
 }
 
-glm::vec3 const& Cone::get_height() const {
+float const& Cone::get_height() const {
 	return height_;
 }
 
@@ -48,7 +48,9 @@ bool Cone::intersect(Ray const& ray, float& distance, glm::vec3& intersection, g
 std::ostream& Cone::print(std::ostream& os) const{
 	Shape::print(os);
 	//os << "Name: " << get_name() << ", Color: " << get_color().r << " " << get_color().g << " " << get_color().b << "\n";
-	os << "Mittelpunkt: " << center_ << "," << "Radius: " << radius_ << "," << "Höhe: " << height_ /*<< "," << "Spitze: " << get_center2()*/;
+	os << "Mittelpunkt Basis: " << center_.x << " " << center_.y << " ";
+	os << center_.z << "," << "Radius: " << radius_ << "," << "Höhe: ";
+	os << height_ /*<< "," << "Spitze: " << get_center2()*/;
 
 	return os;
 }

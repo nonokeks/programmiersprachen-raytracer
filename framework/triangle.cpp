@@ -37,8 +37,8 @@ glm::vec3 const& Triangle::get_c() const {
 
 bool Triangle::intersect(Ray const& ray, float& distance, glm::vec3& intersection, glm::vec3& normal)const{
 	normal = glm::normalize(glm::cross(a_ - b_, a_ - c_)); //Cross = Kreuzprodukt
-	if(glm::dot(hit.normal, ray.direction) > 0) {
-		normal = -normal;
+	if(glm::dot(normal, ray.direction) > 0) {
+		normal *= -1;
 	}
 	
 	glm::vec3 direct = glm::normalize(ray.direction);
@@ -49,7 +49,9 @@ bool Triangle::intersect(Ray const& ray, float& distance, glm::vec3& intersectio
 std::ostream& Triangle::print(std::ostream& os) const{
 	Shape::print(os);
 	//os << "Name: " << get_name() << ", Color: " << get_color().r << " " << get_color().g << " " << get_color().b << "\n";
-	os << "Punkt A: " << a_ << "," << "Punkt B: " << b_ << "," << "Punkt C: " << c_;
+	os << "Punkt A: " << a_.x << " " << a_.y << " " << a_.z << ",";
+	os << "Punkt B: " << b_.x << " " << b_.y << " " << b_.z << ",";
+	os << "Punkt C: " << c_.x << " " << c_.y << " " << c_.z;
 
 	return os;
 }

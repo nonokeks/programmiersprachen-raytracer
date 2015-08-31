@@ -23,6 +23,7 @@ public:
 	glm::vec3 const& get_center() const; //Basis Mittelpunkt
 	glm::vec3 const& get_center2() const; //oberer Mittelpunkt
 	float const& get_radius() const;
+	float const& get_height() const;
 	
 	
 	
@@ -34,6 +35,7 @@ private:
 	glm::vec3 center_;
 	glm::vec3 center2_;
 	float radius_;
+	float height_;
 	
 };
 
