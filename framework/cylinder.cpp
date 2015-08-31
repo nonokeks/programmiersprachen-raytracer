@@ -10,15 +10,15 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/intersect.hpp>
 
-Cylinder::Cylinder(): Shape{}, center_{0.0f, 0.0f, 0.0f}, radius_{0.0f}, height_{0.0f}{}
-Cylinder::Cylinder(glm::vec3 const& center, float radius, float height): Shape{}, center_{center}, radius_{radius}, height_{height}{}
-Cylinder::Cylinder(std::string name, glm::vec3 const& center, float radius, float height, std::string material) : Shape{name, material}, center_{center}, radius_{radius}, height_{height}{}
+Cylinder::Cylinder(): Shape{}, center_{0.0f, 0.0f, 0.0f}, radius_{0.0f}, center2_{0.0f, 0.0f, 0.0f}{}
+Cylinder::Cylinder(glm::vec3 const& center, float radius, glm::vec3 const& center2): Shape{}, center_{center}, radius_{radius}, center2_{center2}{}
+Cylinder::Cylinder(std::string name, glm::vec3 const& center, float radius, glm::vec3 const& center2, std::string material) : Shape{name, material}, center_{center}, radius_{radius}, center2_{center2}{}
 
-//Cylinder::Cylinder(glm::vec3 const& center, float radius, float height, std::string name, Color const& color):Shape{name, color}, center_{center}, radius_{radius}, height_{height}{}
+//Cylinder::Cylinder(glm::vec3 const& center, float radius, glm::vec3 const& center2, std::string name, Color const& color):Shape{name, color}, center_{center}, radius_{radius}, center2_{center2}{}
 //Cylinder::~Cylinder(){std::cout << "Cylinder Destructor" << std::endl;}
 
-/*Cylinder::Cylinder(glm::vec3 const& center, float radius, float height, std::string name, Material const& mat): Shape{name, mat}, center_{center}, radius_{radius}, height_{height}{}
-Cylinder::Cylinder(glm::vec3 const& center, float radius, float height, std::string name, std::string name_mat, Color const& ka, Color const& kd, Color const& ks, float m): Shape{name, name_mat, ka, kd, ks, m}, center_{center}, radius_{radius}, height_{height}{}*/
+/*Cylinder::Cylinder(glm::vec3 const& center, float radius, glm::vec3 const& center2, std::string name, Material const& mat): Shape{name, mat}, center_{center}, radius_{radius}, center2_{center2}{}
+Cylinder::Cylinder(glm::vec3 const& center, float radius, glm::vec3 const& center2, std::string name, std::string name_mat, Color const& ka, Color const& kd, Color const& ks, float m): Shape{name, name_mat, ka, kd, ks, m}, center_{center}, radius_{radius}, center2_{center2}{}*/
 
 
 
@@ -34,18 +34,14 @@ glm::vec3 const& Cylinder::get_center2() const {
 	return center2_;
 }
 
-float const& Cylinder::get_height() const{
-	return height_;
-}
-
 
 bool Cylinder::intersect(Ray const& ray, float& distance, glm::vec3& intersection, glm::vec3& normal)const{
 	//To intersect a ray with a cylinder with caps:
-	/*
+	
 	//-intersect with the infinite cylinder;
 	//Gerade durch Mitte des Zylinders: p_a + v_a * t, p_a = Stützvektor = center unten, v_a = Richtungsvektor = center oben-center unten
-	glm::vec3 p_a = center;
-	glm::vec3 v_a = center2 - center;
+	glm::vec3 p_a = center_;
+	glm::vec3 v_a = center2_ - center_;
 	
 	glm::vec3 p = ray.origin;
 	glm::vec3 v = ray.direction;
@@ -64,12 +60,12 @@ bool Cylinder::intersect(Ray const& ray, float& distance, glm::vec3& intersectio
 	//-check if the intersection is between the planes;
 	
 	vec3 q1 = p + v*x1
-	if (x1 > 0 && (glm::dot(v_a, (q1 - center))) > 0){ //ist && das richtige?? beides muss true sein
+	if (x1 > 0 && (glm::dot(v_a, (q1 - center_))) > 0){ //ist && das richtige?? beides muss true sein
 		possibleT[0] = x1;
 	}
 	
 	vec3 q2 = p + v*x2
-	if (x2 > 0 && (glm::dot(v_a, (q2 - center2))) > 0){
+	if (x2 > 0 && (glm::dot(v_a, (q2 - center2_))) > 0){
 		possibleT[1] = x2;
 	}
 
@@ -84,7 +80,14 @@ bool Cylinder::intersect(Ray const& ray, float& distance, glm::vec3& intersectio
 			t = possibleT[i]
 		}
 	}
-	//true oder false zurückgeben*/
+	
+	if (t > 0){
+		return true;
+	}
+	
+	else {
+		return false;
+	}
 
 }
 
@@ -92,8 +95,8 @@ std::ostream& Cylinder::print(std::ostream& os) const{
 	Shape::print(os);
 	//os << "Name: " << get_name() << ", Color: " << get_color().r << " " << get_color().g << " " << get_color().b << "\n";
 	os << "Mittelpunkt Basis: " << center_.x << " " << center_.y << " ";
-	os << center_.z << "," << "Radius: " << radius_ << "," << "Hoehe: ";
-	os << height_; /*<< "," << "oberer Mittelpunkt: " << get_center2()*/;
+	os << center_.z << "," << "Radius: " << radius_ << "," << "oberer Mittelpunkt: ";
+	os << center2_;
 
 	return os;
 }
