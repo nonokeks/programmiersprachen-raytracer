@@ -13,6 +13,7 @@
 #include "box.hpp"
 #include "sphere.hpp"
 #include "renderer_data.hpp"
+#include "triangle.hpp"
 #include <map>
 using namespace std;
 
@@ -309,6 +310,46 @@ Scene Sdf_loader::load_scene(std::string file) const{
 
 			 			std::shared_ptr<Shape> sph(new Sphere(name, center, r, word));
 			 			s.shapes.push_back(sph);
+		 			}
+		 			else if (word.compare("triangle") == 0)//Shapes (Sphere)
+			 		{
+			 			datei >> name;
+			 			float x,y,z;
+			 			
+			 			datei >> word;
+			 			sstr << word << ' ';
+			 			datei >> word;
+			 			sstr << word << ' ';
+			 			datei >> word;
+			 			sstr << word;
+			 			sstr >> x >> y >> z;
+			 			glm::vec3 a(x,y,z);
+			 			sstr.clear();
+
+			 			datei >> word;
+			 			sstr << word << ' ';
+			 			datei >> word;
+			 			sstr << word << ' ';
+			 			datei >> word;
+			 			sstr << word;
+			 			sstr >> x >> y >> z;
+			 			glm::vec3 b(x,y,z);
+			 			sstr.clear();
+
+			 			datei >> word;
+			 			sstr << word << ' ';
+			 			datei >> word;
+			 			sstr << word << ' ';
+			 			datei >> word;
+			 			sstr << word;
+			 			sstr >> x >> y >> z;
+			 			glm::vec3 c(x,y,z);
+			 			sstr.clear();
+			 			
+			 			datei >> word;//Materialname
+
+			 			std::shared_ptr<Shape> tri(new Triangle(name, a, b, c, word));
+			 			s.shapes.push_back(tri);
 		 			}
 	 			}
 	 			else{
