@@ -1,6 +1,7 @@
 #ifndef BUW_SHAPE_HPP
 #define BUW_SHAPE_HPP
 #include <iostream>
+#include <stdio.h>
 #include <string>
 #include "color.hpp"
 #include "ray.hpp"
@@ -66,6 +67,29 @@ public:
 		}
 		return true;
 	}
+	
+	bool intersectPlane(const Vec3 &normal, const Vec3 &center, const Vec3 &origin, const Vec3 &direction, float &x){
+		//alle Vektoren müssen normalisiert sein!
+		float denom = dotProduct(normal, direction);
+		if (denom > 1e-6) { //1e-6 = 0.000001, denom geht gegen 0 wenn plane und ray parallel sind
+		Vec3 p = center - origin;
+		x = dotProduct(p, normal) / denom;
+		return (x >= 0);
+		}
+
+		return false;
+	} 
+	
+	bool intersectDisk(const Vec3 &normal, const Vec3f &center, const float &radius, const Vec3f &origin, const Vec3 &direction, float &x){
+		if (intersectPlane(normal, center, origin, direction, x)) {
+			Vec3 p = origin + direction * x;
+			Vec3 v = p - center;
+			float d2 = dot(v, v);
+			return (d2 <= (radius*radius));
+		}
+
+		return false;
+	} 
 
 	friend std::ostream& operator<<(std::ostream& os, Shape const& s){
 		return s.print(os);

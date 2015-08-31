@@ -55,7 +55,7 @@ bool Cylinder::intersect(Ray const& ray, float& distance, glm::vec3& intersectio
 	float x1;
 	float x2;
 	
-	bool lsg = solveQuadratic(a, b, c, x1, x2);
+	solveQuadratic(a, b, c, x1, x2);
 	
 	//-check if the intersection is between the planes;
 	
@@ -70,25 +70,66 @@ bool Cylinder::intersect(Ray const& ray, float& distance, glm::vec3& intersectio
 	}
 
 	//-intersect with each plane;
-
 	//-determine if the intersections are inside caps;
+	v_a = glm::normalize(v_a);
+	v_a2 = glm::normalize(center_ - center2_)
+	glm::vec3 c = glm::normalize(center_);
+	glm::vec3 c2 = glm::normalize(center2_);
+	glm::vec3 origin = glm::normalize(ray.origin);
+	glm::vec3 direction = glm::normalize(ray.direction);
+	
+	float x3;
+	float x4;
+	
+	intersectDisk(v_a, c, radius, origin, direction, x3);
+	intersectDisk(v_a2, c2, radius, origin, direction, x4);
+	
+	vec3 q3 = p + v*x3
+	if (x3 > 0 && (((q3 - center_)*(q3 - center_)) < r*r)){ 
+		possibleT[2] = x3;
+	}
+	
+	vec3 q4 = p + v*x4
+	if (x4 > 0 && (((q4 - center2_)*(q4 - center2_)) < r*r)){
+		possibleT[3] = x4;
+	}
 
 	//-out of all intersections choose the on with minimal t
 	float t = possibleT[0];
 	for (int i = 1; i < 4; i++){
-		if(possibleT[i] < t){
+		if (t == 0 && possibleT[i] > 0){
+			t = possibleT[i]
+		}
+		else if(possibleT[i] < t && possibleT[i] > 0){
 			t = possibleT[i]
 		}
 	}
 	
 	if (t > 0){
+		intersection = p + v*t;
+		
+		if(t == x1){
+			//??
+		}		
+		
+		else if(t == x2){
+			//??
+		}	
+		
+		else if(t == x3){
+		normal = v_a;
+		}	
+		
+		else if(t == x1){
+		normal = v_a2;
+		}	
+		
 		return true;
 	}
 	
 	else {
 		return false;
 	}
-
 }
 
 std::ostream& Cylinder::print(std::ostream& os) const{
