@@ -70,6 +70,35 @@ bool Cone::intersect(Ray const& ray, float& distance, glm::vec3& intersection, g
 	float x3;
 	intersectDisk(v_a, c, radius, origin, direction, x3);
 	possibleT[2] = x3;
+	
+	float t = possibleT[0];
+	for (int i = 1; i < 4; i++){
+		if (t == 0 && possibleT[i] > 0){
+			t = possibleT[i]
+		}
+		else if(possibleT[i] < t && possibleT[i] > 0){
+			t = possibleT[i]
+		}
+	}
+	
+	if (t > 0){
+		intersection = p + v*t;
+		
+		if(t == x1 || t == x2){
+			//??
+		}		
+		
+		else if(t == x3){
+		normal = v_a;
+		}	
+
+		return true;
+	}
+	
+	else {
+		return false;
+
+	}
 }
 
 std::ostream& Cone::print(std::ostream& os) const{

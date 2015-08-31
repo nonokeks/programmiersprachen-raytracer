@@ -47,7 +47,7 @@ bool Cylinder::intersect(Ray const& ray, float& distance, glm::vec3& intersectio
 	glm::vec3 v = ray.direction;
 	
 	float a = (v-((glm::dot(v,v_a))*v_a))*(v-((glm::dot(v,v_a))*v_a));
-	float b = 2*((v-(glm::dot(v,v_a))*(glm::dot(v_a,(p-p_a))))-((glm::dot((p-p_a),v_a))*v_a));
+	float b = 2*((v-(glm::dot(v,v_a))*(glm::dot(v_a,(p-p_a))))-((glm::dot((p-p_a),v_a))*v_a)); //vielleicht Fehler bei der Reihenfolge der Skalarprodukte?
 	float c = ((p-p_a)-(glm::dot((p-p_a),v_a))*v_a)* ((p-p_a)-(glm::dot((p-p_a),v_a))*v_a)- (radius*radius);
 	
 	float possibleT[4];
