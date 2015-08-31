@@ -9,6 +9,7 @@
 #include <glm/vec3.hpp>
 #include <glm/glm.hpp>
 #include <glm/gtx/intersect.hpp>
+#define PI 3.14159265
 
 Cone::Cone(): Shape{}, center_{0.0f, 0.0f, 0.0f}, radius_{0.0f}, center2_{0.0f, 0.0f, 0.0f}{}
 Cone::Cone(glm::vec3 const& center, float radius, glm::vec3 const& center2): Shape{}, center_{center}, radius_{radius}, center2_{center2}{}
@@ -43,15 +44,22 @@ bool Cone::intersect(Ray const& ray, float& distance, glm::vec3& intersection, g
 	glm::vec3 p = ray.origin;
 	glm::vec3 v = ray.direction;
 	
-	float a = ;
-	float b = ;
-	float c = ;
+	float height = glm::length(v_a);
+	float beta = atan(height/radius) * PI/180; //Winkel an der Fläche
+	float alpha = PI/2 - beta; //Winkel an der Spitze = zwischen Gerade und einer Seite
+	
+	float a = cos(alpha) * cos(alpha) * (v - glm::dot(v, v_a) * v_a) * (v - glm::dot(v, v_a) * v_a) - sin(alpha) * sin(alpha) * (glm::dot(v, v_a)) * (glm::dot(v, v_a));
+	float b = 2 * cos(alpha) * cos(alpha) * (v - glm::dot(v, v_a) * (glm::dot(v_a,(p-p_a))) - (glm::dot((p-p_a), v_a)) * v_a) - 2 * sin(alpha) * sin(alpha) * glm::dot(v, v_a) * glm::dot((p-p_a), v_a);
+	float c = cos(alpha) * cos(alpha) * ((p-p_a) - glm::dot((p-p_a), v_a) * v_a) * ((p-p_a) - glm::dot((p-p_a), v_a) * v_a) - sin(alpha) * sin(alpha) * glm::dot((p-p_a), v_a) * glm::dot((p-p_a), v_a);
 	
 	float possibleT[3];
 	
-	
 	float x1;
 	float x2;
+	
+	solveQuadratic(a, b, c, x1, x2);
+	
+	//schauen ob die intersection zwischen Spitze und Basis ist
 	
 	//unten
 	v_a = glm::normalize(v_a);
@@ -61,6 +69,7 @@ bool Cone::intersect(Ray const& ray, float& distance, glm::vec3& intersection, g
 	
 	float x3;
 	intersectDisk(v_a, c, radius, origin, direction, x3);
+	possibleT[2] = x3;
 }
 
 std::ostream& Cone::print(std::ostream& os) const{
