@@ -61,12 +61,12 @@ bool Cone::intersect(Ray const& ray, float& distance, glm::vec3& intersection, g
 	
 	//schauen ob die intersection zwischen Spitze und Basis ist
 	glm::vec3 q1 = p + v*x1
-	if (//Bedingung?? gleiche wie bei cylinder?){
+	if (x1 > 0 && (glm::dot(v_a, (q1 - center_))) > 0 && (glm::dot(v_a, (q1 - center2_))) < 0){
 		possibleT[0] = x1;
 	}
 	
 	glm::vec3 q2 = p + v*x2
-	if (){
+	if (x2 > 0 && (glm::dot(v_a, (q2 - center_))) > 0 && (glm::dot(v_a, (q2 - center2_))){
 		possibleT[1] = x2;
 	}
 	
@@ -94,7 +94,10 @@ bool Cone::intersect(Ray const& ray, float& distance, glm::vec3& intersection, g
 		intersection = p + v*t;
 		
 		if(t == x1 || t == x2){
-			//??
+			glm::vec3 b = intersection - p_a;
+			float r = (glm::dot(b, v_a))/glm::length(v_a);
+			glm::vec3 f = p_a + (r/glm::length(v_a))*v_a;
+			normal = intersection - f;
 		}		
 		
 		else if(t == x3){
