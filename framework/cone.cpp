@@ -36,16 +36,39 @@ glm::vec3 const& Cone::get_center2() const {
 }
 
 bool Cone::intersect(Ray const& ray, float& distance, glm::vec3& intersection, glm::vec3& normal)const{
-	//wohin rayplane, raydisc?
-	//raydisc für unterseite
-	//rest?
+	//Gerade durch Mitte des Kegels: p_a + v_a * t, p_a = Stützvektor = center unten, v_a = Richtungsvektor = center oben-center unten
+	glm::vec3 p_a = center_;
+	glm::vec3 v_a = center2_ - center_;
+	
+	glm::vec3 p = ray.origin;
+	glm::vec3 v = ray.direction;
+	
+	float a = ;
+	float b = ;
+	float c = ;
+	
+	float possibleT[3];
+	
+	
+	float x1;
+	float x2;
+	
+	//unten
+	v_a = glm::normalize(v_a);
+	glm::vec3 c = glm::normalize(center_);
+	glm::vec3 origin = glm::normalize(ray.origin);
+	glm::vec3 direction = glm::normalize(ray.direction);
+	
+	float x3;
+	intersectDisk(v_a, c, radius, origin, direction, x3);
 }
 
 std::ostream& Cone::print(std::ostream& os) const{
 	Shape::print(os);
 	//os << "Name: " << get_name() << ", Color: " << get_color().r << " " << get_color().g << " " << get_color().b << "\n";
 	os << "Mittelpunkt Basis: " << center_.x << " " << center_.y << " ";
-	os << center_.z << "," << "Radius: " << radius_; /*<< "," << "Spitze: " << get_center2()*/;
+	os << center_.z << "," << "Radius: " << radius_; << "," << "Spitze: ";
+	os << center2_.x << " " << center2_.y << " " << center2_.z;
 
 	return os;
 }

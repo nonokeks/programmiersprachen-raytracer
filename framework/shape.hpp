@@ -1,6 +1,7 @@
 #ifndef BUW_SHAPE_HPP
 #define BUW_SHAPE_HPP
 #include <iostream>
+#include <stdio.h>
 #include <string>
 #include "color.hpp"
 #include "ray.hpp"
@@ -66,14 +67,37 @@ public:
 		}
 		return true;
 	}
+	
+	bool intersectPlane(const glm::vec3 &normal, const glm::vec3 &center, const glm::vec3 &origin, const glm::vec3 &direction, float &x){
+		//alle Vektoren müssen normalisiert sein!
+		float denom = dotProduct(normal, direction);
+		if (denom > 1e-6) { //1e-6 = 0.000001, denom geht gegen 0 wenn plane und ray parallel sind
+		glm::vec3 p = center - origin;
+		x = dotProduct(p, normal) / denom;
+		return (x >= 0);
+		}
+
+		return false;
+	} 
+	
+	bool intersectDisk(const glm::vec3 &normal, const glm::vec3f &center, const float &radius, const glm::vec3f &origin, const glm::vec3 &direction, float &x){
+		if (intersectPlane(normal, center, origin, direction, x)) {
+			glm::vec3 p = origin + direction * x;
+			glm::vec3 v = p - center;
+			float d2 = dot(v, v);
+			return (d2 <= (radius*radius));
+		}
+
+		return false;
+	} 
 
 	friend std::ostream& operator<<(std::ostream& os, Shape const& s){
 		return s.print(os);
 	}
 
 	virtual bool intersect(Ray const& ray, float& distance) const = 0;
-	virtual bool intersect(Ray const& ray, float& distance, glm::vec3& intersection,
-	glm::vec3& normal) const = 0;
+	virtual bool intersect(Ray const& ray, float& distance, glm::glm::vec3& intersection,
+	glm::glm::vec3& normal) const = 0;
 
 private:
 	std::string name_;
