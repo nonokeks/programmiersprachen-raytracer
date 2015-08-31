@@ -37,7 +37,7 @@ glm::vec3 const& Cylinder::get_center2() const {
 
 bool Cylinder::intersect(Ray const& ray, float& distance, glm::vec3& intersection, glm::vec3& normal)const{
 	//To intersect a ray with a cylinder with caps:
-	
+	/*
 	//-intersect with the infinite cylinder;
 	//Gerade durch Mitte des Zylinders: p_a + v_a * t, p_a = Stützvektor = center unten, v_a = Richtungsvektor = center oben-center unten
 	glm::vec3 p_a = center_;
@@ -87,7 +87,7 @@ bool Cylinder::intersect(Ray const& ray, float& distance, glm::vec3& intersectio
 	
 	else {
 		return false;
-	}
+	}*/
 
 }
 
