@@ -24,6 +24,7 @@ public:
 	glm::vec3 const& get_b() const;
 	glm::vec3 const& get_c() const;
 	
+	bool intersect(Ray const& ray, float& distance) const;
 	bool intersect(Ray const& ray, float& distance, glm::vec3& intersection, glm::vec3& normal)const;
 
 	/*virtual*/ std::ostream& print(std::ostream& os) const;
