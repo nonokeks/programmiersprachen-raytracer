@@ -57,15 +57,15 @@ bool Cone::intersect(Ray const& ray, float& distance, glm::vec3& intersection, g
 	float x1;
 	float x2;
 	
-	solveQuadratic(a, b, c, x1, x2);
+	Shape::solveQuadratic(a, b, c, x1, x2);
 	
 	//schauen ob die intersection zwischen Spitze und Basis ist
-	glm::vec3 q1 = p + v*x1
+	glm::vec3 q1 = p + v*x1;
 	if (x1 > 0 && (glm::dot(v_a, (q1 - center_))) > 0 && (glm::dot(v_a, (q1 - center2_))) < 0){
 		possibleT[0] = x1;
 	}
 	
-	glm::vec3 q2 = p + v*x2
+	glm::vec3 q2 = p + v*x2;
 	if (x2 > 0 && (glm::dot(v_a, (q2 - center_))) > 0 && (glm::dot(v_a, (q2 - center2_))){
 		possibleT[1] = x2;
 	}
@@ -77,16 +77,16 @@ bool Cone::intersect(Ray const& ray, float& distance, glm::vec3& intersection, g
 	glm::vec3 direction = glm::normalize(ray.direction);
 	
 	float x3;
-	intersectDisk(v_a, cent, radius, origin, direction, x3);
+	Shape::intersectDisk(v_a, cent, radius, origin, direction, x3);
 	possibleT[2] = x3;
 	
 	float t = possibleT[0];
 	for (int i = 1; i < 4; i++){
 		if (t == 0 && possibleT[i] > 0){
-			t = possibleT[i]
+			t = possibleT[i];
 		}
 		else if(possibleT[i] < t && possibleT[i] > 0){
-			t = possibleT[i]
+			t = possibleT[i];
 		}
 	}
 	
