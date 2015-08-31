@@ -7,6 +7,8 @@
 #include "ray.hpp"
 #include "material.hpp"
 #include <math.h>
+#include <glm/vec3.hpp>
+#include <glm/glm.hpp>
 
 class Shape
 {
@@ -46,7 +48,7 @@ public:
 	
 	
 	//Ausgangsgleichung: ax^2 + bx + c = 0
-	bool solveQuadratic(const float &a, const float &b, const float &c, float &x0, float &x1){ //x0, x1 geben t0,t1 Auftreffpunkte
+	bool solveQuadratic(float const &a, float const &b, float const &c, float &x0, float &x1){ //x0, x1 geben t0,t1 Auftreffpunkte
 		float discr = b * b - 4 * a * c;
 		if (discr < 0){
 			return false;
@@ -68,23 +70,23 @@ public:
 		return true;
 	}
 	
-	bool intersectPlane(const glm::vec3 &normal, const glm::vec3 &center, const glm::vec3 &origin, const glm::vec3 &direction, float &x){
+	bool intersectPlane(glm::vec3 const& normal, glm::vec3 const& center, glm::vec3 const& origin, glm::vec3 const& direction, float& x){
 		//alle Vektoren müssen normalisiert sein!
-		float denom = dotProduct(normal, direction);
+		float denom = glm::dot(normal, direction);
 		if (denom > 1e-6) { //1e-6 = 0.000001, denom geht gegen 0 wenn plane und ray parallel sind
-		glm::vec3 p = center - origin;
-		x = dotProduct(p, normal) / denom;
-		return (x >= 0);
+			glm::vec3 p = center - origin;
+			x = glm::dot(p, normal) / denom;
+			return (x >= 0);
 		}
 
 		return false;
 	} 
 	
-	bool intersectDisk(const glm::vec3 &normal, const glm::vec3f &center, const float &radius, const glm::vec3f &origin, const glm::vec3 &direction, float &x){
+	bool intersectDisk(glm::vec3 const& normal, glm::vec3 const& center, float const& radius, glm::vec3 const& origin, glm::vec3 const& direction, float& x){
 		if (intersectPlane(normal, center, origin, direction, x)) {
 			glm::vec3 p = origin + direction * x;
 			glm::vec3 v = p - center;
-			float d2 = dot(v, v);
+			float d2 = glm::dot(v, v);
 			return (d2 <= (radius*radius));
 		}
 

@@ -48,23 +48,23 @@ bool Cylinder::intersect(Ray const& ray, float& distance, glm::vec3& intersectio
 	
 	float a = (v-((glm::dot(v,v_a))*v_a))*(v-((glm::dot(v,v_a))*v_a));
 	float b = 2*((v-(glm::dot(v,v_a))*(glm::dot(v_a,(p-p_a))))-((glm::dot((p-p_a),v_a))*v_a)); //vielleicht Fehler bei der Reihenfolge der Skalarprodukte?
-	float c = ((p-p_a)-(glm::dot((p-p_a),v_a))*v_a)* ((p-p_a)-(glm::dot((p-p_a),v_a))*v_a)- (radius*radius);
+	float c = ((p-p_a)-(glm::dot((p-p_a),v_a))*v_a)* ((p-p_a)-(glm::dot((p-p_a),v_a))*v_a)- (radius_*radius_);
 	
 	float possibleT[4];
 	
 	float x1;
 	float x2;
 	
-	solveQuadratic(a, b, c, x1, x2);
+	Shape::solveQuadratic(a, b, c, x1, x2);
 	
 	//-check if the intersection is between the planes;
 	
-	glm::vec3 q1 = p + v*x1
+	glm::vec3 q1 = p + v*x1;
 	if (x1 > 0 && (glm::dot(v_a, (q1 - center_))) > 0 && (glm::dot(v_a, (q1 - center2_))) < 0){ //ist && das richtige?? beides muss true sein
 		possibleT[0] = x1;
 	}
 	
-	glm::vec3 q2 = p + v*x2
+	glm::vec3 q2 = p + v*x2;
 	if (x2 > 0 && (glm::dot(v_a, (q2 - center_))) > 0 && (glm::dot(v_a, (q2 - center2_))) < 0){
 		possibleT[1] = x2;
 	}
@@ -72,8 +72,8 @@ bool Cylinder::intersect(Ray const& ray, float& distance, glm::vec3& intersectio
 	//-intersect with each plane;
 	
 	v_a = glm::normalize(v_a);
-	v_a2 = glm::normalize(center_ - center2_)
-	glm::vec3 c = glm::normalize(center_);
+	glm::vec3 v_a2 = glm::normalize(center_ - center2_);
+	glm::vec3 cent = glm::normalize(center_);
 	glm::vec3 c2 = glm::normalize(center2_);
 	glm::vec3 origin = glm::normalize(ray.origin);
 	glm::vec3 direction = glm::normalize(ray.direction);
@@ -81,17 +81,17 @@ bool Cylinder::intersect(Ray const& ray, float& distance, glm::vec3& intersectio
 	float x3;
 	float x4;
 	
-	intersectDisk(v_a, c, radius, origin, direction, x3);
-	intersectDisk(v_a2, c2, radius, origin, direction, x4);
+	Shape::intersectDisk(v_a, cent, radius_, origin, direction, x3);
+	Shape::intersectDisk(v_a2, c2, radius_, origin, direction, x4);
 	
 	//-determine if the intersections are inside caps;  wird eigentlich schon in intersectdisk geprüft, soll man x3/x4 einfach so in possible t setzen?
-	glm::vec3 q3 = p + v*x3
-	if (x3 > 0 && (((q3 - center_)*(q3 - center_)) < r*r)){ 
+	glm::vec3 q3 = p + v*x3;
+	if (x3 > 0 && (glm::dot((q3 - center_),(q3 - center_)) < radius_*radius_)){ 
 		possibleT[2] = x3;
 	}
 	
-	glm::vec3 q4 = p + v*x4
-	if (x4 > 0 && (((q4 - center2_)*(q4 - center2_)) < r*r)){
+	glm::vec3 q4 = p + v*x4;
+	if (x4 > 0 && (glm::dot((q4 - center2_),(q4 - center2_)) < radius_*radius_)){
 		possibleT[3] = x4;
 	}
 
@@ -100,10 +100,10 @@ bool Cylinder::intersect(Ray const& ray, float& distance, glm::vec3& intersectio
 	float t = possibleT[0];
 	for (int i = 1; i < 4; i++){
 		if (t == 0 && possibleT[i] > 0){
-			t = possibleT[i]
+			t = possibleT[i];
 		}
 		else if(possibleT[i] < t && possibleT[i] > 0){
-			t = possibleT[i]
+			t = possibleT[i];
 		}
 	}
 	

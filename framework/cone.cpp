@@ -72,12 +72,12 @@ bool Cone::intersect(Ray const& ray, float& distance, glm::vec3& intersection, g
 	
 	//unten
 	v_a = glm::normalize(v_a);
-	glm::vec3 c = glm::normalize(center_);
+	glm::vec3 cent = glm::normalize(center_);
 	glm::vec3 origin = glm::normalize(ray.origin);
 	glm::vec3 direction = glm::normalize(ray.direction);
 	
 	float x3;
-	intersectDisk(v_a, c, radius, origin, direction, x3);
+	intersectDisk(v_a, cent, radius, origin, direction, x3);
 	possibleT[2] = x3;
 	
 	float t = possibleT[0];
