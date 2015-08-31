@@ -46,6 +46,7 @@ bool Triangle::intersect(Ray const& ray, float& distance, glm::vec3& intersectio
 	return glm::intersectLineTriangle(ray.origin, direct, a_, b_, c_, intersection);
 }
 
+/*
 bool Triangle::intersect(Ray const& ray, float& distance) const{
 	glm::vec3 normal = glm::normalize(glm::cross(a_ - b_, a_ - c_)); //Cross = Kreuzprodukt
 	if(glm::dot(normal, ray.direction) > 0) {
@@ -56,7 +57,7 @@ bool Triangle::intersect(Ray const& ray, float& distance) const{
 	glm::vec3 direct = glm::normalize(ray.direction);
 	distance = (glm::dot(a_,normal) - glm::dot(normal,ray.origin)) / glm::dot(direct, normal);
 	return glm::intersectLineTriangle(ray.origin, direct, a_, b_, c_, intersection);
-}
+}*/
 
 std::ostream& Triangle::print(std::ostream& os) const{
 	Shape::print(os);

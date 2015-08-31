@@ -97,7 +97,7 @@ public:
 		return s.print(os);
 	}
 
-	virtual bool intersect(Ray const& ray, float& distance) const = 0;
+	//virtual bool intersect(Ray const& ray, float& distance) const = 0;
 	virtual bool intersect(Ray const& ray, float& distance, glm::glm::vec3& intersection,
 	glm::glm::vec3& normal) const = 0;
 

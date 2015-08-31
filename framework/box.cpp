@@ -47,7 +47,7 @@ std::ostream& Box::print(std::ostream& os) const{
 	os << "Min: " << min_.x << " " << min_.y << " " << min_.z << ", Max: "<< max_.x << " " << max_.y << " " << max_.z;
 	return os;
 }
-
+/*
 bool Box::intersect(Ray const& ray, float& distance) const{
     double a = (get_min().x - ray.origin.x) * ray.inv_direction.x;
     double b = (get_max().x - ray.origin.x) * ray.inv_direction.x;
@@ -69,7 +69,7 @@ bool Box::intersect(Ray const& ray, float& distance) const{
         return true;
     }
     return false;
-}
+}*/
 
 bool Box::intersect(Ray const& ray, float& distance, glm::vec3& intersection, glm::vec3& normal) const{
     double a = (min_.x - ray.origin.x) * ray.inv_direction.x;
