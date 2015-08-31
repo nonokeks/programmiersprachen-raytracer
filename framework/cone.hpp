@@ -12,8 +12,8 @@ class Cone : public Shape
 {
 public:
 	Cone();
-	Cone(glm::vec3 const& center, float radius, float height);
-	Cone(std::string name, glm::vec3 const& center, float radius, float height, std::string material);
+	Cone(glm::vec3 const& center, float radius, glm::vec3 const& center2);
+	Cone(std::string name, glm::vec3 const& center, float radius, glm::vec3 const& center2, std::string material);
 	
 	//Cone(glm::vec3 const& center, float radius, float height, std::string name, Color const& color);
 	//~Cone();

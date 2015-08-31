@@ -45,8 +45,7 @@ std::ostream& Cone::print(std::ostream& os) const{
 	Shape::print(os);
 	//os << "Name: " << get_name() << ", Color: " << get_color().r << " " << get_color().g << " " << get_color().b << "\n";
 	os << "Mittelpunkt Basis: " << center_.x << " " << center_.y << " ";
-	os << center_.z << "," << "Radius: " << radius_ << "," << "Höhe: ";
-	os << height_ /*<< "," << "Spitze: " << get_center2()*/;
+	os << center_.z << "," << "Radius: " << radius_; /*<< "," << "Spitze: " << get_center2()*/;
 
 	return os;
 }
