@@ -96,7 +96,7 @@ std::ostream& Cylinder::print(std::ostream& os) const{
 	//os << "Name: " << get_name() << ", Color: " << get_color().r << " " << get_color().g << " " << get_color().b << "\n";
 	os << "Mittelpunkt Basis: " << center_.x << " " << center_.y << " ";
 	os << center_.z << "," << "Radius: " << radius_ << "," << "oberer Mittelpunkt: ";
-	os << center2_;
+	os << center2_.x << " " << center2_.y << " " << center2_.z;
 
 	return os;
 }
