@@ -10,6 +10,13 @@ public:
 	Composite();
 	Composite(std::string const& name);
 	
+	void add(std::shared_ptr<Shape>& shape);
+	void remove(std::string const& name);
+	
+	std::ostream& print(std::ostream& os) const override;
+	
+	std::map<std::string, std::shared_ptr<Shape>> get_children();
+	
 private:
 	std::map<std::string,std::shared_ptr<Shape>> shapes_;
 };
