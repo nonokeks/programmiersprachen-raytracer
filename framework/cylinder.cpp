@@ -46,9 +46,9 @@ bool Cylinder::intersect(Ray const& ray, float& distance, glm::vec3& intersectio
 	glm::vec3 p = ray.origin;
 	glm::vec3 v = ray.direction;
 	
-	float a = (v-((glm::dot(v,v_a))*v_a))*(v-((glm::dot(v,v_a))*v_a));
-	float b = 2*((v-(glm::dot(v,v_a))*(glm::dot(v_a,(p-p_a))))-((glm::dot((p-p_a),v_a))*v_a)); //vielleicht Fehler bei der Reihenfolge der Skalarprodukte?
-	float c = ((p-p_a)-(glm::dot((p-p_a),v_a))*v_a)* ((p-p_a)-(glm::dot((p-p_a),v_a))*v_a)- (radius_*radius_);
+	float a = glm::dot((v-((glm::dot(v,v_a))*v_a)),(v-((glm::dot(v,v_a))*v_a)));
+	float b = 2* glm::dot((v- glm::dot(v,v_a)*v_a),((p-p_a)-glm::dot((p-p_a),v_a)*v_a));
+	float c = glm::dot(((p-p_a)-(glm::dot((p-p_a),v_a))*v_a),((p-p_a)-(glm::dot((p-p_a),v_a))*v_a))- (radius_*radius_);
 	
 	float possibleT[4];
 	
@@ -97,6 +97,7 @@ bool Cylinder::intersect(Ray const& ray, float& distance, glm::vec3& intersectio
 
 	//-out of all intersections choose the on with minimal t
 	// geht bestimmt kürzer
+
 	float t = possibleT[0];
 	for (int i = 1; i < 4; i++){
 		if (t == 0 && possibleT[i] > 0){
@@ -145,3 +146,4 @@ std::ostream& Cylinder::print(std::ostream& os) const{
 
 	return os;
 }
+

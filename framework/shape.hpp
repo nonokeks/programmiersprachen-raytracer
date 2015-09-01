@@ -48,7 +48,7 @@ public:
 	
 	
 	//Ausgangsgleichung: ax^2 + bx + c = 0
-	bool solveQuadratic(float const &a, float const &b, float const &c, float &x0, float &x1){ //x0, x1 geben t0,t1 Auftreffpunkte
+	bool solveQuadratic(float const &a, float const &b, float const &c, float &x0, float &x1)const{ //x0, x1 geben t0,t1 Auftreffpunkte
 		float discr = b * b - 4 * a * c;
 		if (discr < 0){
 			return false;
@@ -70,7 +70,7 @@ public:
 		return true;
 	}
 	
-	bool intersectPlane(glm::vec3 const& normal, glm::vec3 const& center, glm::vec3 const& origin, glm::vec3 const& direction, float& x){
+	bool intersectPlane(glm::vec3 const& normal, glm::vec3 const& center, glm::vec3 const& origin, glm::vec3 const& direction, float& x)const{
 		//alle Vektoren müssen normalisiert sein!
 		float denom = glm::dot(normal, direction);
 		if (denom > 1e-6) { //1e-6 = 0.000001, denom geht gegen 0 wenn plane und ray parallel sind
@@ -82,7 +82,7 @@ public:
 		return false;
 	} 
 	
-	bool intersectDisk(glm::vec3 const& normal, glm::vec3 const& center, float const& radius, glm::vec3 const& origin, glm::vec3 const& direction, float& x){
+	bool intersectDisk(glm::vec3 const& normal, glm::vec3 const& center, float const& radius, glm::vec3 const& origin, glm::vec3 const& direction, float& x)const{
 		if (intersectPlane(normal, center, origin, direction, x)) {
 			glm::vec3 p = origin + direction * x;
 			glm::vec3 v = p - center;
@@ -98,8 +98,8 @@ public:
 	}
 
 	//virtual bool intersect(Ray const& ray, float& distance) const = 0;
-	virtual bool intersect(Ray const& ray, float& distance, glm::glm::vec3& intersection,
-	glm::glm::vec3& normal) const = 0;
+	virtual bool intersect(Ray const& ray, float& distance, glm::vec3& intersection,
+	glm::vec3& normal) const = 0;
 
 private:
 	std::string name_;

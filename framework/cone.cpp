@@ -45,12 +45,12 @@ bool Cone::intersect(Ray const& ray, float& distance, glm::vec3& intersection, g
 	glm::vec3 v = ray.direction;
 	
 	float height = glm::length(v_a);
-	float beta = atan(height/radius); //Winkel an der Fläche
+	float beta = atan(height/radius_); //Winkel an der Fläche
 	float alpha = PI/2 - beta; //Winkel an der Spitze = zwischen Gerade und einer Seite
 	
-	float a = cos(alpha) * cos(alpha) * (v - glm::dot(v, v_a) * v_a) * (v - glm::dot(v, v_a) * v_a) - sin(alpha) * sin(alpha) * (glm::dot(v, v_a)) * (glm::dot(v, v_a));
-	float b = 2 * cos(alpha) * cos(alpha) * (v - glm::dot(v, v_a) * (glm::dot(v_a,(p-p_a))) - (glm::dot((p-p_a), v_a)) * v_a) - 2 * sin(alpha) * sin(alpha) * glm::dot(v, v_a) * glm::dot((p-p_a), v_a);
-	float c = cos(alpha) * cos(alpha) * ((p-p_a) - glm::dot((p-p_a), v_a) * v_a) * ((p-p_a) - glm::dot((p-p_a), v_a) * v_a) - sin(alpha) * sin(alpha) * glm::dot((p-p_a), v_a) * glm::dot((p-p_a), v_a);
+	float a = cos(alpha) * cos(alpha) * glm::dot((v - glm::dot(v, v_a) * v_a) , (v - glm::dot(v, v_a) * v_a)) - sin(alpha) * sin(alpha) * (glm::dot(v, v_a)) * (glm::dot(v, v_a));
+	float b = 2 * cos(alpha) * cos(alpha) * glm::dot(v - glm::dot(v, v_a), (glm::dot(v_a,(p-p_a))) - (glm::dot((p-p_a), v_a)) * v_a) - 2 * sin(alpha) * sin(alpha) * glm::dot(v, v_a) * glm::dot((p-p_a), v_a);
+	float c = cos(alpha) * cos(alpha) * glm::dot(((p-p_a) - glm::dot((p-p_a), v_a) * v_a) , ((p-p_a) - glm::dot((p-p_a), v_a) * v_a))- sin(alpha) * sin(alpha) * glm::dot((p-p_a), v_a) * glm::dot((p-p_a), v_a);
 	
 	float possibleT[3];
 	
@@ -61,12 +61,14 @@ bool Cone::intersect(Ray const& ray, float& distance, glm::vec3& intersection, g
 	
 	//schauen ob die intersection zwischen Spitze und Basis ist
 	glm::vec3 q1 = p + v*x1;
-	if (x1 > 0 && (glm::dot(v_a, (q1 - center_))) > 0 && (glm::dot(v_a, (q1 - center2_))) < 0){
+	if (x1 > 0 && (glm::dot(v_a, (q1 - center_))) > 0 && (glm::dot(v_a, (q1 - center2_))) < 0)
+	{
 		possibleT[0] = x1;
 	}
 	
 	glm::vec3 q2 = p + v*x2;
-	if (x2 > 0 && (glm::dot(v_a, (q2 - center_))) > 0 && (glm::dot(v_a, (q2 - center2_))){
+	if (x2 > 0 && (glm::dot(v_a, (q2 - center_))) > 0 && (glm::dot(v_a, (q2 - center2_))))
+	{
 		possibleT[1] = x2;
 	}
 	
@@ -77,7 +79,7 @@ bool Cone::intersect(Ray const& ray, float& distance, glm::vec3& intersection, g
 	glm::vec3 direction = glm::normalize(ray.direction);
 	
 	float x3;
-	Shape::intersectDisk(v_a, cent, radius, origin, direction, x3);
+	Shape::intersectDisk(v_a, cent, radius_, origin, direction, x3);
 	possibleT[2] = x3;
 	
 	float t = possibleT[0];
@@ -118,7 +120,7 @@ std::ostream& Cone::print(std::ostream& os) const{
 	Shape::print(os);
 	//os << "Name: " << get_name() << ", Color: " << get_color().r << " " << get_color().g << " " << get_color().b << "\n";
 	os << "Mittelpunkt Basis: " << center_.x << " " << center_.y << " ";
-	os << center_.z << "," << "Radius: " << radius_; << "," << "Spitze: ";
+	os << center_.z << "," << "Radius: " << radius_ << "," << "Spitze: ";
 	os << center2_.x << " " << center2_.y << " " << center2_.z;
 
 	return os;
