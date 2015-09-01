@@ -345,10 +345,10 @@ TEST_CASE("Render_test1", "[renderer]"){
 	 	std::cout << it->second << std::endl;
 	}
 
-	
+	/*
 	for(std::vector<std::shared_ptr <Shape>>::iterator it = s.shapes.begin(); it != s.shapes.end(); ++it){
 	 	std::cout << **it << std::endl;
-	}
+	}*/
 	
 	
 	for(std::vector<Light_source>::const_iterator it = s.lights.begin(); it != s.lights.end(); ++it){
