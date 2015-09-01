@@ -1,43 +1,37 @@
 #ifndef BUW_MATERIAL_HPP
-#define BUW_MATERIAL_HPP value
+#define BUW_MATERIAL_HPP value // was hat das hier zu tun??
+
 #include <iostream>
 #include <string>
+
 #include "color.hpp"
 
-class Material
-{
-public:
-	Material();
-	Material(std::string name, Color const& ka, Color const& kd,
-			 Color const& ks, float m, float refract, 
-			 float opacity);
-	~Material();
-//getter
-	std::string const& get_name()const;
-	Color const& get_ka() const;
-	Color const& get_kd() const;
-	Color const& get_ks() const;
-	float get_m() const;
-	float get_refract() const; 
-	float get_opacity() const; 
+class Material{
+	public:
+		Material();
+		Material(std::string name, Color const& ka, Color const& kd, Color const& ks, float m, float refract, float opacity);
+		~Material();
+		
+		std::string const& get_name()const;
+		Color const& get_ka() const;
+		Color const& get_kd() const;
+		Color const& get_ks() const;
+		float get_m() const;
+		float get_refract() const; 
+		float get_opacity() const; 
 
-//operator<<
-	friend std::ostream& operator<<(std::ostream& os, 
-		Material const& mat);
+		friend std::ostream& operator<<(std::ostream& os, 
+			Material const& mat);
 
+	private:
+		std::string name_;
+		Color ka_;
+		Color kd_;
+		Color ks_;
+		float m_; // mirror
 
-
-private:
-	std::string name_;
-	Color ka_;
-	Color kd_;
-	Color ks_;
-	float m_; // Spiegel
-
-	float refract_; //Brechungindex
-	float opacity_; //Transparenz
-
-
+		float refract_; //Brechungindex
+		float opacity_; //Transparenz
 
 };
 

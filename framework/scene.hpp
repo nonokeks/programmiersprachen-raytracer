@@ -1,23 +1,32 @@
 #ifndef BUW_Scene_HPP
 #define BUW_Scene_HPP
-#include <iostream>
-#include <string>
-#include "color.hpp"
-#include "shape.hpp"
-#include "ray.hpp"
-#include "material.hpp"
-#include "camera.hpp"
-#include "light_source.hpp"
-#include "renderer_data.hpp"
-#include "composite.hpp"
-#include <map>
-#include <vector>
-#include <memory>
 
-struct Scene
-{
-	Scene(): ambient(), cam(), render(){}
-	Scene(Color const& ambient_color, Camera const& camera, Renderer_data const& renderer): ambient(ambient_color), cam(camera), render(renderer){}
+#include <iostream>
+#include <map>
+#include <memory>
+#include <string>
+#include <vector>
+
+#include "camera.hpp"
+#include "color.hpp"
+#include "composite.hpp"
+#include "light_source.hpp"
+#include "material.hpp"
+#include "ray.hpp"
+#include "renderer_data.hpp"
+#include "shape.hpp"
+
+struct Scene{
+	Scene():
+		ambient(),
+		cam(),
+		render(){}
+		
+	Scene(Color const& ambient_color, Camera const& camera, Renderer_data const& renderer):
+		ambient(ambient_color),
+		cam(camera),
+		render(renderer){}
+		
 	std::map<std::string, Material> material;
 	std::vector<std::shared_ptr <Composite>> shape_composite; 
 	//std::vector<std::shared_ptr <Shape>> shapes; 
@@ -27,7 +36,6 @@ struct Scene
 	Renderer_data render;
 
 	Scene& operator= (Scene const& rhs){
-
 		material.clear();
 		//shapes.clear();
 		shape_composite.clear();
@@ -64,12 +72,8 @@ struct Scene
 			&& render.filename.compare(rhs.render.filename)){
 			return true;
 		}
-		
-		
 		return false;
 	}
-
 };
-
 
 #endif // #ifndef BUW_SCENE_HPP

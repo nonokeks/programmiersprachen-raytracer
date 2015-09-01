@@ -10,10 +10,10 @@
 #include "ppmwriter.hpp"
 
 // header, system
-#include <iostream>
-#include <fstream>
-#include <cmath>
 #include <algorithm>
+#include <cmath>
+#include <fstream>
+#include <iostream>
 
 PpmWriter::PpmWriter(std::size_t w, std::size_t h, std::string const& file)
   : file_(file),

@@ -1,20 +1,25 @@
 #ifndef BUW_TRIANGLE_HPP
 #define BUW_TRIANGLE_HPP
+
+#include <cmath>
+#include <glm/glm.hpp>
+#include <glm/gtx/intersect.hpp>
 #include <glm/vec3.hpp>
-#include "shape.hpp"
 #include <iostream>
 #include <string>
-#include "color.hpp"
-#include "ray.hpp"
-//#include "material.hpp"
 
-class Triangle : public Shape
-{
+#include "color.hpp"
+//#include "material.hpp"
+#include "shape.hpp"
+#include "ray.hpp"
+
+class Triangle: public Shape{
 public:
 	Triangle();
 	Triangle(glm::vec3 const& a, glm::vec3 const& b, glm::vec3 const& c);
 	Triangle(std::string name, glm::vec3 const& a, glm::vec3 const& b, glm::vec3 const& c, std::string material);
 	
+	//delete?
 	//Triangle(glm::vec3 const& a, glm::vec3 const& b, glm::vec3 const& c, std::string name, Color const& color);
 	//~Triangle();
 	//Triangle(glm::vec3 const& a, glm::vec3 const& b, glm::vec3 const& c, std::string name, Material const& mat);

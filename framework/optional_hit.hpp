@@ -2,8 +2,9 @@
 #define BUW_OPTIONAL_HIT_HPP 
 
 #include <glm/vec3.hpp>
-#include <ray.hpp>
 #include <memory>
+#include <ray.hpp>
+
 #include "shape.hpp"
 
 struct Optional_hit{
@@ -15,17 +16,16 @@ struct Optional_hit{
 		normal{0.0f, 0.0f, 0.0f}{} 
 
 	bool hit;
-	Shape* shape; //std::shared_ptr<Shape> shape;??
+	Shape* shape; 
 	float distance;
 	glm::vec3 intersection;
 	glm::vec3 normal;
 	
 
 	Optional_hit& operator=(const Optional_hit& rhs){
-		if(this==&rhs){ //Operator ist nicht implementiert..?
+		if(this==&rhs){ //Operator ist nicht implementiert..? MUSS DER JETZT NOCH IMPLEMENTIERT WERDEN ODER IST DAS EGAL?
 			return *this;
 		}
-
 		hit = rhs.hit;
 		distance = rhs.distance;
 		intersection = rhs.intersection;
@@ -33,7 +33,7 @@ struct Optional_hit{
 		shape = rhs.shape;
 		return *this;
 	}
-
+	
 };
 
 #endif

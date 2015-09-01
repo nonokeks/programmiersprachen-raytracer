@@ -8,6 +8,8 @@
 // -----------------------------------------------------------------------------
 
 #include "renderer.hpp"
+
+/* im header
 #include "optional_hit.hpp"
 #include "ray.hpp"
 #include "scene.hpp"
@@ -20,6 +22,8 @@
 #include <glm/glm.hpp>
 #include <glm/vec3.hpp>
 #include <glm/geometric.hpp>
+*/
+
 using namespace glm;
 
 Renderer::Renderer(unsigned w, unsigned h, std::string const& file):
@@ -58,10 +62,7 @@ Renderer& Renderer::operator= (Renderer const& rhs){
   return *this;
 }
 
-
-
-void Renderer::render()
-{
+void Renderer::render(){
   const std::size_t checkersize = 20;
 
   for (unsigned y = 0; y < height_; ++y) {
@@ -72,15 +73,13 @@ void Renderer::render()
       } else {
         p.color = Color(1.0, 0.0, float(y)/width_);
       }
-
       write(p);
     }
   }
   ppm_.save(filename_);
 }
 
-void Renderer::write(Pixel const& p)
-{
+void Renderer::write(Pixel const& p){
   // flip pixels, because of opengl glDrawPixels
   size_t buf_pos = (width_*p.y + p.x);
   if (buf_pos >= colorbuffer_.size() || (int)buf_pos < 0) {
@@ -91,17 +90,15 @@ void Renderer::write(Pixel const& p)
   } else {
     colorbuffer_[buf_pos] = p.color;
   }
-
   ppm_.write(p);
 }
-
 
 Optional_hit Renderer::intersect(Ray const& ray) const{
   Optional_hit o;
   Optional_hit temp;
   std::vector<float> hits;  
   
-  
+  //delete?
   /*
   for (std::vector<std::shared_ptr <Shape>>::const_iterator it = scene_.shapes.begin(); it != scene_.shapes.end(); ++it)
   {
@@ -120,85 +117,69 @@ Optional_hit Renderer::intersect(Ray const& ray) const{
         o = temp;
       }
     }
-
   }*/
  
-  //an Composit angepasst
-  for (std::vector<std::shared_ptr <Composite>>::const_iterator i = scene_.shape_composite.begin(); i != scene_.shape_composite.end(); ++i)
-  {
+  // using composite
+  for (std::vector<std::shared_ptr <Composite>>::const_iterator i = scene_.shape_composite.begin(); i != scene_.shape_composite.end(); ++i){
     std::map<std::string,std::shared_ptr<Shape>> temp_map = (**i).get_children();
+	// BRAUCHT MAN DAS NOCH?
     //temp_map.insert(temp_map.begin(), (**i).get_children().begin(), (**i).get_children().end());
-    for (std::map<std::string,std::shared_ptr<Shape>>::const_iterator it = temp_map.begin(); it != temp_map.end(); ++it)
-    {
-      if (it == temp_map.begin() || !o.hit)
-      {
+    for (std::map<std::string,std::shared_ptr<Shape>>::const_iterator it = temp_map.begin(); it != temp_map.end(); ++it){
+      if (it == temp_map.begin() || !o.hit){
         o.hit = it->second->intersect(ray, o.distance, o.intersection, o.normal);
         o.shape = &*(it->second);
       }
-      else
-      {
+      else {
         temp.hit = it->second->intersect(ray, temp.distance, temp.intersection, temp.normal);
         temp.shape = &*(it->second);
-        if(o.distance > temp.distance && temp.distance > 0)
-        {
+        if(o.distance > temp.distance && temp.distance > 0){
           o = temp;
         }
       }
     }
-    
-
   }
- 
   return o;
 }
 
 Color Renderer::raytrace(Ray const& ray, int depth){
   Optional_hit o = intersect(ray);
-  
   if(o.hit) return shade(ray, o, depth);
   else return scene_.ambient;
 }
 
-
 Color Renderer::shade(Ray const& ray, Optional_hit const& o, int depth){
-  Color color; // Farbe des Strahls 
-  Ray rRay, tRay, sRay; // Reflexions-, Brechungs- und Schattenstrahlen 
-  Color rColor, tColor; // Farbe des reflektierten und gebrochenen Strahls 
-  Material temp_mat = scene_.material[o.shape->get_material()]; // Material des geschnittenen Shapes
+  Color color; // Ray color 
+  Ray rRay, tRay, sRay; // Reflection-, Refraction- and Shadow rays 
+  Color rColor, tColor; // Color of reflected and refracted ray 
+  Material temp_mat = scene_.material[o.shape->get_material()]; // Material of intersected Shape
 
   for (std::vector<Light_source>::const_iterator l = scene_.lights.begin(); l != scene_.lights.end(); ++l)
   {
     sRay = Ray(o.intersection, glm::normalize((*l).get_position()));
-    //Teste ob Skalarprodukt von Normalen und sRay.direction positiv ist
+    // Is the dot product of normal and sRay.direction positive?
     if(glm::dot(o.normal, sRay.direction) > 0){
-
       Optional_hit shadow= intersect(sRay);
       float shading = glm::dot(o.normal, glm::normalize((*l).get_position()) );
       float shading_pos = std::max(shading, 0.0f);
       
-      if (!shadow.hit)
-      {
+      if (!shadow.hit){
         color +=  (*l).get_diffuse() * (( temp_mat.get_kd() * shading_pos) + temp_mat.get_ks());
       }
       else{
-        //Wenn im Schatten 
+        // if its in the shadow
         color +=  (*l).get_diffuse() * (( temp_mat.get_kd() * shading_pos));
         Material mat_shadow = scene_.material[shadow.shape->get_material()];
         if(mat_shadow.get_opacity() != 0){
-          //Brechenung?
+		//!!!!!!!!!!!!!!! fehlt noch?
+          //Berechenung?
         }
       }
-      
-      
     }
-
   }
   
-  if (depth <= 2)//3 = Max depth,
-  {
-    if (temp_mat.get_m() != 0)//Objekt reflektiert(spiegelt)
-    {
-      //Reflektionsray mit Reflektionsrichtung (ist der Einfallsvektor = Schnittpunkt?)
+  if (depth <= 2){ //3 = Max depth
+    if (temp_mat.get_m() != 0){ // Object reflects
+      // Reflection ray with direction of reflection (ist der Einfallsvektor = Schnittpunkt?)
       //rRay = reflect_ray(o.intersection, o.normal, o.intersection);
       rRay.origin = o.intersection;
       rRay.direction = glm::reflect(o.intersection, o.normal);
@@ -208,34 +189,29 @@ Color Renderer::shade(Ray const& ray, Optional_hit const& o, int depth){
       color += rColor; 
     } 
     
-    if (temp_mat.get_opacity() != 0)//Objekt transparent(mit Refraktion)
-    {
-      //Ray in Brechungsrichtung
+    if (temp_mat.get_opacity() != 0){ // Object transparent -> refraction
+      //Ray in direction of refraction
       tRay.origin = o.intersection;
       tRay.direction = glm::refract(o.intersection, o.normal, temp_mat.get_refract());
 
-      if(temp_mat.get_m() != 1)
-        tColor = raytrace(tRay, depth + 1);
-        tColor *= temp_mat.get_opacity();
-        color += tColor;
-
+		if(temp_mat.get_m() != 1){ //KLAMMERN NEU; STIMMEN DIE SO??
+			tColor = raytrace(tRay, depth + 1);
+			tColor *= temp_mat.get_opacity();
+			color += tColor;
+		}
     }
   }
-
-  //ambiente Beleuchtung
+  //ambient lightning
   color += temp_mat.get_ka() * scene_.ambient;
-
   return color;
 }
 
-
 void Renderer::render_scene(std::string filename){
-
-  //Scene wird geladen
+  // Load scene
   Sdf_loader loader{filename};
   scene_ = loader.load_scene(filename);
 
-  //Daten aus Transferobjekt in den Renderer schreiben
+  // write data from transferobject into renderer
   width_ = scene_.render.width;
   height_ = scene_.render.height;
   filename_= scene_.render.filename;
@@ -244,11 +220,11 @@ void Renderer::render_scene(std::string filename){
   PpmWriter ppm(width_, height_);
   ppm_ = ppm;
 
-  //Rays für das Bild gernerieren
+  // generate rays for the image
   std::vector<Ray> rays;
   scene_.cam.generate_rays(width_, height_, rays);
 
-  //Pixel für die Rays generieren
+  // generate pixels for the rays
   std::vector<Pixel> pixel;
   for (unsigned i = 0; i < height_; ++i)
   {
@@ -271,12 +247,9 @@ void Renderer::render_scene(std::string filename){
     ++j;
   }
   ppm_.save(filename_);
-  
-  
 }
 
-
-
+//wird das überhaupt benutzt??
 Ray Renderer::reflect_ray(glm::vec3 const& intersection, glm::vec3 const& normale, glm::vec3 const& rayDirection) const{
 	glm::vec3 spiegel{0.0f, 0.0f, 0.0f}; //neuer Ray direction kommt hier rein, origin ist intersection
 	spiegel.x = (2*normale.x*normale.x*rayDirection.x + 2*normale.x*normale.y*rayDirection.y + 2*normale.x*normale.z*rayDirection.z - rayDirection.x);
@@ -284,5 +257,4 @@ Ray Renderer::reflect_ray(glm::vec3 const& intersection, glm::vec3 const& normal
 	spiegel.z = (2*normale.y*normale.z*rayDirection.x + 2*normale.y*normale.z*rayDirection.y + 2*normale.z*normale.z*rayDirection.z - rayDirection.z);
 	Ray newRay{intersection, spiegel}; //spiegel muss vielleicht *-1 genommen werden, bin mir nicht sicher ob der in die richtige Richtung zeigt
 	return newRay;
-
 }
