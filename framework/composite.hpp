@@ -1,8 +1,9 @@
 #ifndef BUW_COMPOSITE_HPP
 #define BUW_COMPOSITE_HPP
-#include <shape.hpp>
+#include <iostream>
 #include <memory>
 #include <map>
+#include <shape.hpp>
 #include <sphere.hpp>
 #include <box.hpp>
 #include <triangle.hpp>
