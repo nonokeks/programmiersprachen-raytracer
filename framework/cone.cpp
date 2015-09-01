@@ -49,7 +49,8 @@ bool Cone::intersect(Ray const& ray, float& distance, glm::vec3& intersection, g
 	float alpha = PI/2 - beta; //Winkel an der Spitze = zwischen Gerade und einer Seite
 	
 	float a = cos(alpha) * cos(alpha) * glm::dot((v - glm::dot(v, v_a) * v_a) , (v - glm::dot(v, v_a) * v_a)) - sin(alpha) * sin(alpha) * (glm::dot(v, v_a)) * (glm::dot(v, v_a));
-	float b = 2 * cos(alpha) * cos(alpha) * glm::dot(v - glm::dot(v, v_a), (glm::dot(v_a,(p-p_a))) - (glm::dot((p-p_a), v_a)) * v_a) - 2 * sin(alpha) * sin(alpha) * glm::dot(v, v_a) * glm::dot((p-p_a), v_a);
+	// alt: float b = 2 * cos(alpha) * cos(alpha) * glm::dot(v - glm::dot(v, v_a), (glm::dot(v_a,(p-p_a))) - (glm::dot((p-p_a), v_a)) * v_a) - 2 * sin(alpha) * sin(alpha) * glm::dot(v, v_a) * glm::dot((p-p_a), v_a);
+	float b = 2 * cos(alpha) * cos(alpha) * glm::dot((v - glm::dot(v, v_a) * v_a), ((p-p_a) - (glm::dot((p-p_a), v_a)) * v_a)) - 2 * sin(alpha) * sin(alpha) * glm::dot(v, v_a) * glm::dot((p-p_a), v_a);
 	float c = cos(alpha) * cos(alpha) * glm::dot(((p-p_a) - glm::dot((p-p_a), v_a) * v_a) , ((p-p_a) - glm::dot((p-p_a), v_a) * v_a))- sin(alpha) * sin(alpha) * glm::dot((p-p_a), v_a) * glm::dot((p-p_a), v_a);
 	
 	float possibleT[3];
