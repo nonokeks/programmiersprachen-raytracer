@@ -1,10 +1,7 @@
 #include <composite.hpp>
+#include <shape.hpp>
 
-Composite::Composite() :
-	Shape{}{}
-
-Composite::Composite(std::string const& name) :
-	Shape{name, ""}{}
+Composite::Composite(){}
 
 Composite::~Composite(){}
 

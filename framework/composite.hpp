@@ -9,18 +9,16 @@
 #include <triangle.hpp>
 
 
-
-class Composite : public Shape {
+class Composite{
 public:
 	Composite();
-	Composite(std::string const& name);
 	
 	~Composite();
 	
 	void add(std::shared_ptr<Shape>& shape);
 	void remove(std::string const& name);
 	
-	std::ostream& print(std::ostream& os) const override;
+	std::ostream& print(std::ostream& os) const;
 	
 	std::map<std::string, std::shared_ptr<Shape>> get_children();
 	

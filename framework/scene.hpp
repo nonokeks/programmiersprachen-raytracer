@@ -9,6 +9,7 @@
 #include "camera.hpp"
 #include "light_source.hpp"
 #include "renderer_data.hpp"
+#include "composite.hpp"
 #include <map>
 #include <vector>
 #include <memory>
@@ -18,7 +19,8 @@ struct Scene
 	Scene(): ambient(), cam(), render(){}
 	Scene(Color const& ambient_color, Camera const& camera, Renderer_data const& renderer): ambient(ambient_color), cam(camera), render(renderer){}
 	std::map<std::string, Material> material;
-	std::vector<std::shared_ptr <Shape>> shapes; 
+	std::vector<std::shared_ptr <Composite>> shape_composite; 
+	//std::vector<std::shared_ptr <Shape>> shapes; 
 	std::vector<Light_source> lights;
 	Color ambient;
 	Camera cam;
@@ -27,7 +29,8 @@ struct Scene
 	Scene& operator= (Scene const& rhs){
 
 		material.clear();
-		shapes.clear();
+		//shapes.clear();
+		shape_composite.clear();
 		lights.clear();
 
 		//for(std::vector<std::shared_ptr <Shape>>::const_iterator it = rhs.shapes.begin(); it != rhs.shapes.end(); ++it){
@@ -44,7 +47,8 @@ struct Scene
 		//std::copy(rhs.lights.begin(), rhs.lights.end(), lights.begin());
 		//std::copy( rhs.shapes.begin(),  rhs.shapes.end(), shapes.begin() );
 
-		shapes.insert(shapes.begin(), rhs.shapes.begin(), rhs.shapes.end());
+		//shapes.insert(shapes.begin(), rhs.shapes.begin(), rhs.shapes.end());
+		shape_composite.insert(shape_composite.begin(), rhs.shape_composite.begin(), rhs.shape_composite.end());
 		lights.insert(lights.begin(), rhs.lights.begin(), rhs.lights.end());
 
 		ambient = rhs.ambient;

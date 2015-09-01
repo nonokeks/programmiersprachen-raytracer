@@ -32,6 +32,9 @@ Scene Sdf_loader::load_scene(std::string file) const{
  	std::string word = " ";
  	std::string name = " ";
  	std::stringstream sstr; //für String to Float
+ 	//Container für Shapes
+ 	std::map<std::string, std::shared_ptr<Shape>> shape_map;
+
  	if (datei.good())
  	{
 
@@ -65,7 +68,7 @@ Scene Sdf_loader::load_scene(std::string file) const{
 				datei >> word;
 			
 				if (word.compare("#") != 0 && word.compare("render") != 0 && 
-				   word.compare("ambient") != 0 && word.compare("define") != 0)
+				   word.compare("camera") != 0 && word.compare("define") != 0)
 				{
 
 					float x, y, z;
@@ -237,172 +240,212 @@ Scene Sdf_loader::load_scene(std::string file) const{
 	 				if (word.compare("box") == 0)//Shapes (Box)
 			 		{
 			 			datei >> name;
-			 			float x,y,z;
-			 			//min
-			 			datei >> word;
-			 			sstr << word << ' ';
-			 			datei >> word;
-			 			sstr << word << ' ';
-			 			datei >> word;
-			 			sstr << word;
-			 			sstr >> x >> y >> z;
-			 			glm::vec3 min(x,y,z);
-			 			sstr.clear();
+			 			if(shape_map.find(name) == shape_map.end()){
+				 			float x,y,z;
+				 			//min
+				 			datei >> word;
+				 			sstr << word << ' ';
+				 			datei >> word;
+				 			sstr << word << ' ';
+				 			datei >> word;
+				 			sstr << word;
+				 			sstr >> x >> y >> z;
+				 			glm::vec3 min(x,y,z);
+				 			sstr.clear();
 
-			 			//max
-			 			datei >> word;
-			 			sstr << word << ' ';
-			 			datei >> word;
-			 			sstr << word << ' ';
-			 			datei >> word;
-			 			sstr << word;
-			 			sstr >> x >> y >> z;
-			 			glm::vec3 max(x,y,z);
-			 			sstr.clear();
-			 			
-			 			datei >> word; //Materialname
+				 			//max
+				 			datei >> word;
+				 			sstr << word << ' ';
+				 			datei >> word;
+				 			sstr << word << ' ';
+				 			datei >> word;
+				 			sstr << word;
+				 			sstr >> x >> y >> z;
+				 			glm::vec3 max(x,y,z);
+				 			sstr.clear();
+				 			
+				 			datei >> word; //Materialname
 
-			 			std::shared_ptr<Shape> b(new Box(name, min, max, word));
-			 			s.shapes.push_back(b);
+				 			std::shared_ptr<Shape> b(new Box(name, min, max, word));
+				 			//s.shapes.push_back(b);
 
+				 			//Box b(name, min, max, word);
+				 			shape_map[name] = b;
+			 			}
 			 		}
 			 		else if (word.compare("sphere") == 0)//Shapes (Sphere)
 			 		{
 			 			datei >> name;
-			 			float x,y,z;
-			 			//center
-			 			datei >> word;
-			 			sstr << word << ' ';
-			 			datei >> word;
-			 			sstr << word << ' ';
-			 			datei >> word;
-			 			sstr << word;
-			 			sstr >> x >> y >> z;
-			 			glm::vec3 center(x,y,z);
+			 			if(shape_map.find(name) == shape_map.end()){
+				 			float x,y,z;
+				 			//center
+				 			datei >> word;
+				 			sstr << word << ' ';
+				 			datei >> word;
+				 			sstr << word << ' ';
+				 			datei >> word;
+				 			sstr << word;
+				 			sstr >> x >> y >> z;
+				 			glm::vec3 center(x,y,z);
 
-			 			sstr.clear();
+				 			sstr.clear();
 
-			 			float r;
-			 			//radius
-			 			datei >> word;
-			 			sstr << word;
-			 			sstr >> r;
-			 			sstr.clear();
+				 			float r;
+				 			//radius
+				 			datei >> word;
+				 			sstr << word;
+				 			sstr >> r;
+				 			sstr.clear();
 
-			 			datei >> word;//Materialname
+				 			datei >> word;//Materialname
 
-			 			std::shared_ptr<Shape> sph(new Sphere(name, center, r, word));
-			 			s.shapes.push_back(sph);
+				 			std::shared_ptr<Shape> sph(new Sphere(name, center, r, word));
+				 			//s.shapes.push_back(sph);
+
+				 			//Sphere sph(name, center, r, word);
+				 			shape_map[name] = sph;
+				 		}
 		 			}
 		 			else if (word.compare("triangle") == 0)//Shapes (Sphere)
 			 		{
 			 			datei >> name;
 			 			float x,y,z;
-			 			
-			 			datei >> word;
-			 			sstr << word << ' ';
-			 			datei >> word;
-			 			sstr << word << ' ';
-			 			datei >> word;
-			 			sstr << word;
-			 			sstr >> x >> y >> z;
-			 			glm::vec3 a(x,y,z);
-			 			sstr.clear();
+			 			if(shape_map.find(name) == shape_map.end()){
+				 			datei >> word;
+				 			sstr << word << ' ';
+				 			datei >> word;
+				 			sstr << word << ' ';
+				 			datei >> word;
+				 			sstr << word;
+				 			sstr >> x >> y >> z;
+				 			glm::vec3 a(x,y,z);
+				 			sstr.clear();
 
-			 			datei >> word;
-			 			sstr << word << ' ';
-			 			datei >> word;
-			 			sstr << word << ' ';
-			 			datei >> word;
-			 			sstr << word;
-			 			sstr >> x >> y >> z;
-			 			glm::vec3 b(x,y,z);
-			 			sstr.clear();
+				 			datei >> word;
+				 			sstr << word << ' ';
+				 			datei >> word;
+				 			sstr << word << ' ';
+				 			datei >> word;
+				 			sstr << word;
+				 			sstr >> x >> y >> z;
+				 			glm::vec3 b(x,y,z);
+				 			sstr.clear();
 
-			 			datei >> word;
-			 			sstr << word << ' ';
-			 			datei >> word;
-			 			sstr << word << ' ';
-			 			datei >> word;
-			 			sstr << word;
-			 			sstr >> x >> y >> z;
-			 			glm::vec3 c(x,y,z);
-			 			sstr.clear();
-			 			
-			 			datei >> word;//Materialname
+				 			datei >> word;
+				 			sstr << word << ' ';
+				 			datei >> word;
+				 			sstr << word << ' ';
+				 			datei >> word;
+				 			sstr << word;
+				 			sstr >> x >> y >> z;
+				 			glm::vec3 c(x,y,z);
+				 			sstr.clear();
+				 			
+				 			datei >> word;//Materialname
 
-			 			std::shared_ptr<Shape> tri(new Triangle(name, a, b, c, word));
-			 			s.shapes.push_back(tri);
+				 			std::shared_ptr<Shape> tri(new Triangle(name, a, b, c, word));
+				 			//s.shapes.push_back(tri);
+
+				 			//Triangle tri(name, a, b, c, word);
+				 			shape_map[name] = tri;
+				 		}
 		 			}
 		 			else if (word.compare("cone") == 0)//Shapes (Sphere)
 			 		{
 			 			datei >> name;
-			 			float x,y,z,r;
-			 			
-			 			datei >> word;
-			 			sstr << word << ' ';
-			 			datei >> word;
-			 			sstr << word << ' ';
-			 			datei >> word;
-			 			sstr << word;
-			 			sstr >> x >> y >> z;
-			 			glm::vec3 center1(x,y,z);
-			 			sstr.clear();
+			 			if(shape_map.find(name) == shape_map.end()){
+				 			float x,y,z,r;
+				 			
+				 			datei >> word;
+				 			sstr << word << ' ';
+				 			datei >> word;
+				 			sstr << word << ' ';
+				 			datei >> word;
+				 			sstr << word;
+				 			sstr >> x >> y >> z;
+				 			glm::vec3 center1(x,y,z);
+				 			sstr.clear();
 
-			 			datei >> word;
-			 			sstr << word;
-			 			sstr >> r;
-			 			sstr.clear();
+				 			datei >> word;
+				 			sstr << word;
+				 			sstr >> r;
+				 			sstr.clear();
 
-			 			datei >> word;
-			 			sstr << word << ' ';
-			 			datei >> word;
-			 			sstr << word << ' ';
-			 			datei >> word;
-			 			sstr << word;
-			 			sstr >> x >> y >> z;
-			 			glm::vec3 center2(x,y,z);
-			 			sstr.clear();
-			 			
-			 			datei >> word;//Materialname
+				 			datei >> word;
+				 			sstr << word << ' ';
+				 			datei >> word;
+				 			sstr << word << ' ';
+				 			datei >> word;
+				 			sstr << word;
+				 			sstr >> x >> y >> z;
+				 			glm::vec3 center2(x,y,z);
+				 			sstr.clear();
+				 			
+				 			datei >> word;//Materialname
 
-			 			std::shared_ptr<Shape> cone(new Cone(name, center1, r, center2, word));
-			 			s.shapes.push_back(cone);
+				 			std::shared_ptr<Shape> cone(new Cone(name, center1, r, center2, word));
+				 			//s.shapes.push_back(cone);
+
+				 			//Cone co(name, center1, r, center2, word);
+				 			shape_map[name] = cone;
+				 		}
 		 			}
 		 			else if (word.compare("cylinder") == 0)//Shapes (Sphere)
 			 		{
 			 			datei >> name;
-			 			float x,y,z,r;
-			 			
-			 			datei >> word;
-			 			sstr << word << ' ';
-			 			datei >> word;
-			 			sstr << word << ' ';
-			 			datei >> word;
-			 			sstr << word;
-			 			sstr >> x >> y >> z;
-			 			glm::vec3 center1(x,y,z);
-			 			sstr.clear();
+			 			if(shape_map.find(name) == shape_map.end()){
+				 			float x,y,z,r;
+				 			
+				 			datei >> word;
+				 			sstr << word << ' ';
+				 			datei >> word;
+				 			sstr << word << ' ';
+				 			datei >> word;
+				 			sstr << word;
+				 			sstr >> x >> y >> z;
+				 			glm::vec3 center1(x,y,z);
+				 			sstr.clear();
 
-			 			datei >> word;
-			 			sstr << word;
-			 			sstr >> r;
-			 			sstr.clear();
+				 			datei >> word;
+				 			sstr << word;
+				 			sstr >> r;
+				 			sstr.clear();
 
-			 			datei >> word;
-			 			sstr << word << ' ';
-			 			datei >> word;
-			 			sstr << word << ' ';
-			 			datei >> word;
-			 			sstr << word;
-			 			sstr >> x >> y >> z;
-			 			glm::vec3 center2(x,y,z);
-			 			sstr.clear();
-			 			
-			 			datei >> word;//Materialname
+				 			datei >> word;
+				 			sstr << word << ' ';
+				 			datei >> word;
+				 			sstr << word << ' ';
+				 			datei >> word;
+				 			sstr << word;
+				 			sstr >> x >> y >> z;
+				 			glm::vec3 center2(x,y,z);
+				 			sstr.clear();
+				 			
+				 			datei >> word;//Materialname
 
-			 			std::shared_ptr<Shape> cyl(new Cylinder(name, center1, r, center2, word));
-			 			s.shapes.push_back(cyl);
+				 			std::shared_ptr<Shape> cyl(new Cylinder(name, center1, r, center2, word));
+				 			//s.shapes.push_back(cyl);
+
+				 			//Cylinder cyl(name, center1, r, center2, word);
+				 			shape_map[name] = cyl;
+				 		}
+		 			}
+		 			else if (word.compare("composite") == 0)
+		 			{
+		 				std::shared_ptr<Composite> c(new Composite);
+		 				datei >> word;
+		 				std::map<std::string, std::shared_ptr<Shape>>::iterator i= shape_map.begin();
+		 				while((word.compare("#") != 0 && word.compare("render") 
+		 					!= 0 && word.compare("camera") != 0 && 
+		 					word.compare("define") != 0) && i != shape_map.end()){
+		 		
+		 					std::shared_ptr<Shape> p = shape_map[word];
+		 					//p = (shape_map.find(word)->second);
+		 					c->add(p);
+		 					datei >> word;
+		 					++i;
+		 				}
+		 				s.shape_composite.push_back(c);
 		 			}
 	 			}
 	 			/*

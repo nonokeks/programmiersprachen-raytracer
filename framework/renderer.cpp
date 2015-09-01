@@ -15,6 +15,7 @@
 #include "sdf_loader.hpp"
 #include "color.hpp"
 #include "shape.hpp"
+#include "composite.hpp"
 #include <algorithm> // min_element
 #include <glm/glm.hpp>
 #include <glm/vec3.hpp>
@@ -100,7 +101,8 @@ Optional_hit Renderer::intersect(Ray const& ray) const{
   Optional_hit temp;
   std::vector<float> hits;  
   
-  //an Composit anpassen
+  
+  /*
   for (std::vector<std::shared_ptr <Shape>>::const_iterator it = scene_.shapes.begin(); it != scene_.shapes.end(); ++it)
   {
 
@@ -119,10 +121,33 @@ Optional_hit Renderer::intersect(Ray const& ray) const{
       }
     }
 
-  }
+  }*/
  
-  
-  //std::cout << o.shape->get_name() << std::endl;
+  //an Composit angepasst
+  for (std::vector<std::shared_ptr <Composite>>::const_iterator i = scene_.shape_composite.begin(); i != scene_.shape_composite.end(); ++i)
+  {
+    std::map<std::string,std::shared_ptr<Shape>> temp_map = (**i).get_children();
+    //temp_map.insert(temp_map.begin(), (**i).get_children().begin(), (**i).get_children().end());
+    for (std::map<std::string,std::shared_ptr<Shape>>::const_iterator it = temp_map.begin(); it != temp_map.end(); ++it)
+    {
+      if (it == temp_map.begin() || !o.hit)
+      {
+        o.hit = it->second->intersect(ray, o.distance, o.intersection, o.normal);
+        o.shape = &*(it->second);
+      }
+      else
+      {
+        temp.hit = it->second->intersect(ray, temp.distance, temp.intersection, temp.normal);
+        temp.shape = &*(it->second);
+        if(o.distance > temp.distance && temp.distance > 0)
+        {
+          o = temp;
+        }
+      }
+    }
+    
+
+  }
  
   return o;
 }
@@ -133,76 +158,6 @@ Color Renderer::raytrace(Ray const& ray, int depth){
   if(o.hit) return shade(ray, o, depth);
   else return scene_.ambient;
 }
-
-/*
-Color Renderer::shade(Ray const& ray, Optional_hit const& o, int depth){ //braucht man noch color und recursion depth statt distance? wenn ja woher?
-	
-  
-  Material temp_mat = scene_.material[o.shape->get_material()]; 
-
-  float r = 0, g = 0, b = 0;
-  float red = 0, green = 0, blue = 0;
-
-  for(std::vector<Light_source>::const_iterator l = scene_.lights.begin(); l != scene_.lights.end(); ++l)
-  {
-
-    //Ray von Schnittpunkt zu Lichtquelle
-    Ray lightray(o.intersection, glm::normalize((*l).get_position()));
-
-    //Lichtintensität (Skalarprodukt, wird dann mit Reflexionskoeffizient und Helligkeit der Lichtquelle multipliziert)
-    //oder Winkel zwischen Normale und Lichtquelle 
-    float tmp = glm::dot(o.normal, glm::normalize((*l).get_position()-o.intersection) );
-    float angle_n_l = std::max(tmp, 0.0f);
-
-    float temp_r = 0, temp_g = 0, temp_b = 0;
-
-    Optional_hit shadow = intersect(lightray);
-    if(!shadow.hit){
-
-      /* Reflection ??
-      //Winkel Kamera/Lichquelle
-      float cam_light_angle = glm::dot(glm::normalize(o.intersection - scene_.cam.get_position()), glm::normalize((*l).get_position() - o.intersection));
-
-
-      //Reflektionswinkel
-      float reflection = cam_light_angle - (2* tmp);
-
-      //Reflektionsvecktor 
-      glm::vec3 reflect_vec((2 * tmp * o.normal.x - (*l).get_position().x), (2 * tmp * o.normal.y - (*l).get_position().y), (2 * tmp * o.normal.z - (*l).get_position().z));
-
-      //Ray reflection_ray(o.intersection, reflect_vec);
-      //oder Ray reflection_ray = reflect_ray(o.intersection, o.normale, l.get_position()); ?
-
-      
-      Ray reflection_ray = reflect_ray(o.intersection, o.normal, (*l).get_position());
-
-      temp_r = temp_mat.get_ks().r; //* pow(reflection, m);
-      temp_g = temp_mat.get_ks().g; //* pow(reflection, m);
-      temp_b = temp_mat.get_ks().b; //* pow(reflection, m);
-      //......
-
-      r += (*l).get_diffuse().r * (angle_n_l * temp_mat.get_kd().r + temp_mat.get_ks().r);
-      g += (*l).get_diffuse().g * (angle_n_l * temp_mat.get_kd().g + temp_mat.get_ks().g);
-      b += (*l).get_diffuse().b * (angle_n_l * temp_mat.get_kd().b + temp_mat.get_ks().b);
-
-    }
-    else{
-      //Wenn im Schatten werden die Werde berechnet, sonst 0 ( Operator shadow.hit ? 1 : 0)
-      r += temp_mat.get_kd().r * (*l).get_diffuse().r * angle_n_l;
-      g += temp_mat.get_kd().g * (*l).get_diffuse().g * angle_n_l;
-      b += temp_mat.get_kd().b * (*l).get_diffuse().b * angle_n_l;
-    }
-  
-  }
-  //mit Ambiente
-  red = temp_mat.get_ka().r * scene_.ambient.r + r;
-  green = temp_mat.get_ka().g * scene_.ambient.g + g;
-  blue = temp_mat.get_ka().b * scene_.ambient.b + b;
-
-
-  return Color(red, green, blue);
-
-}*/
 
 
 Color Renderer::shade(Ray const& ray, Optional_hit const& o, int depth){
