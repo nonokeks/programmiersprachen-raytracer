@@ -84,7 +84,7 @@ bool Cone::intersect(Ray const& ray, float& distance, glm::vec3& intersection, g
 	possibleT[2] = x3;
 	
 	float t = possibleT[0];
-	for (int i = 1; i < 4; i++){
+	for (int i = 1; i < 3; i++){
 		if (t == 0 && possibleT[i] > 0){
 			t = possibleT[i];
 		}
