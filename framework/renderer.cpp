@@ -18,7 +18,8 @@
 #include <algorithm> // min_element
 #include <glm/glm.hpp>
 #include <glm/vec3.hpp>
-
+#include <glm/geometric.hpp>
+using namespace glm;
 
 Renderer::Renderer(unsigned w, unsigned h, std::string const& file):
 	width_(w),
@@ -99,6 +100,7 @@ Optional_hit Renderer::intersect(Ray const& ray) const{
   Optional_hit temp;
   std::vector<float> hits;  
   
+  //an Composit anpassen
   for (std::vector<std::shared_ptr <Shape>>::const_iterator it = scene_.shapes.begin(); it != scene_.shapes.end(); ++it)
   {
 
@@ -214,7 +216,7 @@ Color Renderer::shade(Ray const& ray, Optional_hit const& o, int depth){
     sRay = Ray(o.intersection, glm::normalize((*l).get_position()));
     //Teste ob Skalarprodukt von Normalen und sRay.direction positiv ist
     if(glm::dot(o.normal, sRay.direction) > 0){
-      // Wieviel Licht wird von opaken und transparenten Flächen blockiert?
+
       Optional_hit shadow= intersect(sRay);
       float shading = glm::dot(o.normal, glm::normalize((*l).get_position()) );
       float shading_pos = std::max(shading, 0.0f);
@@ -226,7 +228,10 @@ Color Renderer::shade(Ray const& ray, Optional_hit const& o, int depth){
       else{
         //Wenn im Schatten 
         color +=  (*l).get_diffuse() * (( temp_mat.get_kd() * shading_pos));
-
+        Material mat_shadow = scene_.material[shadow.shape->get_material()];
+        if(mat_shadow.get_opacity() != 0){
+          //Brechenung?
+        }
       }
       
       
@@ -234,12 +239,14 @@ Color Renderer::shade(Ray const& ray, Optional_hit const& o, int depth){
 
   }
   
-  if (depth <= 3)//3 = Max depth,
+  if (depth <= 2)//3 = Max depth,
   {
     if (temp_mat.get_m() != 0)//Objekt reflektiert(spiegelt)
     {
       //Reflektionsray mit Reflektionsrichtung (ist der Einfallsvektor = Schnittpunkt?)
-      rRay = reflect_ray(o.intersection, o.normal, o.intersection);
+      //rRay = reflect_ray(o.intersection, o.normal, o.intersection);
+      rRay.origin = o.intersection;
+      rRay.direction = glm::reflect(o.intersection, o.normal);
       rColor = raytrace(rRay, depth + 1);
       rColor *= temp_mat.get_m();
       //rColor *= temp_mat.get_ks();
@@ -249,7 +256,9 @@ Color Renderer::shade(Ray const& ray, Optional_hit const& o, int depth){
     if (temp_mat.get_opacity() != 0)//Objekt transparent(mit Refraktion)
     {
       //Ray in Brechungsrichtung
-      tRay = Ray (o.intersection, (o.intersection + o.intersection * temp_mat.get_refract()));
+      tRay.origin = o.intersection;
+      tRay.direction = glm::refract(o.intersection, o.normal, temp_mat.get_refract());
+
       if(temp_mat.get_m() != 1)
         tColor = raytrace(tRay, depth + 1);
         tColor *= temp_mat.get_opacity();
