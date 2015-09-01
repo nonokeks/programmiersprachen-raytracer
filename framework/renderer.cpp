@@ -216,7 +216,7 @@ Color Renderer::shade(Ray const& ray, Optional_hit const& o, int depth){
     if(glm::dot(o.normal, sRay.direction) > 0){
       // Wieviel Licht wird von opaken und transparenten Flächen blockiert?
       Optional_hit shadow= intersect(sRay);
-      float shading = glm::dot(o.normal, glm::normalize((*l).get_position()-o.intersection) );
+      float shading = glm::dot(o.normal, glm::normalize((*l).get_position()) );
       float shading_pos = std::max(shading, 0.0f);
       
       if (!shadow.hit)
@@ -226,10 +226,12 @@ Color Renderer::shade(Ray const& ray, Optional_hit const& o, int depth){
       else{
         //Wenn im Schatten 
         color +=  (*l).get_diffuse() * (( temp_mat.get_kd() * shading_pos));
+
       }
       
       
     }
+
   }
   
   if (depth <= 3)//3 = Max depth,
@@ -243,7 +245,7 @@ Color Renderer::shade(Ray const& ray, Optional_hit const& o, int depth){
       //rColor *= temp_mat.get_ks();
       color += rColor; 
     } 
-    /*
+    
     if (temp_mat.get_opacity() != 0)//Objekt transparent(mit Refraktion)
     {
       //Ray in Brechungsrichtung
@@ -253,7 +255,7 @@ Color Renderer::shade(Ray const& ray, Optional_hit const& o, int depth){
         tColor *= temp_mat.get_opacity();
         color += tColor;
 
-    }*/
+    }
   }
 
   //ambiente Beleuchtung
