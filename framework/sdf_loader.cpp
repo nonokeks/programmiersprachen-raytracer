@@ -14,6 +14,8 @@
 #include "sphere.hpp"
 #include "renderer_data.hpp"
 #include "triangle.hpp"
+#include "cone.hpp"
+#include "cylinder.hpp"
 #include <map>
 using namespace std;
 
@@ -126,25 +128,6 @@ Scene Sdf_loader::load_scene(std::string file) const{
 	 			Renderer_data render{x_res, y_res, name, filename};
 	 			s.render = render;
 	 		}
-	 		/*
-	 		else if (word.compare("ambient") == 0)//Color ambient
-	 		{
-	 			float r,g,b;
-		 		datei >> word;
-	 			//Color
-	 			datei >> word;
-	 			sstr << word << ' ';
-	 			datei >> word;
-	 			sstr << word << ' ';
-	 			datei >> word;
-	 			sstr << word;
-	 			sstr >> r >> g >> b;
-	 			Color a(r,g,b);
-
-	 			sstr.clear();
-	 			
-	 			s.ambient = a;
-	 		}*/
 	 		else if (word.compare("define") == 0)//Klassendefinierung
 	 		{
 	 			datei >> word;
@@ -351,11 +334,82 @@ Scene Sdf_loader::load_scene(std::string file) const{
 			 			std::shared_ptr<Shape> tri(new Triangle(name, a, b, c, word));
 			 			s.shapes.push_back(tri);
 		 			}
+		 			else if (word.compare("cone") == 0)//Shapes (Sphere)
+			 		{
+			 			datei >> name;
+			 			float x,y,z,r;
+			 			
+			 			datei >> word;
+			 			sstr << word << ' ';
+			 			datei >> word;
+			 			sstr << word << ' ';
+			 			datei >> word;
+			 			sstr << word;
+			 			sstr >> x >> y >> z;
+			 			glm::vec3 center1(x,y,z);
+			 			sstr.clear();
+
+			 			datei >> word;
+			 			sstr << word;
+			 			sstr >> r;
+			 			sstr.clear();
+
+			 			datei >> word;
+			 			sstr << word << ' ';
+			 			datei >> word;
+			 			sstr << word << ' ';
+			 			datei >> word;
+			 			sstr << word;
+			 			sstr >> x >> y >> z;
+			 			glm::vec3 center2(x,y,z);
+			 			sstr.clear();
+			 			
+			 			datei >> word;//Materialname
+
+			 			std::shared_ptr<Shape> cone(new Cone(name, center1, r, center2, word));
+			 			s.shapes.push_back(cone);
+		 			}
+		 			else if (word.compare("cylinder") == 0)//Shapes (Sphere)
+			 		{
+			 			datei >> name;
+			 			float x,y,z,r;
+			 			
+			 			datei >> word;
+			 			sstr << word << ' ';
+			 			datei >> word;
+			 			sstr << word << ' ';
+			 			datei >> word;
+			 			sstr << word;
+			 			sstr >> x >> y >> z;
+			 			glm::vec3 center1(x,y,z);
+			 			sstr.clear();
+
+			 			datei >> word;
+			 			sstr << word;
+			 			sstr >> r;
+			 			sstr.clear();
+
+			 			datei >> word;
+			 			sstr << word << ' ';
+			 			datei >> word;
+			 			sstr << word << ' ';
+			 			datei >> word;
+			 			sstr << word;
+			 			sstr >> x >> y >> z;
+			 			glm::vec3 center2(x,y,z);
+			 			sstr.clear();
+			 			
+			 			datei >> word;//Materialname
+
+			 			std::shared_ptr<Shape> cyl(new Cylinder(name, center1, r, center2, word));
+			 			s.shapes.push_back(cyl);
+		 			}
 	 			}
+	 			/*
 	 			else{
 	 				//define <class> <name> <arg> ...
 	 				//Für evtl neue Klassen
-	 			}
+	 			}*/
 	 			sstr.clear(); 
 		 		
 	 		}	
@@ -373,143 +427,10 @@ Scene Sdf_loader::load_scene(std::string file) const{
 
  	}
  	else{
- 		std::cout << "Nope nope" << std::endl;
+ 		std::cout << "File not good" << std::endl;
  	}
 
  	//datei.close();
  	return s;
 
  }
-
-/*	
-void Sdf_loader::load_material(std::string file, std::map<std::string, Material>& material) {
-	ifstream datei;
-	datei.open(file, ios::in);
-	std::string line;
-	std::string name;
-	std::string defmat = "define material";
-	if (datei.good())
-	{
-		std::cout<<"geöffnet"<<std::endl;
-	
-		while(getline(datei, line)){
-			if(defmat.compare(0, 14, line) == 0){
-				int i = 15;
-				for (i; line[i]==' '; ++i)
-				{
-					name += line[i];
-					
-				}
-				//int c = 3;
-				
-			
-				//ka
-				std::string temp;
-				float ka_r;
-				float ka_g;
-				float ka_b;
-				while (line[i]!=' ')
-				{
-					temp += line[i];
-					++i;
-				}
-				ka_r=stod(temp);
-				temp.clear(); 
-				while (line[i]!=' ')
-				{
-					temp += line[i];
-					++i;
-				}
-				ka_b = stod(temp);
-				temp.clear();
-				while (line[i]!=' ')
-				{
-					temp += line[i];
-					++i;
-				}
-				ka_b = stod(temp);
-				temp.clear();
-				
-				//ks
-				float kd_r;
-				float kd_g;
-				float kd_b;
-				while (line[i]!=' ')
-				{
-					temp += line[i];
-					++i;
-				}
-				kd_r=stod(temp);
-				temp.clear(); 
-				while (line[i]!=' ')
-				{
-					temp += line[i];
-					++i;
-				}
-				kd_b = stod(temp);
-				temp.clear();
-				while (line[i]!=' ')
-				{
-					temp += line[i];
-					++i;
-				}
-				kd_b = stod(temp);
-				temp.clear();
-
-				//kd
-				float ks_r;
-				float ks_g;
-				float ks_b;
-				while (line[i]!=' ')
-				{
-					temp += line[i];
-					++i;
-				}
-				ks_r=stod(temp);
-				temp.clear(); 
-				while (line[i]!=' ')
-				{
-					temp += line[i];
-					++i;
-				}
-				ks_b = stod(temp);
-				temp.clear();
-				while (line[i]!=' ')
-				{
-					temp += line[i];
-					++i;
-				}
-				ks_b = stod(temp);
-				temp.clear();
-
-
-				Color ka{ka_r, ka_g, ka_b};
-				Color kd{kd_r, kd_g, kd_b};
-				Color ks{ks_r, ks_g, ks_b};
-
-				while (i<line.size())
-				{
-					temp += line[i];
-					++i;
-				}
-				float m = stod(temp);
-
-				Material mat{name, ka, kd, ks, m};
-				material[name] = mat;
-
-			}
-			else{
-				break;
-			}
-		}
-	}
-	else{
-		std::cout<<"Datei kaputt"<<std::endl;
-	}
-	datei.close();
-}
-
-std::string Sdf_loader::get_file() const{
-	return file_;
-}
-*/
