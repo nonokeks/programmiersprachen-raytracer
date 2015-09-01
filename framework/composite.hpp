@@ -15,7 +15,7 @@ public:
 	Composite();
 	Composite(std::string const& name);
 	
-	~Composition();
+	~Composite();
 	
 	void add(std::shared_ptr<Shape>& shape);
 	void remove(std::string const& name);
