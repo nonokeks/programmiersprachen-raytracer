@@ -19,7 +19,7 @@ void Composite::remove(std::string const& name) {
 }
 
 std::ostream& Composite::print(std::ostream& os) const {
-	for(auto element : shapes_) {
+	for(auto element: shapes_) {
 		element.second->print(os);
 	}
 	return os;
