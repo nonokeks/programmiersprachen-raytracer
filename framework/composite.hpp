@@ -6,7 +6,7 @@
 #include <sphere.hpp>
 #include <box.hpp>
 #include <triangle.hpp>
-#include <shape.hpp>
+
 
 
 class Composite : public Shape {
