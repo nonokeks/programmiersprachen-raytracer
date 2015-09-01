@@ -14,6 +14,8 @@ Composite::Composite(std::string const& name) :
 	shapes_{}
 {}
 
+Composite::~Composite() {}
+
 void Composite::add(std::shared_ptr<Shape>& shape) {
 	shapes_.insert(shapes_.begin(),std::pair<std::string,std::shared_ptr<Shape>>(shape->name(),shape));
 }
