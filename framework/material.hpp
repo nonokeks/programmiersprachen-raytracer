@@ -1,5 +1,5 @@
 #ifndef BUW_MATERIAL_HPP
-#define BUW_MATERIAL_HPP value // was hat das hier zu tun??
+#define BUW_MATERIAL_HPP 
 
 #include <iostream>
 #include <string>
