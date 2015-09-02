@@ -83,9 +83,9 @@ int main(int argc, char* argv[])
     renderer += bild + masse;
 
     //Position
-    camera += toString(i/120) + " " + toString(0) + " " + toString(0) + " ";
+    camera += toString(10) + " " + toString(0) + " " + toString(-10) + " ";
     //view
-    camera += toString(-i/100) + " " + toString(0) + " " + toString(0)
+    camera += toString((float)-i/20) + " " + toString(0) + " " + toString(-1)
                + " ";
     //UPvector
     camera += toString(0) + " " + toString(1) + " " + toString(0) + "\n";
