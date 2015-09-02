@@ -105,6 +105,7 @@ Optional_hit Renderer::intersect(Ray const& ray) const{
       }
     }
   }
+
   return o;
 }
 
@@ -113,6 +114,7 @@ Color Renderer::raytrace(Ray const& ray, int depth){
   if(o.hit) return shade(ray, o, depth);
   else return scene_.ambient;
 }
+
 
 Color Renderer::shade(Ray const& ray, Optional_hit const& o, int depth){
   Color color; // Ray color 
