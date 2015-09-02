@@ -9,21 +9,6 @@
 
 #include "renderer.hpp"
 
-/* im header
-#include "optional_hit.hpp"
-#include "ray.hpp"
-#include "scene.hpp"
-#include "camera.hpp"
-#include "sdf_loader.hpp"
-#include "color.hpp"
-#include "shape.hpp"
-#include "composite.hpp"
-#include <algorithm> // min_element
-#include <glm/glm.hpp>
-#include <glm/vec3.hpp>
-#include <glm/geometric.hpp>
-*/
-
 using namespace glm;
 
 Renderer::Renderer(unsigned w, unsigned h, std::string const& file):
@@ -98,39 +83,21 @@ Optional_hit Renderer::intersect(Ray const& ray) const{
   Optional_hit temp;
   std::vector<float> hits;  
   
-  //delete?
-  /*
-  for (std::vector<std::shared_ptr <Shape>>::const_iterator it = scene_.shapes.begin(); it != scene_.shapes.end(); ++it)
-  {
-
-    if (it == scene_.shapes.begin() || !o.hit)
-    {
-      o.hit = (*it)->intersect(ray, o.distance, o.intersection, o.normal);
-      o.shape = &**it;
-    }
-    else
-    {
-      temp.hit = (*it)->intersect(ray, temp.distance, temp.intersection, temp.normal);
-      temp.shape = &**it;
-      if(o.distance > temp.distance && temp.distance > 0)
-      {
-        o = temp;
-      }
-    }
-  }*/
  
-  // using composite
-  for (std::vector<std::shared_ptr <Composite>>::const_iterator i = scene_.shape_composite.begin(); i != scene_.shape_composite.end(); ++i){
+  //for each composit
+  for (std::vector<std::shared_ptr <Composite>>::const_iterator i =
+      scene_.shape_composite.begin(); i != scene_.shape_composite.end(); ++i){
+    //for each Shape in a composit
     std::map<std::string,std::shared_ptr<Shape>> temp_map = (**i).get_children();
-	// BRAUCHT MAN DAS NOCH?
-    //temp_map.insert(temp_map.begin(), (**i).get_children().begin(), (**i).get_children().end());
-    for (std::map<std::string,std::shared_ptr<Shape>>::const_iterator it = temp_map.begin(); it != temp_map.end(); ++it){
+	  for (std::map<std::string,std::shared_ptr<Shape>>::const_iterator it =
+     temp_map.begin(); it != temp_map.end(); ++it){
       if (it == temp_map.begin() || !o.hit){
         o.hit = it->second->intersect(ray, o.distance, o.intersection, o.normal);
         o.shape = &*(it->second);
       }
       else {
-        temp.hit = it->second->intersect(ray, temp.distance, temp.intersection, temp.normal);
+        temp.hit = it->second->intersect(ray, temp.distance, temp.intersection,
+                                         temp.normal);
         temp.shape = &*(it->second);
         if(o.distance > temp.distance && temp.distance > 0){
           o = temp;
@@ -151,54 +118,55 @@ Color Renderer::shade(Ray const& ray, Optional_hit const& o, int depth){
   Color color; // Ray color 
   Ray rRay, tRay, sRay; // Reflection-, Refraction- and Shadow rays 
   Color rColor, tColor; // Color of reflected and refracted ray 
-  Material temp_mat = scene_.material[o.shape->get_material()]; // Material of intersected Shape
+  // Material of intersected Shape
+  Material temp_mat = scene_.material[o.shape->get_material()]; 
 
-  for (std::vector<Light_source>::const_iterator l = scene_.lights.begin(); l != scene_.lights.end(); ++l)
+  for (std::vector<Light_source>::const_iterator l = scene_.lights.begin();
+       l != scene_.lights.end(); ++l)
   {
     sRay = Ray(o.intersection, glm::normalize((*l).get_position()));
     // Is the dot product of normal and sRay.direction positive?
     if(glm::dot(o.normal, sRay.direction) > 0){
       Optional_hit shadow= intersect(sRay);
-      float shading = glm::dot(o.normal, glm::normalize((*l).get_position()) );
+      float shading = glm::dot(o.normal, glm::normalize((*l).get_position()));
       float shading_pos = std::max(shading, 0.0f);
       
-      if (!shadow.hit){
-        color +=  (*l).get_diffuse() * (( temp_mat.get_kd() * shading_pos) + temp_mat.get_ks());
+      if (!shadow.hit)// not in shadow
+      {
+        color +=  (*l).get_diffuse() * (( temp_mat.get_kd() * shading_pos) +
+                   temp_mat.get_ks());
       }
-      else{
-        // if its in the shadow
+      else // if its in the shadow
+      {
         color +=  (*l).get_diffuse() * (( temp_mat.get_kd() * shading_pos));
-        Material mat_shadow = scene_.material[shadow.shape->get_material()];
-        if(mat_shadow.get_opacity() != 0){
-		//!!!!!!!!!!!!!!! fehlt noch?
-          //Berechenung?
-        }
       }
     }
   }
   
-  if (depth <= 2){ //3 = Max depth
+  if (depth <= 3){ //3 = Max depth
     if (temp_mat.get_m() != 0){ // Object reflects
-      // Reflection ray with direction of reflection (ist der Einfallsvektor = Schnittpunkt?)
-      //rRay = reflect_ray(o.intersection, o.normal, o.intersection);
       rRay.origin = o.intersection;
+      //Reflectionvector
       rRay.direction = glm::reflect(o.intersection, o.normal);
+      //raytrace reflectionray
       rColor = raytrace(rRay, depth + 1);
+      //scalte Color
       rColor *= temp_mat.get_m();
-      //rColor *= temp_mat.get_ks();
       color += rColor; 
     } 
     
     if (temp_mat.get_opacity() != 0){ // Object transparent -> refraction
       //Ray in direction of refraction
       tRay.origin = o.intersection;
-      tRay.direction = glm::refract(o.intersection, o.normal, temp_mat.get_refract());
+      tRay.direction = glm::refract(o.intersection, o.normal, 
+                                    temp_mat.get_refract());
 
-		if(temp_mat.get_m() != 1){ //KLAMMERN NEU; STIMMEN DIE SO??
-			tColor = raytrace(tRay, depth + 1);
-			tColor *= temp_mat.get_opacity();
-			color += tColor;
-		}
+  		if(temp_mat.get_m() != 1) //object is not selfreflection complete
+      {
+  			tColor = raytrace(tRay, depth + 1);
+  			tColor *= temp_mat.get_opacity();
+  			color += tColor;
+  		}
     }
   }
   //ambient lightning
@@ -237,24 +205,14 @@ void Renderer::render_scene(std::string filename){
 
 
   std::vector<Pixel>::iterator j = pixel.begin();
-  //Farbe für jeden Pixel berechnen
+  //raytrace color for each Pixel
   for (std::vector<Ray>::iterator i = rays.begin(); i < rays.end(); ++i)
   {
     Color temp = raytrace(*i,1);
     (*j).color = temp;
-    //std::cout << temp;
     write(*j);
     ++j;
   }
+  //Save file
   ppm_.save(filename_);
-}
-
-//wird das überhaupt benutzt??
-Ray Renderer::reflect_ray(glm::vec3 const& intersection, glm::vec3 const& normale, glm::vec3 const& rayDirection) const{
-	glm::vec3 spiegel{0.0f, 0.0f, 0.0f}; //neuer Ray direction kommt hier rein, origin ist intersection
-	spiegel.x = (2*normale.x*normale.x*rayDirection.x + 2*normale.x*normale.y*rayDirection.y + 2*normale.x*normale.z*rayDirection.z - rayDirection.x);
-	spiegel.y = (2*normale.x*normale.y*rayDirection.x + 2*normale.x*normale.y*rayDirection.y + 2*normale.y*normale.z*rayDirection.z - rayDirection.y);
-	spiegel.z = (2*normale.y*normale.z*rayDirection.x + 2*normale.y*normale.z*rayDirection.y + 2*normale.z*normale.z*rayDirection.z - rayDirection.z);
-	Ray newRay{intersection, spiegel}; //spiegel muss vielleicht *-1 genommen werden, bin mir nicht sicher ob der in die richtige Richtung zeigt
-	return newRay;
 }

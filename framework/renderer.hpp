@@ -50,8 +50,6 @@ class Renderer {
 
 	  Color raytrace(Ray const& ray, int depth);
 	  void render_scene(std::string filename); 
-	  Ray reflect_ray(glm::vec3 const& intersection, glm::vec3 const& normale, glm::vec3 const& rayDirection) const;
-	  //Color shade(Ray const& ray, Optional_hit const& o); //weg?
 	  Color shade(Ray const& ray, Optional_hit const& o, int depth);
 
 	private:

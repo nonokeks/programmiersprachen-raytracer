@@ -30,8 +30,6 @@ class Sdf_loader {
 		~Sdf_loader();
 
 		Scene load_scene(std::string file) const;
-		
-		//void load_material(std::string file, std::map<std::string, Material>& material);
 		std::string get_file() const;
 
 	private:

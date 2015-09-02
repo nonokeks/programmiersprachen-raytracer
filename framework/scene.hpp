@@ -22,7 +22,8 @@ struct Scene{
 		cam(),
 		render(){}
 		
-	Scene(Color const& ambient_color, Camera const& camera, Renderer_data const& renderer):
+	Scene(Color const& ambient_color, Camera const& camera, 
+		  Renderer_data const& renderer):
 		ambient(ambient_color),
 		cam(camera),
 		render(renderer){}
@@ -37,26 +38,12 @@ struct Scene{
 
 	Scene& operator= (Scene const& rhs){
 		material.clear();
-		//shapes.clear();
 		shape_composite.clear();
 		lights.clear();
 
-		//for(std::vector<std::shared_ptr <Shape>>::const_iterator it = rhs.shapes.begin(); it != rhs.shapes.end(); ++it){
-	 	//	shapes.push_back(*it);
-		//}
-		
-		//for(std::vector<Light_source>::const_iterator it = rhs.lights.begin(); it != rhs.lights.end(); ++it){
-		//	lights.push_back(*it);
-		//}
-
 		material.insert(rhs.material.begin(), rhs.material.end());
-
-		//Problem für SIGSEV
-		//std::copy(rhs.lights.begin(), rhs.lights.end(), lights.begin());
-		//std::copy( rhs.shapes.begin(),  rhs.shapes.end(), shapes.begin() );
-
-		//shapes.insert(shapes.begin(), rhs.shapes.begin(), rhs.shapes.end());
-		shape_composite.insert(shape_composite.begin(), rhs.shape_composite.begin(), rhs.shape_composite.end());
+		shape_composite.insert(shape_composite.begin(), 
+					rhs.shape_composite.begin(), rhs.shape_composite.end());
 		lights.insert(lights.begin(), rhs.lights.begin(), rhs.lights.end());
 
 		ambient = rhs.ambient;
@@ -66,9 +53,11 @@ struct Scene{
 	}
 
 	bool operator==(Scene const& rhs){
-		if(ambient == rhs.ambient && !cam.get_name().compare(rhs.cam.get_name())
-			&& cam.get_angle() == rhs.cam.get_angle() && render.width == rhs.render.width
-			&& render.height == rhs.render.height && render.camera_name.compare(rhs.render.camera_name)
+		if(ambient == rhs.ambient && 
+			!cam.get_name().compare(rhs.cam.get_name()) && cam.get_angle()
+			== rhs.cam.get_angle() && render.width == rhs.render.width 
+			&& render.height == rhs.render.height 
+			&& render.camera_name.compare(rhs.render.camera_name)
 			&& render.filename.compare(rhs.render.filename)){
 			return true;
 		}

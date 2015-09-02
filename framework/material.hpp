@@ -9,7 +9,8 @@
 class Material{
 	public:
 		Material();
-		Material(std::string name, Color const& ka, Color const& kd, Color const& ks, float m, float refract, float opacity);
+		Material(std::string name, Color const& ka, Color const& kd, 
+			     Color const& ks, float m, float refract, float opacity);
 		~Material();
 		
 		std::string const& get_name()const;

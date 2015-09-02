@@ -1,23 +1,3 @@
-/*#include <iostream>
-#include <string>
-#include <fstream>
-#include <sstream>  
-#include <glm/vec3.hpp>
-#include "scene.hpp"
-#include "material.hpp"
-#include <map>
-#include "camera.hpp"
-#include "light_source.hpp"
-#include "color.hpp"
-#include "shape.hpp"
-#include "box.hpp"
-#include "sphere.hpp"
-#include "renderer_data.hpp"
-#include "triangle.hpp"
-#include "cone.hpp"
-#include "cylinder.hpp"
-*/
-
 #include "sdf_loader.hpp"
 
 using namespace std;
@@ -31,8 +11,6 @@ Sdf_loader::Sdf_loader():
 Sdf_loader::~Sdf_loader(){}
 
 Scene Sdf_loader::load_scene(std::string file) const{
-//delete?
-	//file_ = file; // noetig?
 
 	ifstream datei(file, ios::in);
  	Scene s{};
@@ -47,18 +25,7 @@ Scene Sdf_loader::load_scene(std::string file) const{
 		while(datei >> word){
  			if (word.compare("#") == 0){ // ignore comments
 	 			datei >> word; // read next word = ignore this line
-				//DELETE?
-	 			//Komplette Zeile automatisch?
-
-	 			/*
-	 			if(word.compare("camera") == 0 ||
-				   word.compare("render") == 0 || word.compare("define") == 0){
-	 			    
-	 			    //datei >> word;
-	 			}*/
-	 			
-	 		}
-			
+			}
 			// Camera
 	 		else if (word.compare("camera") == 0){ 
 	 			datei >> name;
@@ -114,7 +81,7 @@ Scene Sdf_loader::load_scene(std::string file) const{
 			
 			//Renderer
 	 		else if (word.compare("render") == 0){
-	 			datei >> name; //Kamera Name ..? //HAT DAS NOCH BEDEUTUNG?
+	 			datei >> name; 
 	 			std::string filename;
 	 			datei >> filename;
 
@@ -267,11 +234,9 @@ Scene Sdf_loader::load_scene(std::string file) const{
 				 			
 				 			datei >> word; // Material name
 
-				 			std::shared_ptr<Shape> b(new Box(name, min, max, word));
-				 			//KANN DAS WEG?
-							//s.shapes.push_back(b);
-
-				 			//Box b(name, min, max, word);
+				 			std::shared_ptr<Shape> b(new 
+				 				Box(name, min, max, word));
+				 			
 				 			shape_map[name] = b;
 			 			}
 			 		}
@@ -304,11 +269,9 @@ Scene Sdf_loader::load_scene(std::string file) const{
 
 				 			datei >> word; // Material name
 
-				 			std::shared_ptr<Shape> sph(new Sphere(name, center, r, word));
-							
-							//WEG?
-				 			//s.shapes.push_back(sph);
-				 			//Sphere sph(name, center, r, word);
+				 			std::shared_ptr<Shape> sph(new 
+				 				Sphere(name, center, r, word));
+			
 				 			shape_map[name] = sph;
 				 		}
 		 			}
@@ -351,10 +314,9 @@ Scene Sdf_loader::load_scene(std::string file) const{
 				 			
 				 			datei >> word; // Material name
 
-				 			std::shared_ptr<Shape> tri(new Triangle(name, a, b, c, word));
-							//WEG?
-				 			//s.shapes.push_back(tri);
-				 			//Triangle tri(name, a, b, c, word);
+				 			std::shared_ptr<Shape> tri(new 
+				 				Triangle(name, a, b, c, word));
+
 				 			shape_map[name] = tri;
 				 		}
 		 			}
@@ -393,10 +355,9 @@ Scene Sdf_loader::load_scene(std::string file) const{
 				 			
 				 			datei >> word; // Material name
 
-				 			std::shared_ptr<Shape> cone(new Cone(name, center1, r, center2, word));
-							//WEG??
-				 			//s.shapes.push_back(cone);
-				 			//Cone co(name, center1, r, center2, word);
+				 			std::shared_ptr<Shape> cone(new 
+				 				Cone(name, center1, r, center2, word));
+							
 				 			shape_map[name] = cone;
 				 		}
 		 			}
@@ -435,11 +396,9 @@ Scene Sdf_loader::load_scene(std::string file) const{
 				 			
 				 			datei >> word; // Material name
 
-				 			std::shared_ptr<Shape> cyl(new Cylinder(name, center1, r, center2, word));
-							//WEG?
-				 			//s.shapes.push_back(cyl);
-
-				 			//Cylinder cyl(name, center1, r, center2, word);
+				 			std::shared_ptr<Shape> cyl(new 
+				 				Cylinder(name, center1, r, center2, word));
+							
 				 			shape_map[name] = cyl;
 				 		}
 		 			}
@@ -448,13 +407,15 @@ Scene Sdf_loader::load_scene(std::string file) const{
 		 			else if (word.compare("composite") == 0){
 		 				std::shared_ptr<Composite> c(new Composite);
 		 				datei >> word;
-		 				std::map<std::string, std::shared_ptr<Shape>>::iterator i= shape_map.begin();
+		 				std::map<std::string, std::shared_ptr<Shape>>::iterator
+		 				 			i = shape_map.begin();
 		 				while((word.compare("#") != 0 && word.compare("render") 
 		 					!= 0 && word.compare("camera") != 0 && 
-		 					word.compare("define") != 0) && i != shape_map.end()){
+		 					word.compare("define") != 0) &&
+		 					i != shape_map.end())
+		 				{
 		 		
 		 					std::shared_ptr<Shape> p = shape_map[word];
-		 					//p = (shape_map.find(word)->second);
 		 					c->add(p);
 		 					datei >> word;
 		 					++i;
@@ -462,18 +423,15 @@ Scene Sdf_loader::load_scene(std::string file) const{
 		 				s.shape_composite.push_back(c);
 		 			}
 	 			}
-	 			/*
-	 			else{
-	 				//define <class> <name> <arg> ...
-	 				//Für evtl neue Klassen
-	 			}*/
 	 			sstr.clear(); 
 		 		
 	 		}	
 		}
 
 		//calculate ambient from all light sources
-		for (std::vector<Light_source>::const_iterator it = s.lights.begin(); it != s.lights.end(); ++it){
+		for (std::vector<Light_source>::const_iterator it = s.lights.begin();
+			 it != s.lights.end(); ++it)
+		{
 			s.ambient.r += (*it).get_ambiente().r;
 			s.ambient.g += (*it).get_ambiente().g;
 			s.ambient.b += (*it).get_ambiente().b;

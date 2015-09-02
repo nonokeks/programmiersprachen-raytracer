@@ -1,19 +1,5 @@
 #include "cone.hpp"
 
-/*
-#include <iostream>
-#include <cmath>
-#include <string>
-#include "color.hpp"
-#include "ray.hpp"
-#include <glm/vec3.hpp>
-#include <glm/glm.hpp>
-#include <glm/gtx/intersect.hpp>
-*/
-
-//warum ist das hier wenn im Header auskommentiert?
-#include "material.hpp"
-
 #define PI 3.14159265
 #define _USE_MATH_DEFINES
 
@@ -29,18 +15,13 @@ Cone::Cone(glm::vec3 const& center, float radius, glm::vec3 const& center2):
 	radius_{radius},
 	center2_{center2}{}
 	
-Cone::Cone(std::string name, glm::vec3 const& center, float radius, glm::vec3 const& center2, std::string material):
+Cone::Cone(std::string name, glm::vec3 const& center, float radius,
+		   glm::vec3 const& center2, std::string material):
 	Shape{name, material},
 	center_{center},
 	radius_{radius},
 	center2_{center2}{}
 
-//delete?
-//Cone::Cone(glm::vec3 const& center, float radius, glm::vec3 const& center2, std::string name, Color const& color):Shape{name, color}, center_{center}, radius_{radius}, center2_{center2}{}
-//Cone::~Cone(){std::cout << "Cone Destructor" << std::endl;}
-
-/*Cone::Cone(glm::vec3 const& center, float radius, glm::vec3 const& center2, std::string name, Material const& mat): Shape{name, mat}, center_{center}, radius_{radius}, center2_{center2}{}
-Cone::Cone(glm::vec3 const& center, float radius, glm::vec3 const& center2, std::string name, std::string name_mat, Color const& ka, Color const& kd, Color const& ks, float m): Shape{name, name_mat, ka, kd, ks, m}, center_{center}, radius_{radius}, center2_{center2}{}*/
 
 glm::vec3 const& Cone::get_center() const {
 	return center_;
@@ -58,8 +39,11 @@ glm::vec3 const& Cone::get_center2() const {
 /*		does not work!!
 		was supposed to calculate intersection, normal and distance
 		
-bool Cone::intersect(Ray const& ray, float& distance, glm::vec3& intersection, glm::vec3& normal)const{
-	//Gerade durch Mitte des Kegels: p_a + v_a * t, p_a = Stützvektor = center unten, v_a = Richtungsvektor = center oben-center unten
+bool Cone::intersect(Ray const& ray, float& distance, glm::vec3& intersection,
+					 glm::vec3& normal)const{
+	//Gerade durch Mitte des Kegels: 
+	//p_a + v_a * t, p_a = Stützvektor = center unten, 
+	//v_a = Richtungsvektor = center oben-center unten
 	glm::vec3 p_a = center_;
 	glm::vec3 v_a = center2_ - center_;
 	
@@ -68,12 +52,24 @@ bool Cone::intersect(Ray const& ray, float& distance, glm::vec3& intersection, g
 	
 	float height = glm::length(v_a);
 	float beta = atan(height/radius_); //Winkel an der Fläche
-	float alpha = PI/2 - beta; //Winkel an der Spitze = zwischen Gerade und einer Seite
+	//Winkel an der Spitze = zwischen Gerade und einer Seite
+	float alpha = PI/2 - beta; 
 	
-	float a = cos(alpha) * cos(alpha) * glm::dot((v - glm::dot(v, v_a) * v_a) , (v - glm::dot(v, v_a) * v_a)) - sin(alpha) * sin(alpha) * (glm::dot(v, v_a)) * (glm::dot(v, v_a));
-	// alt: float b = 2 * cos(alpha) * cos(alpha) * glm::dot(v - glm::dot(v, v_a), (glm::dot(v_a,(p-p_a))) - (glm::dot((p-p_a), v_a)) * v_a) - 2 * sin(alpha) * sin(alpha) * glm::dot(v, v_a) * glm::dot((p-p_a), v_a);
-	float b = 2 * cos(alpha) * cos(alpha) * glm::dot((v - glm::dot(v, v_a) * v_a), ((p-p_a) - (glm::dot((p-p_a), v_a)) * v_a)) - 2 * sin(alpha) * sin(alpha) * glm::dot(v, v_a) * glm::dot((p-p_a), v_a);
-	float c = cos(alpha) * cos(alpha) * glm::dot(((p-p_a) - glm::dot((p-p_a), v_a) * v_a) , ((p-p_a) - glm::dot((p-p_a), v_a) * v_a))- sin(alpha) * sin(alpha) * glm::dot((p-p_a), v_a) * glm::dot((p-p_a), v_a);
+	float a = cos(alpha) * cos(alpha) * glm::dot((v - glm::dot(v, v_a) * v_a),
+			(v - glm::dot(v, v_a) * v_a)) - sin(alpha) * sin(alpha) * 
+			(glm::dot(v, v_a)) * (glm::dot(v, v_a));
+	// alt: float b = 2 * cos(alpha) * cos(alpha) * 
+			glm::dot(v - glm::dot(v, v_a), (glm::dot(v_a,(p-p_a))) -
+			(glm::dot((p-p_a), v_a)) * v_a) - 2 * sin(alpha) * sin(alpha) *
+	 		glm::dot(v, v_a) * glm::dot((p-p_a), v_a);
+	float b = 2 * cos(alpha) * cos(alpha) * 
+			glm::dot((v - glm::dot(v, v_a) * v_a), ((p-p_a) - 
+			(glm::dot((p-p_a), v_a)) * v_a)) - 2 * sin(alpha) * sin(alpha) * 
+			glm::dot(v, v_a) * glm::dot((p-p_a), v_a);
+	float c = cos(alpha) * cos(alpha) * glm::dot(((p-p_a) - glm::dot((p-p_a),
+			v_a) * v_a) , ((p-p_a) - glm::dot((p-p_a), v_a) * v_a)) - 
+			sin(alpha) * sin(alpha) * glm::dot((p-p_a), v_a) * 
+			glm::dot((p-p_a), v_a);
 	
 	float possibleT[3];
 	
@@ -84,13 +80,15 @@ bool Cone::intersect(Ray const& ray, float& distance, glm::vec3& intersection, g
 	
 	//schauen ob die intersection zwischen Spitze und Basis ist
 	glm::vec3 q1 = p + v*x1;
-	if (x1 > 0 && (glm::dot(v_a, (q1 - center_))) > 0 && (glm::dot(v_a, (q1 - center2_))) < 0)
+	if (x1 > 0 && (glm::dot(v_a, (q1 - center_))) > 0 
+		&& (glm::dot(v_a, (q1 - center2_))) < 0)
 	{
 		possibleT[0] = x1;
 	}
 	
 	glm::vec3 q2 = p + v*x2;
-	if (x2 > 0 && (glm::dot(v_a, (q2 - center_))) > 0 && (glm::dot(v_a, (q2 - center2_))))
+	if (x2 > 0 && (glm::dot(v_a, (q2 - center_))) > 0 
+		&& (glm::dot(v_a, (q2 - center2_))))
 	{
 		possibleT[1] = x2;
 	}
@@ -140,9 +138,14 @@ bool Cone::intersect(Ray const& ray, float& distance, glm::vec3& intersection, g
 }
 */
 
+bool Cone::intersect(Ray const& ray, float& distance, glm::vec3& intersection,
+					 glm::vec3& normal)const{
+	return false;
+}
+
 std::ostream& Cone::print(std::ostream& os) const{
 	Shape::print(os);
-	//os << "Name: " << get_name() << ", Color: " << get_color().r << " " << get_color().g << " " << get_color().b << "\n";
+	;
 	os << "Center Base: " << center_.x << " " << center_.y << " ";
 	os << center_.z << "," << "Radius: " << radius_ << "," << "Tip: ";
 	os << center2_.x << " " << center2_.y << " " << center2_.z;

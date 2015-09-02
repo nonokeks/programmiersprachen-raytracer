@@ -1,10 +1,7 @@
 #include "light_source.hpp"
 
-/* im header
-#include <glm/vec3.hpp>
-#include <string>*/
-
-Light_source::Light_source(std::string name, glm::vec3 const& pos, Color const& ambient, Color const& diffuse):
+Light_source::Light_source(std::string name, glm::vec3 const& pos, 
+                           Color const& ambient, Color const& diffuse):
 	name_{name},
     pos_{pos},
     la_{ambient},
@@ -16,7 +13,7 @@ Light_source::Light_source():
     la_{},
     ld_{}{}
 
-//Light_source::~Light_source();
+Light_source::~Light_source(){}
 
 std::string Light_source::get_name() const{
 	return name_;

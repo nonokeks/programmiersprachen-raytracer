@@ -23,9 +23,6 @@ struct Optional_hit{
 	
 
 	Optional_hit& operator=(const Optional_hit& rhs){
-		if(this==&rhs){ //Operator ist nicht implementiert..? MUSS DER JETZT NOCH IMPLEMENTIERT WERDEN ODER IST DAS EGAL?
-			return *this;
-		}
 		hit = rhs.hit;
 		distance = rhs.distance;
 		intersection = rhs.intersection;

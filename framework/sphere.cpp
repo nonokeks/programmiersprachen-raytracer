@@ -2,18 +2,6 @@
 
 #define _USE_MATH_DEFINES
 
-/* im header
-#include <cmath>
-#include <iostream>
-#include <string>
-#include "color.hpp"
-#include "ray.hpp"
-#include "material.hpp"
-#include <glm/vec3.hpp>
-#include <glm/glm.hpp>
-#include <glm/gtx/intersect.hpp>
-*/
-
 Sphere::Sphere():
 	Shape{},
 	center_{0.0f, 0.0f, 0.0f},
@@ -24,20 +12,13 @@ Sphere::Sphere(glm::vec3 const& center, float radius):
 	center_{center},
 	radius_{radius}{}
 	
-Sphere::Sphere(std::string name, glm::vec3 const& center, float radius, std::string material):
+Sphere::Sphere(std::string name, glm::vec3 const& center, float radius, 
+			   std::string material):
 	Shape{name, material},
 	center_{center},
 	radius_{radius}{}
 	
-	//DELETE?
-//Sphere::Sphere(glm::vec3 const& center, float radius, std::string name, Color const& color):Shape{name, color}, center_{center}, 
-//radius_{radius}{}
-//Sphere::~Sphere(){std::cout << "Sphere Destructor" << std::endl;}
-
-/*Sphere::Sphere(glm::vec3 const& center, float radius, std::string name, Material const& mat) : Shape{name, mat}, center_{center}, radius_{radius} {}
-Sphere::Sphere(glm::vec3 const& center, float radius, std::string name, std::string name_mat, Color const& ka, Color const& kd, Color const& ks, 
-float m):Shape{name, name_mat, ka, kd, ks, m}, center_{center}, radius_{radius} {}*/
-
+	
 glm::vec3 const& Sphere::get_center() const {
 	return center_;
 }
@@ -46,23 +27,22 @@ float Sphere::get_radius() const{
 	return radius_;
 }
 
-/*
-bool Sphere::intersect(Ray const& ray, float& distance)const{
-	glm::vec3 direct = glm::normalize(ray.direction);
-	return glm::intersectRaySphere(ray.origin, direct, center_, radius_*radius_, distance);
-}*/
 
-bool Sphere::intersect(Ray const& ray, float& distance, glm::vec3& intersection, glm::vec3& normal)const{
+bool Sphere::intersect(Ray const& ray, float& distance, 
+						glm::vec3& intersection, glm::vec3& normal)const
+{
 	glm::vec3 direct = glm::normalize(ray.direction);
-	bool b = glm::intersectRaySphere(ray.origin, direct, center_, radius_, intersection, normal);
+	bool b = glm::intersectRaySphere(ray.origin, direct, center_, radius_,
+									 intersection, normal);
 	normal = glm::normalize(normal);
 	return b;
 }
 
 std::ostream& Sphere::print(std::ostream& os) const{
 	Shape::print(os);
-	//os << "Name: " << get_name() << ", Color: " << get_color().r << " " << get_color().g << " " << get_color().b << "\n";
-	os << "Radius: " << radius_ << ", Center: " << center_.x << " " << center_.y << " " << center_.z;
+	
+	os << "Radius: " << radius_ << ", Center: " << center_.x << " " <<
+	   center_.y << " " << center_.z;
 
 	return os;
 }

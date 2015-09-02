@@ -8,9 +8,10 @@
 
 class Light_source{
 	public:
-		Light_source(std::string name, glm::vec3 const& pos, Color const& ambient, Color const& diffuse);
+		Light_source(std::string name, glm::vec3 const& pos, 
+					Color const& ambient, Color const& diffuse);
 		Light_source();
-		//~Light_source(); Wieso gibt es den nicht??
+		~Light_source();
 
 		std::string get_name() const;
 		glm::vec3 const& get_position() const;
