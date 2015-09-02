@@ -32,7 +32,7 @@ class Material{
 		float m_; // mirror
 
 		float refract_; // Refractive index
-		float opacity_; // Transparency
+		float opacity_; // Opacity - how transparent is the object?
 
 };
 
