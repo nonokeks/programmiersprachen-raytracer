@@ -32,7 +32,7 @@ class Shape{
 		}
 		
 			
-		//Solve for x: ax^2 + bx + c = 0
+		// Solve for x: ax^2 + bx + c = 0
 		bool solveQuadratic(float const &a, float const &b, float const &c, 
 							float &x0, float &x1)const
 		{
@@ -63,7 +63,7 @@ class Shape{
 		{
 			// vectors have to be normalized!
 			float denom = glm::dot(normal, direction);
-			//1e-6 = 0.000001, denom approaches 0 if plane and ray are parallel
+			// 1e-6 = 0.000001, denom approaches 0 if plane and ray are parallel
 			if (denom > 1e-6) { 
 				glm::vec3 p = center - origin;
 				x = glm::dot(p, normal) / denom;

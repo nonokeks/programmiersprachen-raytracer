@@ -30,7 +30,7 @@ Scene Sdf_loader::load_scene(std::string file) const{
 	 		else if (word.compare("camera") == 0){ 
 	 			datei >> name;
 	 			datei >> word;
-				sstr << word; //String to Float
+				sstr << word; // String to Float
 				float angle;
 				sstr >> angle;
 				sstr.clear();
@@ -79,7 +79,7 @@ Scene Sdf_loader::load_scene(std::string file) const{
 				}
 	 		}
 			
-			//Renderer
+			// Renderer
 	 		else if (word.compare("render") == 0){
 	 			datei >> name; 
 	 			std::string filename;
@@ -102,12 +102,12 @@ Scene Sdf_loader::load_scene(std::string file) const{
 	 		else if (word.compare("define") == 0){ 
 	 			datei >> word;
 				
-	 			if (word.compare("material") == 0){// Materials for Shapes
+	 			if (word.compare("material") == 0){ // Materials for Shapes
 		 			float r,g,b;
 		 			datei >> name;
-		 			//only if material name is unique
+		 			// only if material name is unique
 		 			if(s.material.find(name) == s.material.end()){
-		 				//ka
+		 				// ka
 		 				sstr.clear();
 			 			datei >> word;
 			 			sstr << word << ' ';
@@ -119,7 +119,7 @@ Scene Sdf_loader::load_scene(std::string file) const{
 			 			Color ka(r,g,b);
 			 			sstr.clear();
 			 			
-			 			//kd
+			 			// kd
 			 			datei >> word;
 			 			sstr << word << ' ';
 			 			datei >> word;
@@ -130,7 +130,7 @@ Scene Sdf_loader::load_scene(std::string file) const{
 			 			Color kd(r,g,b);
 			 			sstr.clear();
 
-			 			//ks
+			 			// ks
 			 			datei >> word;
 			 			sstr << word << ' ';
 			 			datei >> word;
@@ -160,7 +160,7 @@ Scene Sdf_loader::load_scene(std::string file) const{
 		 		else if (word.compare("light") == 0){
 		 			datei >> name;
 
-		 			//Position
+		 			// Position
 		 			float x, y, z;
 		 			datei >> word;
 		 			sstr << word << ' ';
@@ -172,7 +172,7 @@ Scene Sdf_loader::load_scene(std::string file) const{
 		 			glm::vec3 position(x,y,z);
 		 			sstr.clear(); // Clear stringstream
 					
-					//La
+					// La
 					float r, g, b;
 					datei >> word;
 		 			sstr << word << ' ';
@@ -184,7 +184,7 @@ Scene Sdf_loader::load_scene(std::string file) const{
 		 			Color la(r,g,b);
 		 			sstr.clear(); //Clear stringstream
 
-		 			//Ld
+		 			// Ld
 					datei >> word;
 		 			sstr << word << ' ';
 		 			datei >> word;
@@ -200,17 +200,17 @@ Scene Sdf_loader::load_scene(std::string file) const{
 
 		 		}
 				
-				//Shapes
+				// Shapes
 	 			else if (word.compare("shape") == 0){
 	 				datei >> word;
 					
-					//Box
+					// Box
 	 				if (word.compare("box") == 0){
 			 			datei >> name;
 			 			if(shape_map.find(name) == shape_map.end()){
 				 			float x,y,z;
 							
-				 			//min
+				 			// min
 				 			datei >> word;
 				 			sstr << word << ' ';
 				 			datei >> word;
@@ -221,7 +221,7 @@ Scene Sdf_loader::load_scene(std::string file) const{
 				 			glm::vec3 min(x,y,z);
 				 			sstr.clear();
 
-				 			//max
+				 			// max
 				 			datei >> word;
 				 			sstr << word << ' ';
 				 			datei >> word;
@@ -248,7 +248,7 @@ Scene Sdf_loader::load_scene(std::string file) const{
 			 			if(shape_map.find(name) == shape_map.end()){
 						
 				 			float x,y,z;
-				 			//center
+				 			// center
 				 			datei >> word;
 				 			sstr << word << ' ';
 				 			datei >> word;
@@ -261,7 +261,7 @@ Scene Sdf_loader::load_scene(std::string file) const{
 				 			sstr.clear();
 
 				 			float r;
-				 			//radius
+				 			// radius
 				 			datei >> word;
 				 			sstr << word;
 				 			sstr >> r;
@@ -276,7 +276,7 @@ Scene Sdf_loader::load_scene(std::string file) const{
 				 		}
 		 			}
 					
-					//Triangle
+					// Triangle
 		 			else if (word.compare("triangle") == 0){
 			 			datei >> name;
 			 			float x,y,z;
@@ -321,7 +321,7 @@ Scene Sdf_loader::load_scene(std::string file) const{
 				 		}
 		 			}
 					
-					//Cone
+					// Cone
 		 			else if (word.compare("cone") == 0){
 			 			datei >> name;
 						
@@ -362,7 +362,7 @@ Scene Sdf_loader::load_scene(std::string file) const{
 				 		}
 		 			}
 					
-					//Cylinder
+					// Cylinder
 		 			else if (word.compare("cylinder") == 0){
 			 			datei >> name;
 						
@@ -403,7 +403,7 @@ Scene Sdf_loader::load_scene(std::string file) const{
 				 		}
 		 			}
 					
-					//Composite
+					// Composite
 		 			else if (word.compare("composite") == 0){
 		 				std::shared_ptr<Composite> c(new Composite);
 		 				datei >> word;
@@ -428,7 +428,7 @@ Scene Sdf_loader::load_scene(std::string file) const{
 	 		}	
 		}
 
-		//calculate ambient from all light sources
+		// calculate ambient from all light sources
 		for (std::vector<Light_source>::const_iterator it = s.lights.begin();
 			 it != s.lights.end(); ++it)
 		{
@@ -442,7 +442,7 @@ Scene Sdf_loader::load_scene(std::string file) const{
  		std::cout << "File not good" << std::endl;
  	}
 
- 	//datei.close();
+ 	// datei.close();
  	return s;
 
  }

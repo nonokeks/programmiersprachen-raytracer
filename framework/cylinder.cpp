@@ -148,7 +148,6 @@ bool Cylinder::intersect(Ray const& ray, float& distance,
 }
 */
 
-
 bool Cylinder::intersect(Ray const& ray, float& distance, 
 						glm::vec3& intersection, glm::vec3& normal)const{
 	return false;

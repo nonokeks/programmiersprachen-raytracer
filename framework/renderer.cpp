@@ -84,10 +84,10 @@ Optional_hit Renderer::intersect(Ray const& ray) const{
   std::vector<float> hits;  
   
  
-  //for each composit
+  //for each composite
   for (std::vector<std::shared_ptr <Composite>>::const_iterator i =
       scene_.shape_composite.begin(); i != scene_.shape_composite.end(); ++i){
-    //for each Shape in a composit
+    //for each Shape in a composite
     std::map<std::string,std::shared_ptr<Shape>> temp_map = (**i).get_children();
 	  for (std::map<std::string,std::shared_ptr<Shape>>::const_iterator it =
      temp_map.begin(); it != temp_map.end(); ++it){
@@ -136,7 +136,7 @@ Color Renderer::shade(Ray const& ray, Optional_hit const& o, int depth){
         color +=  (*l).get_diffuse() * (( temp_mat.get_kd() * shading_pos) +
                    temp_mat.get_ks());
       }
-      else // if its in the shadow
+      else // its in the shadow
       {
         color +=  (*l).get_diffuse() * (( temp_mat.get_kd() * shading_pos));
       }
@@ -146,17 +146,17 @@ Color Renderer::shade(Ray const& ray, Optional_hit const& o, int depth){
   if (depth <= 3){ //3 = Max depth
     if (temp_mat.get_m() != 0){ // Object reflects
       rRay.origin = o.intersection;
-      //Reflectionvector
+      // Reflection vector
       rRay.direction = glm::reflect(o.intersection, o.normal);
-      //raytrace reflectionray
+      // raytrace reflection ray
       rColor = raytrace(rRay, depth + 1);
-      //scalte Color
+      // scale Color
       rColor *= temp_mat.get_m();
       color += rColor; 
     } 
     
     if (temp_mat.get_opacity() != 0){ // Object transparent -> refraction
-      //Ray in direction of refraction
+      // Ray in direction of refraction
       tRay.origin = o.intersection;
       tRay.direction = glm::refract(o.intersection, o.normal, 
                                     temp_mat.get_refract());
@@ -169,7 +169,7 @@ Color Renderer::shade(Ray const& ray, Optional_hit const& o, int depth){
   		}
     }
   }
-  //ambient lightning
+  // ambient lightning
   color += temp_mat.get_ka() * scene_.ambient;
   return color;
 }
@@ -179,7 +179,7 @@ void Renderer::render_scene(std::string filename){
   Sdf_loader loader{filename};
   scene_ = loader.load_scene(filename);
 
-  // write data from transferobject into renderer
+  // write data from transfer object into renderer
   width_ = scene_.render.width;
   height_ = scene_.render.height;
   filename_= scene_.render.filename;

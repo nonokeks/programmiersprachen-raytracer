@@ -7,10 +7,6 @@
 // Color
 // -----------------------------------------------------------------------------
 
-
-//HEADER VERÄNDERN??
-
-
 #ifndef BUW_COLOR_HPP
 #define BUW_COLOR_HPP
 

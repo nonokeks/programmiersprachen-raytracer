@@ -31,8 +31,8 @@ class Material{
 		Color ks_;
 		float m_; // mirror
 
-		float refract_; //Brechungindex
-		float opacity_; //Transparenz
+		float refract_; // Refractive index
+		float opacity_; // Opacity - how transparent is the object?
 
 };
 

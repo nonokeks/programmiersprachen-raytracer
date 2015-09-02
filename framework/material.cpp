@@ -1,10 +1,5 @@
 #include "material.hpp"
 
-/* im header
-#include <iostream>
-#include <string>
-#include "color.hpp"*/
-
 Material::Material():
 	name_{""},
 	ka_{0.0, 0.0, 0.0},
