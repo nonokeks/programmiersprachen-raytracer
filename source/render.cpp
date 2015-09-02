@@ -22,23 +22,29 @@ std::string toString(T x)
 int main(int argc, char* argv[])
 {
 
-  //fuer die Dateinamen
-  std::string save = "~\\Dokumente\\PLSE\\programmiersprachen-raytracer\\build\\build\\Release\\picture";
+  //file path
+  std::string save = "~\\Dokumente\\PLSE\\programmiersprachen-raytracer\\";
+  save += "build\\build\\Release\\picture";
   std::string txt = ".txt";
   std::string ppm = ".ppm";
   std::string nullnull = "00";
   std::string null = "0";
   std::vector<std::string> dateien;
 
-  //Inhalt der Scene 
+  //Content of Scene
   std::string geometry = "define shape sphere sphere1 20 20 -100 10 red\n";
   geometry += "define shape box rbottom 0.2 0.7 -5 1.6 1.2 -8 green\n"; 
-  geometry += "define shape triangle triangle1 -20 20 -100 20 20 -100 -10 -10 -100 blue\n";
+  geometry += "define shape triangle triangle1 -20 20 -100 20 20 -100 -10 -10";
+  geometry += " -100 blue\n";
+  geometry += "define shape sphere sphere3 -2 -2 -15 2 yellow\n";
   std::string materials = "define material green 0 1 0 0 1 0 0 1 0 0 0 0\n";
   materials += "define material red 1 0 0 1 0 0 1 0 0 0 0 0\n";
   materials += "define material blue 0 0 1 0 0 1 0 0 1 0 0 0\n";
+  materials += "define material yellow 1 1 0 1 1 0 1 1 0 0 0 0\n";
   std::string lights = "define light sun 1000 700 0 0.2 0.2 0.2 0.8 0.8 0.8\n";
   lights += "define light lamp 50 50 10 0.3 0.3 0.3 0.3 0.3 0.3\n";
+  std::string composite = "define shape composite sphere1 rbottom triangle1";
+  composite += " sphere3\n";
   
   std::string name = "";
   std::string bild = "picture";
@@ -46,9 +52,11 @@ int main(int argc, char* argv[])
   std::string masse = " 600 600\n";
   std::string camera = "camera cam 45 ";
 
+  Renderer r;
+
   for (int i = 1; i < 181; ++i)
   {
-    Renderer r;
+    
     name = "";
     bild = "picture";
     camera = "camera cam 45 ";
@@ -75,21 +83,22 @@ int main(int argc, char* argv[])
     renderer += bild + masse;
 
     //Position
-    camera += toString(i) + " " + toString(0) + " " + toString(0) + " ";
-    //Blickwinkel
-    camera += toString((float)i/1000) + " " + toString(0) + " " + toString(-1) + " ";
+    camera += toString(i/120) + " " + toString(0) + " " + toString(0) + " ";
+    //view
+    camera += toString(-i/100) + " " + toString(0) + " " + toString(0)
+               + " ";
     //UPvector
     camera += toString(0) + " " + toString(1) + " " + toString(0) + "\n";
 
-    //inhalt in die Datei
+    
     std::ofstream data;
     data.open(name, std::ios::out);
    
-    data << geometry << materials << lights << renderer << camera;
+    data << geometry << materials << lights << renderer << camera << composite;
 
     data.close();
 
-    //Scene rendern
+    //render scene
     r.render_scene(name);
 
   }
