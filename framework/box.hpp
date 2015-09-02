@@ -12,8 +12,6 @@
 #include "ray.hpp"
 #include "shape.hpp"
 
-//"" wenn vom Benutzer, <> wenn fertiger Header
-
 class Box : public Shape {
 	public:
 		Box();

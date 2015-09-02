@@ -61,7 +61,7 @@ void Camera::generate_rays(unsigned width, unsigned height,
 		{
 			glm::vec3 direction(x, y, -(distance));
 			
-			//Scalte Camera if not default
+			//Scale Camera if not default
 			if (eye_.x != 0 || eye_.y != 0 || eye_.z != 0 ||
 				dir_.x != 0 || dir_.y != 0 || dir_.z != -1 ||
 				up_.x != 0 || up_.y != 1 || up_.z != 0 )
